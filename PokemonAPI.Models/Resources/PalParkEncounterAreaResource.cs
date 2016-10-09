@@ -1,15 +1,15 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PalParkEncounterAreaResource
     {
         /// <summary>
-        /// The base score given to the player when the referenced Pokémon 
+        /// The base score given to the player when the referenced PokÃ©mon 
         /// is caught during a pal park run
         /// </summary>
         public int BaseScore { get; set; }
 
         /// <summary>
-        /// The base rate for encountering the referenced Pokémon in this pal park area
+        /// The base rate for encountering the referenced PokÃ©mon in this pal park area
         /// </summary>
         public int Rate { get; set; }
 

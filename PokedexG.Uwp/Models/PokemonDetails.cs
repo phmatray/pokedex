@@ -1,4 +1,4 @@
-using PokedexG.Uwp.Services.VeekunServices.Business;
+﻿using PokedexG.Uwp.Services.VeekunServices.Business;
 
 namespace PokedexG.Uwp.Models
 {

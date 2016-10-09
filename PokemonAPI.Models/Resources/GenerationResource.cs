@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     /// <summary>
-    /// A generation is a grouping of the Pokémon games that separates them based on the Pokémon
-    /// they include. In each generation, a new set of Pokémon, Moves, Abilities and Types
+    /// A generation is a grouping of the PokÃ©mon games that separates them based on the PokÃ©mon
+    /// they include. In each generation, a new set of PokÃ©mon, Moves, Abilities and Types
     /// that did not exist in the previous generation are released.
     /// </summary>
     public class GenerationResource : NamedAPIResource
@@ -35,7 +35,7 @@ namespace PokemonAPI.Models.Resources
         public List<NameResource> Names { get; set; }
 
         /// <summary>
-        /// A list of Pokémon species that were introduced in this generation
+        /// A list of PokÃ©mon species that were introduced in this generation
         /// </summary>
         public List<NamedAPIResource> PokemonSpecies { get; set; }
 

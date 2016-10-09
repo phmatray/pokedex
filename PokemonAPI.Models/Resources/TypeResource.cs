@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     /// <summary>
-    /// Types are properties for Pokémon and their moves. Each type has three properties: 
-    /// which types of Pokémon it is super effective against, which types of Pokémon it is not
-    /// very effective against, and which types of Pokémon it is completely ineffective against.
+    /// Types are properties for PokÃ©mon and their moves. Each type has three properties: 
+    /// which types of PokÃ©mon it is super effective against, which types of PokÃ©mon it is not
+    /// very effective against, and which types of PokÃ©mon it is completely ineffective against.
     /// </summary>
     public class TypeResource : NamedAPIResource
     {
@@ -45,7 +45,7 @@ namespace PokemonAPI.Models.Resources
         public List<NameResource> Names { get; set; }
 
         /// <summary>
-        /// A list of details of Pokémon that have this type
+        /// A list of details of PokÃ©mon that have this type
         /// </summary>
         public List<TypePokemonResource> Pokemon { get; set; }
 

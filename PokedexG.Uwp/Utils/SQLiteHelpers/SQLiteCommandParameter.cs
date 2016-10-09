@@ -1,4 +1,4 @@
-namespace PokedexG.Uwp.Utils.SQLiteHelpers
+﻿namespace PokedexG.Uwp.Utils.SQLiteHelpers
 {
     public class SQLiteCommandParameter
     {

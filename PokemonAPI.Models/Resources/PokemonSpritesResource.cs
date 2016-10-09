@@ -1,44 +1,44 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PokemonSpritesResource
     {
         /// <summary>
-        /// The default depiction of this Pokémon from the front in battle
+        /// The default depiction of this PokÃ©mon from the front in battle
         /// </summary>
         public string FrontDefault { get; set; }
 
         /// <summary>
-        /// The shiny depiction of this Pokémon from the front in battle
+        /// The shiny depiction of this PokÃ©mon from the front in battle
         /// </summary>
         public string FrontShiny { get; set; }
 
         /// <summary>
-        /// The female depiction of this Pokémon from the front in battle
+        /// The female depiction of this PokÃ©mon from the front in battle
         /// </summary>
         public string FrontFemale{ get; set; }
 
         /// <summary>
-        /// The shiny female depiction of this Pokémon from the front in battle
+        /// The shiny female depiction of this PokÃ©mon from the front in battle
         /// </summary>
         public string FrontShinyFemale { get; set; }
 
         /// <summary>
-        /// The default depiction of this Pokémon from the back in battle
+        /// The default depiction of this PokÃ©mon from the back in battle
         /// </summary>
         public string BackDefault { get; set; }
 
         /// <summary>
-        /// The shiny depiction of this Pokémon from the back in battle
+        /// The shiny depiction of this PokÃ©mon from the back in battle
         /// </summary>
         public string BackShiny { get; set; }
 
         /// <summary>
-        /// The female depiction of this Pokémon from the back in battle
+        /// The female depiction of this PokÃ©mon from the back in battle
         /// </summary>
         public string BackFemale{ get; set; }
 
         /// <summary>
-        /// The shiny female depiction of this Pokémon from the back in battle
+        /// The shiny female depiction of this PokÃ©mon from the back in battle
         /// </summary>
         public string BackShinyFemale { get; set; }
     }

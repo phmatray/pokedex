@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     public class EncounterResource
     {
         /// <summary>
-        /// The lowest level the Pokémon could be encountered at
+        /// The lowest level the PokÃ©mon could be encountered at
         /// </summary>
         public int MinLevel { get; set; }
 
         /// <summary>
-        /// The highest level the Pokémon could be encountered at
+        /// The highest level the PokÃ©mon could be encountered at
         /// </summary>
         public int MaxLevel { get; set; }
 

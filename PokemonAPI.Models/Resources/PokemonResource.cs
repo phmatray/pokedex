@@ -1,36 +1,36 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     /// <summary>
-    /// Pokémon are the creatures that inhabit the world of the Pokémon games. 
-    /// They can be caught using Pokéballs and trained by battling with other Pokémon. 
+    /// PokÃ©mon are the creatures that inhabit the world of the PokÃ©mon games. 
+    /// They can be caught using PokÃ©balls and trained by battling with other PokÃ©mon. 
     /// See Bulbapedia for greater detail.
     /// </summary>
     public class PokemonResource : NamedAPIResource
     {
         /// <summary>
-        /// The identifier for this Pokémon resource
+        /// The identifier for this PokÃ©mon resource
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// The human readable identifier for this Pokémon resource
+        /// The human readable identifier for this PokÃ©mon resource
         /// </summary>
         public string Identifier { get; set; }
 
         /// <summary>
-        /// The base experience gained for defeating this Pokémon
+        /// The base experience gained for defeating this PokÃ©mon
         /// </summary>
         public int BaseExperience { get; set; }
 
         /// <summary>
-        /// The height of this Pokémon
+        /// The height of this PokÃ©mon
         /// </summary>
         public int Height { get; set; }
 
         /// <summary>
-        /// Set for exactly one Pokémon used as the default for each species
+        /// Set for exactly one PokÃ©mon used as the default for each species
         /// </summary>
         public bool IsDefault { get; set; }
 
@@ -40,27 +40,27 @@ namespace PokemonAPI.Models.Resources
         public int Order { get; set; }
 
         /// <summary>
-        /// The weight of this Pokémon
+        /// The weight of this PokÃ©mon
         /// </summary>
         public int Weight { get; set; }
 
         /// <summary>
-        /// A list of abilities this Pokémon could potentially have
+        /// A list of abilities this PokÃ©mon could potentially have
         /// </summary>
         public List<PokemonAbilityResource> Abilities { get; set; }
 
         /// <summary>
-        /// A list of forms this Pokémon can take on
+        /// A list of forms this PokÃ©mon can take on
         /// </summary>
         public List<NamedAPIResource> Forms { get; set; }
 
         /// <summary>
-        /// A list of game indices relevent to Pokémon item by generation
+        /// A list of game indices relevent to PokÃ©mon item by generation
         /// </summary>
         public List<VersionGameIndexResource> GameIndices { get; set; }
 
         /// <summary>
-        /// A list of items this Pokémon may be holding when encountered
+        /// A list of items this PokÃ©mon may be holding when encountered
         /// </summary>
         public List<PokemonHeldItemResource> HeldItems { get; set; }
 
@@ -75,22 +75,22 @@ namespace PokemonAPI.Models.Resources
         public List<PokemonMoveResource> Moves { get; set; }
 
         /// <summary>
-        /// A set of sprites used to depict this Pokémon in the game
+        /// A set of sprites used to depict this PokÃ©mon in the game
         /// </summary>
         public PokemonSpritesResource Sprites { get; set; }
 
         /// <summary>
-        /// The species this Pokémon belongs to
+        /// The species this PokÃ©mon belongs to
         /// </summary>
         public NamedAPIResource Species { get; set; }
 
         /// <summary>
-        /// A list of base stat values for this Pokémon
+        /// A list of base stat values for this PokÃ©mon
         /// </summary>
         public List<PokemonStatResource> Stats { get; set; }
 
         /// <summary>
-        /// A list of details showing types this Pokémon has
+        /// A list of details showing types this PokÃ©mon has
         /// </summary>
         public List<PokemonTypeResource> Types { get; set; }
     }

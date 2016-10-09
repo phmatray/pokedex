@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
@@ -20,7 +20,7 @@ namespace PokemonAPI.Models.Resources
         public List<NameResource> Names { get; set; }
 
         /// <summary>
-        /// A list of all Pok�mon species that are members of this egg group
+        /// A list of all Pokémon species that are members of this egg group
         /// </summary>
         public List<NamedAPIResource> PokemonSpecies { get; set; }
     }

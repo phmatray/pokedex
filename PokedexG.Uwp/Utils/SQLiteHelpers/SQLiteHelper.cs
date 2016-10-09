@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SQLite.Net;
 using SQLite.Net.Platform.WinRT;

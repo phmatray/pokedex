@@ -1,4 +1,4 @@
-namespace PokemonAPI.Models.Resources
+﻿namespace PokemonAPI.Models.Resources
 {
     public class PokemonSpeciesVarietyResource
     {
@@ -8,7 +8,7 @@ namespace PokemonAPI.Models.Resources
         public bool IsDefault { get; set; }
 
         /// <summary>
-        /// The Pok�mon variety
+        /// The Pokémon variety
         /// </summary>
         public NamedAPIResource Pokemon { get; set; }
     }

@@ -1,4 +1,4 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PokemonAbilityResource
     {
@@ -8,12 +8,12 @@ namespace PokemonAPI.Models.Resources
         public bool IsHidden { get; set; }
 
         /// <summary>
-        /// The slot this ability occupies in this Pokémon species
+        /// The slot this ability occupies in this PokÃ©mon species
         /// </summary>
         public int Slot { get; set; }
 
         /// <summary>
-        /// The ability the Pokémon may have
+        /// The ability the PokÃ©mon may have
         /// </summary>
         public NamedAPIResource Ability { get; set; }
     }

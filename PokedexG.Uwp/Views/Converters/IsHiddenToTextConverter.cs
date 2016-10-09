@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Windows.UI.Xaml.Data;
 
 namespace PokedexG.Uwp.Views.Converters
@@ -9,7 +9,7 @@ namespace PokedexG.Uwp.Views.Converters
         {
             try
             {
-                return (bool) value ? "(Cach�)" : "";
+                return (bool) value ? "(Caché)" : "";
             }
             catch (Exception)
             {

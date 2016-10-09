@@ -1,4 +1,4 @@
-namespace PokedexG.Uwp.Models
+﻿namespace PokedexG.Uwp.Models
 {
     public class Pokedex
     {

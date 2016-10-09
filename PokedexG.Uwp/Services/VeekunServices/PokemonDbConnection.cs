@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using Windows.Storage;
 using PokedexG.Uwp.Utils.SQLiteHelpers;
 using SQLite.Net;

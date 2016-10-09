@@ -1,9 +1,9 @@
-namespace PokemonAPI.Models.Resources
+﻿namespace PokemonAPI.Models.Resources
 {
     public class GenusResource
     {
         /// <summary>
-        /// The localized genus for the referenced Pok�mon species
+        /// The localized genus for the referenced Pokémon species
         /// </summary>
         public string Genus { get; set; }
 

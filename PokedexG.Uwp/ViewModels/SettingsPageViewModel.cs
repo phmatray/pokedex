@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -169,14 +169,14 @@ namespace PokedexG.Uwp.ViewModels
 
             // Post a message on your wall
             var result = await FacebookService.Instance.PostToFeedAsync(
-                "Pokédex G",
-                "Pokédex G sur Windows 10",
-                "Le Pokédex 6G en français est le compagnon idéal pour découvrir tous les pokémons de vos jeux 3DS.",
+                "PokÃ©dex G",
+                "PokÃ©dex G sur Windows 10",
+                "Le PokÃ©dex 6G en franÃ§ais est le compagnon idÃ©al pour dÃ©couvrir tous les pokÃ©mons de vos jeux 3DS.",
                 "https://www.microsoft.com/fr-fr/store/p/pokedex-g/9nblggh516gc");
 
             if (result)
             {
-                var messageDialog = new MessageDialog("Merci d'avoir partagé votre intérêt pour Pokédex G");
+                var messageDialog = new MessageDialog("Merci d'avoir partagÃ© votre intÃ©rÃªt pour PokÃ©dex G");
                 await messageDialog.ShowAsync();
             }
         }

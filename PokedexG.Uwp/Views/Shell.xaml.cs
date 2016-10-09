@@ -1,4 +1,4 @@
-using Template10.Controls;
+﻿using Template10.Controls;
 using Template10.Services.NavigationService;
 
 namespace PokedexG.Uwp.Views

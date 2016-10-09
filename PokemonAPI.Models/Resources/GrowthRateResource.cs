@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     /// <summary>
-    /// Growth rates are the speed with which Pokémon gain levels through experience.
+    /// Growth rates are the speed with which PokÃ©mon gain levels through experience.
     /// Check out Bulbapedia for greater detail.
     /// </summary>
     public class GrowthRateResource : NamedAPIResource
@@ -19,7 +19,7 @@ namespace PokemonAPI.Models.Resources
         public string Identifier { get; set; }
 
         /// <summary>
-        /// The formula used to calculate the rate at which the Pokémon species gains level
+        /// The formula used to calculate the rate at which the PokÃ©mon species gains level
         /// </summary>
         public string Formula { get; set; }
 
@@ -35,7 +35,7 @@ namespace PokemonAPI.Models.Resources
         public List<GrowthRateExperienceLevelResource> Levels { get; set; }
 
         /// <summary>
-        /// A list of Pokémon species that gain levels at this growth rate
+        /// A list of PokÃ©mon species that gain levels at this growth rate
         /// </summary>
         public List<NamedAPIResource> PokemonSpecies { get; set; }
     }

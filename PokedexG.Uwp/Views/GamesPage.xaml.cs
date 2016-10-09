@@ -1,4 +1,4 @@
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Navigation;
 
 namespace PokedexG.Uwp.Views
 {

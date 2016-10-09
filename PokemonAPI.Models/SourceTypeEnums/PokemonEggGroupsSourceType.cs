@@ -1,4 +1,4 @@
-namespace PokemonAPI.Models.SourceTypeEnums
+﻿namespace PokemonAPI.Models.SourceTypeEnums
 {
     public enum PokemonEggGroupsSourceType
     {

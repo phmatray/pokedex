@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Windows.UI.Xaml;
 using PokedexG.Uwp.Views;
 using Template10.Common;

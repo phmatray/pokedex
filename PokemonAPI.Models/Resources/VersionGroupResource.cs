@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
@@ -23,7 +23,7 @@ namespace PokemonAPI.Models.Resources
         public int? Order { get; set; }
 
         /// <summary>
-        /// A list of methods in which Pokémon can learn moves in this version group
+        /// A list of methods in which PokÃ©mon can learn moves in this version group
         /// </summary>
         public List<NamedAPIResource> MoveLearnMethods { get; set; }
 
@@ -43,7 +43,7 @@ namespace PokemonAPI.Models.Resources
         public List<NamedAPIResource> Regions { get; set; }
 
         /// <summary>
-        /// A list of Pokédexes introduces in this version group
+        /// A list of PokÃ©dexes introduces in this version group
         /// </summary>
         public List<NamedAPIResource> Pokedexes { get; set; }
     }

@@ -1,4 +1,4 @@
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using PokedexG.Uwp.Models;
 using PokedexG.Uwp.ViewModels;

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using SQLite.Net;
 
 namespace PokedexG.Uwp.Utils.SQLiteHelpers

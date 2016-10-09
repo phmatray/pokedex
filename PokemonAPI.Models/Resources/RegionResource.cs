@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     /// <summary>
-    /// A region is an organized area of the Pokémon world. Most often, the main difference between regions is the species of Pokémon that can be encountered within them.
+    /// A region is an organized area of the PokÃ©mon world. Most often, the main difference between regions is the species of PokÃ©mon that can be encountered within them.
     /// </summary>
     public class RegionResource : NamedAPIResource
     {
@@ -38,7 +38,7 @@ namespace PokemonAPI.Models.Resources
         public NamedAPIResource MainGeneration { get; set; }
 
         /// <summary>
-        /// A list of pokédexes that catalogue Pokémon in this region
+        /// A list of pokÃ©dexes that catalogue PokÃ©mon in this region
         /// </summary>
         public List<NamedAPIResource> Pokedexes { get; set; }
     }

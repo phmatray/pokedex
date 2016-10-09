@@ -1,14 +1,14 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PokemonEntryResource
     {
         /// <summary>
-        /// The index of this Pokémon species entry within the Pokédex
+        /// The index of this PokÃ©mon species entry within the PokÃ©dex
         /// </summary>
         public int EntryNumber { get; set; }
 
         /// <summary>
-        /// The Pokémon species being encountered
+        /// The PokÃ©mon species being encountered
         /// </summary>
         public NamedAPIResource PokemonSpecies { get; set; }
     }

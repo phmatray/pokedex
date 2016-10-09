@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using PokedexG.Uwp.Services.VeekunServices.Models;
 
 namespace PokedexG.Uwp.Services.VeekunServices.Repositories

@@ -1,14 +1,14 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PokemonTypeResource
     {
         /// <summary>
-        /// The order the Pokémon's types are listed in
+        /// The order the PokÃ©mon's types are listed in
         /// </summary>
         public int Slot { get; set; }
 
         /// <summary>
-        /// The type the referenced Pokémon has
+        /// The type the referenced PokÃ©mon has
         /// </summary>
         public NamedAPIResource Type { get; set; }
     }

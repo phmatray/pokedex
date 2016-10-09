@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
@@ -81,7 +81,7 @@ namespace PokedexG.Uwp.ViewModels
             Pokemons.RefreshView();
 
             var pokedexes = await Veekun.GetPokedexes();
-            PokedexName = pokedexes?.First()?.Description ?? "Pok�dex";
+            PokedexName = pokedexes?.First()?.Description ?? "Pokédex";
 
             Busy.SetBusy(false);
             await Task.CompletedTask;

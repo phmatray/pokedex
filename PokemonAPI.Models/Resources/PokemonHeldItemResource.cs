@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PokemonAPI.Models.Resources
 {
     public class PokemonHeldItemResource
     {
         /// <summary>
-        /// The item the referenced Pok�mon holds
+        /// The item the referenced Pokémon holds
         /// </summary>
         public NamedAPIResource Item { get; set; }
 

@@ -1,14 +1,14 @@
-namespace PokemonAPI.Models.Resources
+ï»¿namespace PokemonAPI.Models.Resources
 {
     public class PokemonStatResource
     {
         /// <summary>
-        /// The stat the Pokémon has
+        /// The stat the PokÃ©mon has
         /// </summary>
         public NamedAPIResource Stat { get; set; }
 
         /// <summary>
-        /// The effort points (EV) the Pokémon has in the stat
+        /// The effort points (EV) the PokÃ©mon has in the stat
         /// </summary>
         public int Effort { get; set; }
 
