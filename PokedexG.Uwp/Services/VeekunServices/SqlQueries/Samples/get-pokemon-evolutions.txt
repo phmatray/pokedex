@@ -1,0 +1,36 @@
+﻿select 
+	ps2.id as PokemonId,
+	ps2.identifier as PokemonIdentifier,
+	ps2.generation_id as GenerationId,
+	ps2.evolves_from_species_id as EvolvesFromSpeciesId,
+	ps2.evolution_chain_id as EvolutionChainId,
+	ps2.is_baby as IsBaby,
+	pokemon_species_names.name as NameFr
+	
+from pokemon
+join pokemon_species as ps1
+	on ps1.id = pokemon.species_id
+left join pokemon_species as ps2
+	on ps1.evolution_chain_id = ps2.evolution_chain_id
+inner join pokemon_species_names
+	on pokemon_species_names.pokemon_species_id = ps2.id
+
+where 
+	ps1.id = 25 and
+	pokemon_species_names.local_language_id = 5 and
+	ps2.generation_id <= 6 and
+	pokemon.id != 10080 and
+	pokemon.id != 10081 and
+	pokemon.id != 10082 and
+	pokemon.id != 10083 and
+	pokemon.id != 10084 and
+	pokemon.id != 10085 and -- Exclude Specials Pikachu
+	pokemon.id != 10027 and 
+	pokemon.id != 10028 and 
+	pokemon.id != 10029 and -- Exclude Pumpkaboo  
+	pokemon.id != 10030 and 
+	pokemon.id != 10031 and 
+	pokemon.id != 10032 -- Exclude Gourgeist 
+	
+order by 
+	ps2.[order]

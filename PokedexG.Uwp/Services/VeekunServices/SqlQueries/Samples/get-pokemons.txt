@@ -1,0 +1,145 @@
+select
+	pokemon_forms.id as FormId,
+	pokemon_forms.identifier as Identifier,
+	pokemon_forms.form_identifier as FormIdentifier,
+	pokemon_forms.is_default as IsDefault,
+	pokemon_forms.is_battle_only as IsBattleOnly,
+	pokemon_forms.is_mega as IsMega,
+	pokemon_forms.[order] as [Order],
+	pokemon.id as PokemonId,
+	pokemon.species_id as SpecieId,
+	pokemon_species.evolution_chain_id as EvolutionChainId,
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 5 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			pokemon_species_names.name
+		)
+	END 	as Name,
+	
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 1
+	) as BaseStatHp,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 2
+	) as BaseStatAtk,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 3
+	) as BaseStatDef,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 4
+	) as BaseStatAtkSpe,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 5
+	) as BaseStatDefSpe,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 6
+	) as BaseStatSpd,
+	
+	(
+		select pokemon_dex_numbers.pokedex_number
+		from pokemon_dex_numbers
+		where pokemon_dex_numbers.pokedex_id = 1  and
+		pokemon_dex_numbers.species_id = pokemon.id
+	) as PokedexNumberNational,
+	
+	Type1.Type1Id,
+	Type1.Type1Identifier,
+	Type1.Type1Name,
+	Type2.Type2Id,
+	Type2.Type2Identifier,
+	Type2.Type2Name
+	
+from versions
+join version_groups
+	on version_groups.id = versions.version_group_id
+join pokemon_forms
+join pokemon
+	on pokemon.id = pokemon_forms.pokemon_id
+join pokemon_species
+	on pokemon_species.id = pokemon.species_id
+join pokemon_species_names
+	on pokemon_species_names.pokemon_species_id = pokemon.species_id
+left join (
+	select 
+		pokemon_types.pokemon_id,
+		pokemon_types.type_id as Type1Id,
+		types.identifier as Type1Identifier,
+		type_names.name as Type1Name
+	from pokemon_types
+	left join type_names
+		on type_names.type_id = pokemon_types.type_id
+	left join types
+		on types.id = pokemon_types.type_id
+	where pokemon_types.slot = 1 and
+	type_names.local_language_id = 5
+) as Type1 on Type1.pokemon_id = pokemon.id
+left join (
+	select 
+		pokemon_types.pokemon_id,
+		pokemon_types.type_id as Type2Id,
+		types.identifier as Type2Identifier,
+		type_names.name as Type2Name
+	from pokemon_types
+	left join type_names
+		on type_names.type_id = pokemon_types.type_id
+	left join types
+		on types.id = pokemon_types.type_id
+	where pokemon_types.slot = 2 and
+	type_names.local_language_id = 5
+) as Type2 on Type2.pokemon_id = pokemon.id
+
+where
+	versions.id = 25 and
+	pokemon_forms.introduced_in_version_group_id <= versions.version_group_id and	
+	pokemon_species_names.local_language_id = 5 and
+	pokemon_forms.id != 10065 and -- Exclude Pichu-spiky-eared
+	pokemon_forms.id != 10034 and -- Exclude burmy-sandy
+	pokemon_forms.id != 10035 and -- Exclude burmy-trash
+	pokemon_forms.id != 10038 and -- Exclude cherrim-sunshine
+	pokemon_forms.id != 10039 and -- Exclude shellos-east
+	pokemon_forms.id != 10040 and -- Exclude gastrodon-east
+	pokemon_forms.id != 10085 and -- Exclude Arceus Fairy
+	pokemon_forms.id != 10132 and -- Exclude Xerneas neutral
+	(pokemon_forms.id < 10041 or pokemon_forms.id > 10057) and -- Exclude Arceus
+	(pokemon_forms.id < 10001 or pokemon_forms.id > 10027) and -- Exclude Unown
+	(pokemon_forms.id < 10182 or pokemon_forms.id > 10187) and -- Exclude Specials Pikachu
+	(pokemon_forms.id < 10068 or pokemon_forms.id > 10070) and -- Exclude Deerling
+	(pokemon_forms.id < 10071 or pokemon_forms.id > 10073) and -- Exclude Sawsbuck
+	(pokemon_forms.id < 10075 or pokemon_forms.id > 10078) and -- Exclude Genesect
+	(pokemon_forms.id < 10086 or pokemon_forms.id > 10102) and -- Exclude Vivillon
+	(pokemon_forms.id < 10161 or pokemon_forms.id > 10162) and -- Exclude Vivillon 2
+	(pokemon_forms.id < 10103 or pokemon_forms.id > 10106) and -- Exclude Flabebe
+	(pokemon_forms.id < 10107 or pokemon_forms.id > 10110) and -- Exclude Floette
+	(pokemon_forms.id < 10111 or pokemon_forms.id > 10114) and -- Exclude Florges
+	(pokemon_forms.id < 10115 or pokemon_forms.id > 10123) and -- Exclude Furfrou
+	(pokemon_forms.id < 10126 or pokemon_forms.id > 10128) and -- Exclude Pumpkaboo
+	(pokemon_forms.id < 10129 or pokemon_forms.id > 10131) -- Exclude Gourgeist
+	
+order by
+	pokemon_forms.[order]

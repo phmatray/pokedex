@@ -1,0 +1,85 @@
+﻿<Page x:Class="PokedexG.Uwp.Views.GamesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controlsT10="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:resources="using:PokemonAPI.Models.Resources"
+      xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewModels:GamesPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <Page.Resources>
+    </Page.Resources>
+    
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for narrow view  
+                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />
+                    </VisualState.Setters>-->
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for normal view  
+                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
+                    </VisualState.Setters>-->
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for wide view  
+                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
+                    </VisualState.Setters>-->
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <controlsT10:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" HorizontalAlignment="Left" Width="1280">
+
+            <controlsT10:PageHeader.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Games" VerticalAlignment="Center"/>
+                </StackPanel>
+            </controlsT10:PageHeader.Content>
+
+        </controlsT10:PageHeader>
+
+        <controls:AdaptiveGridView ItemsSource="{x:Bind ViewModel.Generations, Mode=OneWay}"
+                                   ItemHeight="220"
+                                   DesiredWidth="200"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.Below="pageHeader">
+            <controls:AdaptiveGridView.ItemTemplate>
+                <DataTemplate x:DataType="resources:GenerationResource">
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind Identifier}"/>
+                        <TextBlock Text="{x:Bind MainRegion.Identifier}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:AdaptiveGridView.ItemTemplate>
+        </controls:AdaptiveGridView>
+    </RelativePanel>
+</Page>
+
+
+

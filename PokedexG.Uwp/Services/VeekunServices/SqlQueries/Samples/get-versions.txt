@@ -1,0 +1,54 @@
+select 
+	versions.id as Id,
+	--versions.version_group_id,
+	versions.identifier as Identifier,
+	--version_names.local_language_id,
+	version_names.name as Name,
+	--version_names.version_id,
+	version_groups.id as VersionGroupId,
+	version_groups.identifier as VersionGroupIdentifier,
+	version_groups.generation_id as Generation,
+	--version_groups.[order],
+	language_names.language_id as LanguageId,
+	--language_names.local_language_id,
+	language_names.name as LanguageName,
+	--pokedex_version_groups.pokedex_id,
+	--pokedex_version_groups.version_group_id,
+	--pokedexes.id,
+	--pokedexes.region_id as RegionId,
+	pokedexes.identifier as RegionIdentifier,
+	--pokedexes.is_main_series
+	--region_names.region_id,
+	--region_names.local_language_id,
+	region_names.name as RegionName,
+	pokedex_prose.pokedex_id as PokedexId,
+	--pokedex_prose.local_language_id,
+	pokedex_prose.name as PokedexName,
+	pokedex_prose.description as PokedexDescription
+	
+from versions
+left join version_names
+	on version_names.version_id = versions.id
+left join version_groups
+	on version_groups.id = versions.version_group_id
+left join language_names
+	on language_names.language_id = version_names.local_language_id
+	and language_names.local_language_id = version_names.local_language_id
+left join pokedex_version_groups
+	on pokedex_version_groups.version_group_id = versions.version_group_id
+left join pokedexes
+	on pokedexes.id = pokedex_version_groups.pokedex_id
+left join region_names
+	on region_names.region_id = pokedexes.region_id
+left join pokedex_prose
+	on pokedex_prose.pokedex_id = pokedexes.id
+
+where
+	version_names.local_language_id = 5 and
+	pokedex_version_groups.pokedex_id is not NULL and
+	region_names.local_language_id = 5 and
+	pokedex_prose.local_language_id = 5
+	
+order by
+	version_groups.[order]
+	

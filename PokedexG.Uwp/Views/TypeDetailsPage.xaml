@@ -1,0 +1,162 @@
+﻿<Page x:Class="PokedexG.Uwp.Views.TypeDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
+      xmlns:userControls="using:PokedexG.Uwp.Views.UserControls"
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewModels:TypeDetailsPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for narrow view  
+                    </VisualState.Setters>-->
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for normal view  
+                    </VisualState.Setters>-->
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <!--<VisualState.Setters>
+                          TODO: change properties for wide view  
+                    </VisualState.Setters>-->
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--  header  -->
+        <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             Text="Détails d'un type"/>
+
+        <Grid x:Name="DetailsHeader"  Height="48" VerticalAlignment="Top"
+              Background="{ThemeResource ButtonBackgroundThemeBrush}"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.Below="pageHeader">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Bind ViewModel.TypeName, FallbackValue=Normal, Mode=OneWay}"
+                            Style="{StaticResource TitleTextBlockStyle}"
+                            VerticalAlignment="Center" Margin="10,4,10,0" FontWeight="Bold" FontFamily="Segoe UI Semibold" FontSize="18">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="MainGrid"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.Below="DetailsHeader">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Pivot>
+
+                <PivotItem Header="Faiblesses &amp; Résistances">
+                    <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                                  VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,10">
+                                <StackPanel x:Name="SectionDamageFrom">
+                                    <userControls:UserControlTitle Title="Damage From"/>
+                                </StackPanel>
+                                <StackPanel x:Name="SectionDamageTo">
+                                    <userControls:UserControlTitle Title="Damage To"/>
+
+                                    <!--<GridView ItemsSource="{x:Bind ViewModel.Weaknesses}" SelectionMode="None"
+                                              HorizontalAlignment="Left" MaxWidth="520">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:DamageType">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <userControls:UserControlWeakness Damage="{x:Bind}" Margin="5"
+                                                                                      Tapped="WeaknessType_OnTapped" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>-->
+                                </StackPanel>
+                                <StackPanel x:Name="SectionInfos">
+                                    <userControls:UserControlTitle Title="Informations"/>
+                                    <TextBlock>
+                                        <Run Text="Ce type est apparu en"/>
+                                        <Run Text="{x:Bind ViewModel.GenerationName}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,10">
+                                <StackPanel x:Name="SectionEvolutions">
+                                    <userControls:UserControlTitle Title="Chaîne d'évolution" />
+                                </StackPanel>
+                                <StackPanel x:Name="SectionMegaEvolutions">
+                                    <userControls:UserControlTitle Title="Méga évolutions" />
+                                </StackPanel>
+                                <StackPanel x:Name="SectionWeaknesses">
+                                    <userControls:UserControlTitle Title="Faiblesses"/>
+
+                                </StackPanel>
+                                <StackPanel x:Name="SectionPokemons">
+                                    <userControls:UserControlTitle Title="Pokémons de ce type"/>
+
+                                    <GridView ItemsSource="{x:Bind ViewModel.PokemonsByType}">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:PokemonLite">
+                                                <StackPanel Tapped="PokemonElement_OnTapped">
+                                                    <Image Source="{x:Bind FormKey, Converter={StaticResource FormKeyToIconPathConverter}}"
+                                                           Width="40" Height="30">
+                                                        <ToolTipService.ToolTip>
+                                                            <TextBlock Text="{x:Bind Name}"/>
+                                                        </ToolTipService.ToolTip>
+                                                    </Image>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+                                </StackPanel>
+                                <StackPanel x:Name="SectionMoves">
+                                    <userControls:UserControlTitle Title="Attaques"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </PivotItem>
+
+            </Pivot>
+
+        </Grid>
+    </RelativePanel>
+</Page>
+
+
+
+
+
+
+

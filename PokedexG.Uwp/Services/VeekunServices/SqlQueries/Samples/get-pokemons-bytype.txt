@@ -1,0 +1,65 @@
+﻿select
+	pokemon.id as PokemonId,
+	pokemon.species_id as SpecieId,
+	pokemon_forms.form_identifier as FormIdentifier,
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 5 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			pokemon_species_names.name
+		)
+	END 	as Name
+	
+from pokemon_forms
+left join pokemon
+	on pokemon.id = pokemon_forms.pokemon_id
+left join pokemon_species_names
+	on pokemon_species_names.pokemon_species_id = pokemon_forms.id
+	and pokemon_species_names.local_language_id = 5
+	
+left join (
+	select 
+		pokemon_types.pokemon_id,
+		pokemon_types.type_id as Type1Id,
+		types.identifier as Type1Identifier,
+		type_names.name as Type1Name
+	from pokemon_types
+	left join type_names
+		on type_names.type_id = pokemon_types.type_id
+	left join types
+		on types.id = pokemon_types.type_id
+	where pokemon_types.slot = 1 and
+	type_names.local_language_id = 5
+) as Type1 on Type1.pokemon_id = pokemon_forms.pokemon_id
+
+left join (
+	select 
+		pokemon_types.pokemon_id,
+		pokemon_types.type_id as Type2Id,
+		types.identifier as Type2Identifier,
+		type_names.name as Type2Name
+	from pokemon_types
+	left join type_names
+		on type_names.type_id = pokemon_types.type_id
+	left join types
+		on types.id = pokemon_types.type_id
+	where pokemon_types.slot = 2 and
+	type_names.local_language_id = 5
+) as Type2 on Type2.pokemon_id = pokemon_forms.pokemon_id
+
+where 
+	(Type1.Type1Id = 1 or Type2.Type2id = 1) and
+	(pokemon_forms.id < 10115 or pokemon_forms.id > 10123) and -- Exclude Furfrou
+	(pokemon_forms.id < 10126 or pokemon_forms.id > 10128) and -- Exclude Pumpkaboo
+	(pokemon_forms.id < 10129 or pokemon_forms.id > 10131) and -- Exclude Gourgeist
+	(pokemon_forms.id < 10182 or pokemon_forms.id > 10187)  -- Exclude Specials Pikachu
+
+order by pokemon_forms.[Order]
+

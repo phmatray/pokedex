@@ -1,0 +1,2 @@
+MainPackage=C:\Repo\pokedex\PokedexPro\bin\x64\Release\Upload\PokedexG.Uwp.MainApp_1.5.10.0_x64.appx
+SymbolPackage=C:\Repo\pokedex\PokedexPro\AppPackages\PokedexG.Uwp.MainApp_1.5.10.0\PokedexG.Uwp.MainApp_1.5.10.0_x64.appxsym

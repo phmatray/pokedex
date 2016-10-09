@@ -1,0 +1,327 @@
+﻿select
+	pokemon_forms.id as FormId,
+	pokemon_forms.identifier as Identifier,
+	pokemon_forms.form_identifier as FormIdentifier,
+	pokemon_forms.is_battle_only as IsBattleOnly,
+	pokemon_forms.is_mega as IsMega,
+	pokemon.id as PokemonId,
+	pokemon.species_id as SpecieId,
+	pokemon.height as Height,
+	pokemon.weight as Weight,
+	pokemon.base_experience as BaseExperience,
+	pokemon_species.generation_id as GenerationId,
+	pokemon_species.evolves_from_species_id as EvolveFromSpeciesId,
+	pokemon_species.evolution_chain_id as EvolutionChainId,
+	pokemon_species.habitat_id as HabitatId,
+	pokemon_species.gender_rate as GenderRate,
+	pokemon_species.capture_rate as CaptureRate,
+	pokemon_species.base_happiness as BaseHappiness,
+	pokemon_species.is_baby as IsBaby,
+	pokemon_species.hatch_counter as HatchCounter,
+	pokemon_species.has_gender_differences as HasGenderDifference,
+	pokemon_species.growth_rate_id as GrowthRateId,
+	pokemon_species.forms_switchable as FormSwitchable,
+	pokemon_species.[order] as [Order],
+	growth_rate_prose.name as GrowthRateName,
+	generation_names.name as GenerationName,
+	pokemon_color_names.name as ColorName,
+	pokemon_shape_prose.name as ShapeName,
+	pokemon_shape_prose.awesome_name as ShapeAwesomeName,
+	pokemon_species_names.genus as Genus,
+	language_names.name as Language,
+	pokemon.[order] as [Order],
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 5 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			pokemon_species_names.name
+		)
+	END 	as NameFr,
+	
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 9 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			select pokemon_species_names.name
+			from pokemon_species_names
+			where pokemon_species_names.local_language_id = 9 and
+			pokemon_species_names.pokemon_species_id = pokemon.species_id
+		)
+	END 	as NameEn,
+	
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 1 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			select pokemon_species_names.name
+			from pokemon_species_names
+			where pokemon_species_names.local_language_id = 1 and
+			pokemon_species_names.pokemon_species_id = pokemon.species_id
+		)
+	END 	as NameJp,
+	
+	CASE
+		WHEN pokemon_forms.id > 10000
+		THEN
+		(
+			select pokemon_form_names.pokemon_name
+			from pokemon_form_names
+			where pokemon_form_names.local_language_id = 2 and
+			pokemon_form_names.pokemon_form_id= pokemon_forms.id
+		)
+		ELSE
+		(
+			select pokemon_species_names.name
+			from pokemon_species_names
+			where pokemon_species_names.local_language_id = 2 and
+			pokemon_species_names.pokemon_species_id = pokemon.species_id
+		)
+	END 	as NameJpRoomaji,
+	
+	(
+		select pokemon_species_flavor_text.flavor_text
+		from pokemon_species_flavor_text
+		where pokemon_species_flavor_text.language_id = 5 and
+		pokemon_species_flavor_text.species_id = pokemon.species_id and
+		pokemon_species_flavor_text.version_id = 23
+	) as FlavorTextX,
+	(
+		select pokemon_species_flavor_text.flavor_text
+		from pokemon_species_flavor_text
+		where pokemon_species_flavor_text.language_id = 5 and
+		pokemon_species_flavor_text.species_id = pokemon.species_id and
+		pokemon_species_flavor_text.version_id = 24
+	) as FlavorTextY,
+	(
+		select pokemon_species_flavor_text.flavor_text
+		from pokemon_species_flavor_text
+		where pokemon_species_flavor_text.language_id = 5 and
+		pokemon_species_flavor_text.species_id = pokemon.species_id and
+		pokemon_species_flavor_text.version_id = 25
+	) as FlavorTextOmegaRuby,
+	(
+		select pokemon_species_flavor_text.flavor_text
+		from pokemon_species_flavor_text
+		where pokemon_species_flavor_text.language_id = 5 and
+		pokemon_species_flavor_text.species_id = pokemon.species_id and
+		pokemon_species_flavor_text.version_id = 26
+	) as FlavorTextAlphaSapphire,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 1
+	) as BaseStatHp,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 2
+	) as BaseStatAtk,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 3
+	) as BaseStatDef,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 4
+	) as BaseStatAtkSpe,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 5
+	) as BaseStatDefSpe,
+	(
+		select pokemon_stats.base_stat
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 6
+	) as BaseStatSpd,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 1
+	) as EffortStatHp,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 2
+	) as EffortStatAtk,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 3
+	) as EffortStatDef,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 4
+	) as EffortStatAtkSpe,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 5
+	) as EffortStatDefSpe,
+	(
+		select pokemon_stats.effort
+		from pokemon_stats
+		where pokemon_stats.pokemon_id = pokemon.id and
+		pokemon_stats.stat_id = 6
+	) as EffortStatSpd,
+	(
+		select type_names.name
+		from pokemon_types
+		inner join type_names
+		on type_names.type_id = pokemon_types.type_id 
+		where 
+			type_names.local_language_id = 5 and
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 1
+	) as Type1,
+	(
+		select pokemon_types.type_id
+		from pokemon_types
+		where 
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 1
+	) as Type1Id,
+	(
+		select types.identifier
+		from pokemon_types
+		inner join types
+		on types.id = pokemon_types.type_id 
+		where 
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 1
+	) as Type1Identifier,
+	(
+		select type_names.name
+		from pokemon_types
+		inner join type_names
+		on type_names.type_id = pokemon_types.type_id 
+		where 
+			type_names.local_language_id = 5 and
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 2
+	) as Type2,
+	(
+		select pokemon_types.type_id
+		from pokemon_types
+		where 
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 2
+	) as Type2Id,
+	(
+		select types.identifier
+		from pokemon_types
+		inner join types
+		on types.id = pokemon_types.type_id 
+		where 
+			pokemon_types.pokemon_id = pokemon.id and
+			pokemon_types.slot = 2
+	) as Type2Identifier,
+	(
+		select pokemon_dex_numbers.pokedex_number
+		from pokemon_dex_numbers
+		where pokemon_dex_numbers.pokedex_id = pokedex_version_groups.pokedex_id  and
+		pokemon_dex_numbers.species_id = pokemon.id
+	) as PokedexNumberRegional,
+	(
+		select pokemon_dex_numbers.pokedex_number
+		from pokemon_dex_numbers
+		where pokemon_dex_numbers.pokedex_id = 1  and
+		pokemon_dex_numbers.species_id = pokemon.id
+	) as PokedexNumberNational,
+	(
+		select experience.experience
+		from experience
+		where experience.growth_rate_id = pokemon_species.growth_rate_id
+		and experience.level = 50
+	) as Exp50,
+	(
+		select experience.experience
+		from experience
+		where experience.growth_rate_id = pokemon_species.growth_rate_id
+		and experience.level = 100
+	) as Exp100
+
+from versions
+join version_groups
+	on version_groups.id = versions.version_group_id
+join pokemon_forms
+join pokemon
+	on pokemon.id = pokemon_forms.pokemon_id
+join pokemon_species
+	on pokemon_species.id = pokemon.species_id
+join pokemon_species_names
+	on pokemon_species_names.pokemon_species_id = pokemon.species_id
+join pokedex_version_groups
+	on pokedex_version_groups.version_group_id = version_groups.id
+join language_names
+	on language_names.language_id = pokemon_species_names.local_language_id
+	and language_names.local_language_id = pokemon_species_names.local_language_id
+join pokemon_color_names
+	on pokemon_color_names.pokemon_color_id  = pokemon_species.color_id
+	and pokemon_color_names.local_language_id = pokemon_species_names.local_language_id
+join pokemon_shape_prose
+	on pokemon_shape_prose.pokemon_shape_id = pokemon_species.shape_id
+	and pokemon_shape_prose.local_language_id = pokemon_species_names.local_language_id
+join generation_names
+	on generation_names.generation_id = pokemon_species.generation_id
+	and generation_names.local_language_id = pokemon_species_names.local_language_id
+join growth_rate_prose
+	on growth_rate_prose.growth_rate_id = pokemon_species.growth_rate_id
+	and growth_rate_prose.local_language_id = pokemon_species_names.local_language_id
+	
+where
+	versions.id = 25 and
+	pokemon_forms.id = 10133 and
+	pokemon_forms.introduced_in_version_group_id <= versions.version_group_id and	
+	pokemon_forms.is_default = 1 and
+	pokemon_species_names.local_language_id = 5 and
+	pokemon_forms.id != 10182 and 
+	pokemon_forms.id != 10183 and 
+	pokemon_forms.id != 10184 and 
+	pokemon_forms.id != 10185 and 
+	pokemon_forms.id != 10186 and 
+	pokemon_forms.id != 10187 and -- Exclude Specials Pikachu
+	pokemon_forms.id != 10126 and
+	pokemon_forms.id != 10127 and
+	pokemon_forms.id != 10128 and -- Exlucde Pumpkaboo
+	pokemon_forms.id != 10129 and 
+	pokemon_forms.id != 10130 and 
+	pokemon_forms.id != 10131 -- Exlucde Gourgeist
+	
+order by
+	SpecieId, FormId

@@ -1,0 +1,72 @@
+select 
+	--encounters.id,
+	--encounters.version_id,
+	--encounters.location_area_id,
+	--encounters.encounter_slot_id,
+	encounters.pokemon_id as PokemonId,
+	--encounters.min_level,
+	Min(encounters.min_level) as MinLevel,
+	--encounters.max_level,
+	Max(encounters.max_level) as MaxLevel,
+	--versions.id,
+	--versions.version_group_id,
+	--versions.identifier,
+	--encounter_slots.id,
+	--encounter_slots.version_group_id,
+	--encounter_slots.encounter_method_id,
+	--encounter_slots.slot,
+	Min(encounter_slots.rarity) as Rarity,
+	--encounter_slots.rarity,
+	--location_areas.id,
+	--location_areas.location_id,
+	--location_areas.game_index,
+	--location_areas.identifier,
+	--locations.id,
+	--locations.region_id,
+	--locations.identifier,
+	--region_names.region_id,
+	--region_names.local_language_id,
+	region_names.name as RegionName,
+	--location_names.location_id,
+	--location_names.local_language_id,
+	location_names.name as LocationName,
+	--encounter_methods.id,
+	encounter_methods.identifier as EncounterMethod,
+	--encounter_methods.[order],
+	--language_names.language_id,
+	--language_names.local_language_id,
+	language_names.name as LanguageName,
+	--version_names.version_id,
+	--version_names.local_language_id,
+	version_names.name as VersionName
+	
+from encounters
+inner join versions
+	on versions.id = encounters.version_id
+inner join encounter_slots
+	on encounter_slots.id = encounters.encounter_slot_id
+inner join location_areas
+	on location_areas.id = encounters.location_area_id
+inner join locations
+	on locations.id = location_areas.location_id
+inner join region_names
+	on region_names.region_id = locations.region_id
+inner join location_names
+	on location_names.location_id = location_areas.location_id
+	and location_names.local_language_id = region_names.local_language_id
+inner join encounter_methods
+	on encounter_methods.id = encounter_slots.encounter_method_id
+inner join language_names
+	on language_names.language_id = region_names.local_language_id
+	and language_names.local_language_id = region_names.local_language_id
+inner join version_names
+	on version_names.version_id = versions.id
+	and version_names.local_language_id = region_names.local_language_id
+	
+where 
+	encounters.version_id = 24 and 
+	encounters.pokemon_id = 25 and
+	region_names.local_language_id = 5
+	
+group by 
+	location_areas.id

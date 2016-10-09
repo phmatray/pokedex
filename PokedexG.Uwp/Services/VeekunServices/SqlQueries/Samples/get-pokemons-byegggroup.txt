@@ -1,0 +1,13 @@
+﻿select
+	pokemon_egg_groups.species_id as SpecieId,
+	--egg_group_id,
+	pokemon_species_names.name as Name
+
+from pokemon_egg_groups
+join pokemon_species_names
+	on pokemon_species_names.pokemon_species_id = pokemon_egg_groups.species_id
+
+where 
+	pokemon_egg_groups.egg_group_id = 1 and
+	pokemon_species_names.local_language_id = 5 
+

@@ -1,0 +1,22 @@
+select
+	types1.id as DamageTypeId,
+	types1.identifier as DamageTypeIdentifier,
+	tn1.name as DamageTypeName,
+	types2.id as TargetTypeId,
+	types2.identifier as TargetTypeIdentifier,
+	tn2.name as TargetTypeName,
+	type_efficacy.damage_factor as DamageFactor
+
+from type_efficacy
+join types as types1
+	on types1.id = type_efficacy.damage_type_id
+join types as types2
+	on types2.id = type_efficacy.target_type_id
+join type_names as tn1
+	on tn1.type_id = types1.id
+join type_names as tn2
+	on tn2.type_id = types2.id
+	
+where 
+	tn1.local_language_id = @languageId and
+	tn2.local_language_id = @languageId

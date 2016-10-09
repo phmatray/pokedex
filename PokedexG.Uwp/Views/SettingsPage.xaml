@@ -1,0 +1,326 @@
+﻿<Page x:Class="PokedexG.Uwp.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:uwp="using:FontAwesome.UWP"
+      xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewModels:SettingsPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        
+                        <!--  TODO: change properties for narrow view  -->
+                        <Setter Target="MainScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                        <Setter Target="MainScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                        <Setter Target="MainGrid.Orientation" Value="Vertical"/>
+                        <Setter Target="MainGrid.Margin" Value="0"/>
+                        <Setter Target="Grid1.ColumnDefinitions[0].Width" Value="*"/>
+                        <Setter Target="Grid2.ColumnDefinitions[0].Width" Value="*"/>
+                        <Setter Target="Grid1.Margin" Value="0 0 26 6"/>
+                        <Setter Target="Grid2.Margin" Value="0 6 26 26"/>
+                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        
+                        <!--  TODO: change properties for normal view  -->
+                        <Setter Target="MainScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                        <Setter Target="MainScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                        <Setter Target="MainGrid.Orientation" Value="Horizontal"/>
+                        <Setter Target="MainGrid.Margin" Value="0"/>
+                        <Setter Target="Grid1.ColumnDefinitions[0].Width" Value="420"/>
+                        <Setter Target="Grid2.ColumnDefinitions[0].Width" Value="420"/>
+                        <Setter Target="Grid1.Margin" Value="0 0 6 14"/>
+                        <Setter Target="Grid2.Margin" Value="60 0 14 14"/>
+                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        
+                        <!--  TODO: change properties for wide view  -->
+                        <Setter Target="MainScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                        <Setter Target="MainScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                        <Setter Target="MainGrid.Orientation" Value="Horizontal"/>
+                        <Setter Target="MainGrid.Margin" Value="0"/>
+                        <Setter Target="Grid1.ColumnDefinitions[0].Width" Value="420"/>
+                        <Setter Target="Grid2.ColumnDefinitions[0].Width" Value="420"/>
+                        <Setter Target="Grid1.Margin" Value="0 0 6 14"/>
+                        <Setter Target="Grid2.Margin" Value="60 0 14 14"/>
+                        
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--  header  -->
+        <controls:PageHeader x:Name="pageHeader" Content="Options"
+                             Frame="{x:Bind Frame}"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" />
+
+        <!--  content  -->
+        <Pivot x:Name="MyPivot"
+               RelativePanel.AlignBottomWithPanel="True"
+               RelativePanel.AlignLeftWithPanel="True"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.Below="pageHeader">
+
+            <!--  settings  -->
+            <PivotItem DataContext="{Binding SettingsPartViewModel}" Header="Paramètres">
+                <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                              VerticalScrollBarVisibility="Auto">
+                    <RelativePanel HorizontalAlignment="Left">
+
+                        <controls1:HeaderedTextBlock x:Name="UseShellDrawnBackButtonHeader" 
+                                                     Header="Position du bouton de retour"
+                                                     RelativePanel.AlignLeftWithPanel="True"
+                                                     RelativePanel.AlignTopWithPanel="True" Margin="0,0,0,-20"/>
+
+                        <ToggleSwitch x:Name="UseShellDrawnBackButtonToggleSwtich"
+                                      IsOn="{Binding UseShellBackButton, Mode=TwoWay}"
+                                      OffContent="Bouton de retour dans l'entête de page"
+                                      OnContent="bouton de retour dans la barre de titre ou la barre des tâches"
+                                      RelativePanel.Below="UseShellDrawnBackButtonHeader"/>
+
+                        <controls1:HeaderedTextBlock x:Name="UsePokedexEvolutionFamiliesHeader" 
+                                                     Header="Style du Pokédex"
+                                                     RelativePanel.AlignLeftWithPanel="True" Margin="0,20,0,-20"
+                                                     RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich"/>
+
+                        <ToggleSwitch x:Name="UsePokedexEvolutionFamiliesToggleSwtich"
+                                      IsOn="{Binding UsePokedexEvolutionFamilies, Mode=TwoWay}"
+                                      OffContent="Pokédex trié par numéro"
+                                      OnContent="Pokédex trié par famille d'évolution"
+                                      RelativePanel.Below="UsePokedexEvolutionFamiliesHeader"/>
+
+                        <ToggleSwitch x:Name="UsePokedexMegaEvolutionsToggleSwtich"
+                                      IsOn="{Binding UsePokedexMegaEvolutions, Mode=TwoWay}"
+                                      OffContent="Masquer les méga-évolutions"
+                                      OnContent="Afficher les méga-évolutions"
+                                      RelativePanel.Below="UsePokedexEvolutionFamiliesToggleSwtich"/>
+
+                        <ToggleSwitch x:Name="UsePokedexAlternativesToggleSwtich"
+                                      IsOn="{Binding UsePokedexAlternatives, Mode=TwoWay}"
+                                      OffContent="Masquer les formes alternatives"
+                                      OnContent="Afficher les formes alternatives"
+                                      RelativePanel.Below="UsePokedexMegaEvolutionsToggleSwtich"/>
+
+                        <controls1:HeaderedTextBlock x:Name="ArtworkStyleHeader" 
+                                                     Header="Style des illustrations"
+                                                     RelativePanel.AlignLeftWithPanel="True" Margin="0,20,0,-20"
+                                                     RelativePanel.Below="UsePokedexAlternativesToggleSwtich"/>
+
+                        <ToggleSwitch x:Name="ArtworkStyleToggleSwtich"
+                                      IsOn="{Binding ArtworkStyle, Mode=TwoWay}"
+                                      OffContent="Illustrations du Global Link"
+                                      OnContent="Illustrations de Sugimori"
+                                      RelativePanel.Below="ArtworkStyleHeader"/>
+
+                        <!--<controls1:HeaderedTextBlock x:Name="ClearCacheHeader"
+                                                     Header="Cache"
+                                                     RelativePanel.Below="ArtworkStyleToggleSwtich" Margin="0,20,0,-20"/>
+
+                        <Button Margin="12,0,0,0"
+                                Command="{x:Bind ViewModel.SettingsPartViewModel.ClearCacheCommand}"
+                                Content="Vider le cache"
+                                RelativePanel.Below="ClearCacheHeader" />-->
+
+                        <!--<ToggleSwitch x:Name="UseLightThemeToggleSwitch" Header="Use Light Theme"
+                                      IsOn="{Binding UseLightThemeButton, Mode=TwoWay}"
+                                      OffContent="Dark theme" OnContent="Light theme"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich" />-->
+
+                        <!--<TextBox x:Name="BusyTextTextBox" Width="200"
+                                 Margin="0,12,0,0" HorizontalAlignment="Left"
+                                 Header="Busy text" RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.Below="UseLightThemeToggleSwitch"
+                                 Text="{Binding BusyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+
+                        <!--<Button Margin="12,0,0,0"
+                                Command="{x:Bind ViewModel.SettingsPartViewModel.ShowBusyCommand}"
+                                Content="Show Busy"
+                                RelativePanel.AlignBottomWith="BusyTextTextBox"
+                                RelativePanel.RightOf="BusyTextTextBox" />-->
+
+                    </RelativePanel>
+
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--  privacy  -->
+            <!--<PivotItem DataContext="{Binding SettingsPartViewModel}"
+                       Header="Confidentialité" Padding="0">
+                <ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Margin="0,12,24,12" LineHeight="24"
+                               TextWrapping="Wrap">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra dictum nibh vel ornare. Donec sem urna, rhoncus sed cursus ac, aliquet at nisl. Pellentesque cursus et lacus vel porta. Morbi iaculis efficitur volutpat. Curabitur sit amet cursus nisl, ac suscipit mauris. Nulla a tellus a odio tincidunt maximus. Maecenas non eros lacus. Donec aliquam libero nec ex ullamcorper, in lobortis nibh dapibus. Mauris vehicula, tellus quis congue tincidunt, neque massa auctor ante, ut laoreet felis nisi id tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc sed dapibus quam, in viverra arcu. Vivamus ut metus non magna viverra porttitor a ultrices dui.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Vestibulum accumsan posuere elit vitae dignissim. Nulla facilisis nec sapien vel condimentum. Suspendisse urna nunc, luctus sit amet maximus in, finibus a erat. Mauris aliquam gravida sollicitudin. Aliquam a erat vitae dolor scelerisque maximus quis sit amet tellus. Nunc vitae nisi vulputate, consequat eros aliquet, tincidunt ante. Phasellus ultricies nisi eget porttitor consectetur. Nam lacinia nisi eget scelerisque mattis.
+                        <LineBreak />
+                        In vel imperdiet elit. Nunc vehicula libero vitae volutpat auctor. Vestibulum at interdum urna. Praesent eu velit at nisi convallis consectetur vitae vitae lorem. Phasellus semper arcu sit amet nisl pharetra aliquet. Suspendisse potenti. Proin in ipsum euismod, porttitor nisl quis, pulvinar eros. Curabitur sit amet rhoncus eros. Quisque risus elit, lacinia et aliquet at, dictum sit amet metus. Curabitur ut euismod erat.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Integer finibus aliquam accumsan. Ut porta quis ante et imperdiet. Curabitur sit amet nunc ligula. Sed porttitor dui dui, in finibus justo ullamcorper non. Mauris volutpat, nisi vel commodo auctor, arcu sem hendrerit elit, a cursus nulla felis at urna. Maecenas egestas volutpat diam, imperdiet vehicula nibh vulputate porta. Donec sed risus eget massa viverra fermentum eget et leo. Morbi a rutrum dui.
+                        <LineBreak />
+                        Mauris suscipit ac leo placerat auctor. Morbi tristique congue hendrerit. Fusce nec egestas dui, quis venenatis diam. Etiam viverra quis risus nec faucibus. Pellentesque efficitur tellus et volutpat bibendum. Cras tincidunt sem eget nisl aliquet venenatis. Vivamus at nisl eget sem vestibulum condimentum. Vivamus ut orci nec velit commodo fermentum a nec sem. Curabitur non consequat sapien.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Fusce ut nisl ante. Mauris in lobortis libero, eu sodales ex. Quisque nec nulla eget massa sodales blandit. Phasellus rutrum in orci in dictum. Pellentesque elit nulla, luctus iaculis fringilla at, ultrices vel mauris. Suspendisse finibus purus eu dui dignissim rhoncus. Donec accumsan metus id leo efficitur tristique. Curabitur placerat nibh risus, eu mollis nibh mollis in. Nullam velit nisi, porttitor eget dignissim viverra, euismod sed urna. Duis interdum nunc posuere semper tincidunt. Etiam suscipit porttitor magna id auctor. Maecenas suscipit risus tellus, eu viverra leo fringilla at. Aenean erat nisl, vehicula ut dapibus quis, molestie ac diam. Nulla egestas risus quis felis gravida, quis molestie tortor lobortis. Nullam aliquam orci et auctor suscipit.
+                        <LineBreak />
+                        Integer hendrerit tortor vitae augue auctor pulvinar. Aenean porta commodo est id interdum. Proin mattis nec nunc in ornare. Aliquam malesuada bibendum ante, vel hendrerit lectus blandit non. Vestibulum sit amet lorem venenatis, sollicitudin dolor eu, congue sapien. In lobortis quam orci. In ut imperdiet purus, in pharetra nunc. Praesent fermentum erat et vehicula volutpat. Morbi vitae sodales erat.
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>Section</Bold>
+                        <LineBreak />
+                        Nulla efficitur lectus eget dolor eleifend molestie. Aliquam sed iaculis metus, nec accumsan mauris. Donec id magna ac tellus tristique dignissim quis vel lacus. Integer nulla est, euismod at iaculis id, feugiat eu erat. In vel purus mattis, dictum dui et, luctus diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sit amet ornare nisi. Nunc in ante efficitur, posuere enim ac, lobortis est. Aenean pretium lacinia elit, at iaculis dui congue nec. Mauris scelerisque vestibulum hendrerit.
+                        <LineBreak />
+                        Donec scelerisque, est vel laoreet sollicitudin, nulla arcu blandit quam, quis fringilla nibh ipsum maximus leo. In varius mauris mauris, non maximus odio placerat quis. Sed tincidunt nulla at vulputate maximus. Praesent viverra vehicula mauris vitae commodo. Ut eget accumsan orci. Vestibulum condimentum, leo non consequat tempus, turpis justo pharetra ipsum, ut tempus purus ligula sit amet massa. Maecenas ante est, imperdiet in metus eu, tincidunt convallis dolor. Vivamus suscipit felis at laoreet laoreet. Vestibulum pharetra lacinia lorem, ut viverra lacus congue blandit. Sed at lorem neque. Phasellus ultricies nibh placerat mattis imperdiet. In rutrum sollicitudin lobortis. Aliquam a rhoncus lorem, pulvinar tempor libero.
+                    </TextBlock>
+                </ScrollViewer>
+            </PivotItem>-->
+
+            <!--  about  -->
+            <PivotItem Header="Infos">
+                <ScrollViewer x:Name="MainScrollViewer"
+                              Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="MainGrid">
+                        
+                        <Grid x:Name="Grid1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel DataContext="{Binding AboutPartViewModel}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border HorizontalAlignment="Left"
+                                            VerticalAlignment="Top" BorderBrush="DimGray"
+                                            BorderThickness="1" IsHitTestVisible="False" Width="80" Height="80">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+                                        </Border.Background>
+                                        <Image Margin="12" Source="{Binding Logo}" Stretch="None" />
+                                    </Border>
+
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Top" >
+                                        <TextBlock  Margin="0,0,0,0" FontSize="24" Text="{Binding DisplayName}" FontWeight="Bold"/>
+                                        <TextBlock  Margin="0,0,0,12" FontSize="20">
+                                            <Run Text="version"/>
+                                            <Run Text="{Binding Version}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <TextBlock Text="Pokédex G est le pokédex 6G le plus complet et le plus pratique sur Windows 10. Découvrez les fiches des 721 Pokémons existants, leurs méga-évolutions et leurs formes alternatives." TextWrapping="Wrap" TextAlignment="Justify" Margin="0,20,0,0"/>
+
+                                <controls1:HeaderedTextBlock Header="Soutenir Pokédex G" Margin="0,20,0,-20"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Button Content="Évaluer Pokédex G" Width="200" Click="ReviewApp_OnClick"/>
+                                    <Button Content="Partager sur Facebook" Width="200" Margin="10,0,0,0" 
+                                            Command="{x:Bind ViewModel.AboutPartViewModel.ShareOnFacebookCommand}"/>
+                                    <!--<Button Content="Faire un don" Margin="10,0,0,0" Width="150"/>-->
+                                </StackPanel>
+                                
+
+                                <controls1:HeaderedTextBlock Header="Créé par" Margin="0,20,0,-20"/>
+                                <Border BorderThickness="2" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" Width="184" Height="184" HorizontalAlignment="Left" Margin="0,0,0,20">
+                                    <Grid>
+                                        <Image Source="ms-appx:///Assets/interface/me.jpg" Stretch="UniformToFill"/>
+                                        <Border Height="32" Background="#7F000000" VerticalAlignment="Bottom">
+                                            <TextBlock Text="Philippe MATRAY" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFCCCCCC" FontSize="15" FontWeight="Bold" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <Grid x:Name="Grid2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+
+                                <controls1:HeaderedTextBlock Header="Crédits" Margin="0,0,0,-20"/>
+                                <TextBlock Text="Un grand merci pour la base de données :" FontWeight="Bold"/>
+                                <HyperlinkButton NavigateUri="http://veekun.com/" Content="Veekun"/>
+                                <TextBlock Text="Site web de Pokémon :" Margin="0,10,0,0" FontWeight="Bold"/>
+                                <HyperlinkButton NavigateUri="http://www.pokemon.com/" Content="pokemon.com" Margin="0,0,0,5"/>
+
+                                <controls1:HeaderedTextBlock Header="Contact" Margin="0,20,0,-20"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <HyperlinkButton Grid.Column="0" NavigateUri="https://twitter.com/phmatray" HorizontalAlignment="Center">
+                                        <StackPanel Margin="5">
+                                            <uwp:FontAwesome Icon="Twitter" FontSize="72" HorizontalAlignment="Center" Foreground="#FF33CCFF" />
+                                            <TextBlock Text="@phmatray" HorizontalAlignment="Center" Foreground="#FF33CCFF" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </HyperlinkButton>
+
+                                    <HyperlinkButton Grid.Column="1" NavigateUri="mailto://phmatray@outlook.com" HorizontalAlignment="Center">
+                                        <StackPanel Margin="5">
+                                            <uwp:FontAwesome Icon="Envelope" FontSize="72" HorizontalAlignment="Center" Foreground="#FF3636A6" />
+                                            <TextBlock Text="e-mail" HorizontalAlignment="Center" Foreground="#FF3636A6" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </HyperlinkButton>
+
+                                    <HyperlinkButton Grid.Column="2" NavigateUri="http://phmatray.net" HorizontalAlignment="Center">
+                                        <StackPanel Margin="5">
+                                            <uwp:FontAwesome Icon="Home" FontSize="72" HorizontalAlignment="Center" Foreground="#FFFF9933" />
+                                            <TextBlock Text="site perso" HorizontalAlignment="Center" Foreground="#FFFF9933" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </HyperlinkButton>
+                                </Grid>
+
+                                <controls1:HeaderedTextBlock Header="Trademaks" Margin="0,20,0,-20"/>
+                                <TextBlock Text="Pokédex G n'est pas affilié avec, sponsorisé, ou spécifiquement approuvé par Nintendo, Game Freak, Creatures et The Pokémon Company. Pokémon est une marque déposée de Nintendo Co., Ltd." TextWrapping="Wrap" TextAlignment="Justify"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+                
+            </PivotItem>
+        </Pivot>
+
+    </RelativePanel>
+
+</Page>
+

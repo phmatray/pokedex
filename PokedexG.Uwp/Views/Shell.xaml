@@ -1,0 +1,94 @@
+﻿<Page x:Class="PokedexG.Uwp.Views.Shell"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d">
+
+    <Controls:HamburgerMenu x:Name="MyHamburgerMenu">
+
+        <Controls:HamburgerMenu.PrimaryButtons>
+            <!--  mainpage button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:PokemonsPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="TwoPage" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Pokedex" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+            <!--  pokedex button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:GalleryPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Pictures" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Galerie" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+            <!--  types button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:TypesPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Clock" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Types" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+            <!--  machine button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:MachinesPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Rotate" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Capsules Techniques" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+            <!--  generation button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:GamesPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Rotate" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Games" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+            <!--  news button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:NewsPage" 
+                                          AutomationProperties.Name="Jerry">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Globe" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Actualité" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+        </Controls:HamburgerMenu.PrimaryButtons>
+
+        <Controls:HamburgerMenu.SecondaryButtons>
+            <!--  settingspage button  -->
+            <Controls:HamburgerButtonInfo x:Name="SettingsButton" PageParameter="0"
+                                          PageType="views:SettingsPage">
+                <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <SuppressNavigationTransitionInfo />
+                </Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Setting" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Options" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+        </Controls:HamburgerMenu.SecondaryButtons>
+
+    </Controls:HamburgerMenu>
+
+</Page>
+

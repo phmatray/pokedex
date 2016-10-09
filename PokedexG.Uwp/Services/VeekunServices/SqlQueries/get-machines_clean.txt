@@ -1,0 +1,97 @@
+select
+	machines.machine_number as MachineNumber,
+	items.identifier as ItemIdentifier,
+	items.cost as ItemCost,
+	item_names.name as ItemName,
+	moves.type_id as TypeId,
+	moves.power as Power,
+	moves.pp as Pp,
+	moves.accuracy as Accuracy,
+	moves.priority as Priority,
+	moves.effect_chance as EffectChance,
+	move_names.name as Name,
+	(
+		select move_names.name
+		from move_names
+		where move_names.local_language_id = 9 
+		and move_names.move_id = moves.id
+	) as NameEn,
+	move_flavor_text.flavor_text as FlavorText,
+	move_meta_ailment_names.name as Ailment,
+	move_meta_categories.identifier as Category,
+	move_meta.meta_ailment_id as AilmentId,
+	move_meta.min_hits as MinHits,
+	move_meta.max_hits as MaxHits,
+	move_meta.min_turns as MinTurns,
+	move_meta.max_turns as MaxTurns,
+	move_meta.drain as Drain,
+	move_meta.healing as Healing,
+	move_meta.crit_rate as CritRate,
+	move_meta.ailment_chance as AilmentChance,
+	move_meta.flinch_chance as FlinchChance,
+	move_meta.stat_chance as StatChance,
+	types.id as TypeId,
+	type_names.name as Type,
+	generation_names.name as Generation,
+	region_names.name as Region,
+	language_names.name as Language,
+	move_damage_classes.identifier as DamageClass,
+	contest_type_names.name as ContestTypeName,
+	contest_type_names.flavor as PokeblocFlavor,
+	contest_type_names.color as PokeblocColor,
+	version_groups.identifier as VersionGroup,
+	move_targets.identifier as Targets
+	
+from machines
+join items
+	on items.id = machines.item_id
+join item_names
+	on item_names.item_id = items.id
+	and item_names.local_language_id = language_names.language_id
+join moves
+	on moves.id = machines.move_id
+join move_names
+	on move_names.move_id = machines.move_id
+join move_flavor_text
+	on move_flavor_text.move_id = machines.move_id
+	and move_flavor_text.language_id = language_names.language_id
+	and move_flavor_text.version_group_id = machines.version_group_id
+join move_meta_ailment_names
+	on move_meta_ailment_names.move_meta_ailment_id = move_meta.meta_ailment_id
+	and move_meta_ailment_names.local_language_id = language_names.language_id
+join move_meta_categories
+	on move_meta_categories.id = move_meta.meta_category_id
+join move_meta
+	on move_meta.move_id = machines.move_id
+join types
+	on types.id = moves.type_id
+join type_names
+	on type_names.type_id = types.id
+	and type_names.local_language_id = language_names.language_id
+join generations
+	on generations.id = moves.generation_id
+join generation_names
+	on generation_names.generation_id = moves.generation_id
+	and generation_names.local_language_id = language_names.language_id
+join regions
+	on regions.id = generations.main_region_id
+join region_names
+	on region_names.region_id = regions.id
+	and region_names.local_language_id = language_names.language_id
+join language_names
+	on language_names.language_id = move_names.local_language_id
+	and language_names.local_language_id = move_names.local_language_id
+left join move_damage_classes
+	on move_damage_classes.id = types.damage_class_id
+left join contest_type_names
+	on contest_type_names.contest_type_id = moves.contest_type_id
+	and contest_type_names.local_language_id = language_names.language_id
+left join version_groups
+	on version_groups.id = machines.version_group_id
+left join move_targets
+	on move_targets.id = moves.target_id	
+
+where
+	machines.version_group_id = @versionGroupId and
+	machines.machine_number <= 100 and
+	move_names.local_language_id = @languageId
