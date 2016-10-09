@@ -2944,9 +2944,6 @@
     <Compile Include="Views\GamesPage.xaml.cs">
       <DependentUpon>GamesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PokemonDetails2Page.xaml.cs">
-      <DependentUpon>PokemonDetails2Page.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TypeDetailsPage.xaml.cs">
       <DependentUpon>TypeDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -3031,10 +3028,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\GamesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\PokemonDetails2Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

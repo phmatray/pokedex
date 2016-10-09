@@ -55,7 +55,7 @@ namespace PokemonAPI.WebService
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
 
                 //Set the comments path for the swagger json and ui.
-                options.IncludeXmlComments(basePath + "\\PokedexG.WebService.xml");
+                options.IncludeXmlComments(basePath + "\\PokemonAPI.WebService.xml");
             });
         }
 

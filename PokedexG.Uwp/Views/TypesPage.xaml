@@ -6,6 +6,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
       xmlns:userControls="using:PokedexG.Uwp.Views.UserControls"
+      xmlns:models="using:PokedexG.Uwp.Models"
       mc:Ignorable="d">
 
     <Page.DataContext>
