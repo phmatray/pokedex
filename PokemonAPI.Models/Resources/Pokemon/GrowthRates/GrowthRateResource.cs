@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PokemonAPI.Models.Resources
+namespace PokemonAPI.Models.Resources.Pokemon.GrowthRates
 {
     /// <summary>
     /// Growth rates are the speed with which Pokémon gain levels through experience.

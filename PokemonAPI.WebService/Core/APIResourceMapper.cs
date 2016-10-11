@@ -1,5 +1,6 @@
 ﻿using System;
 using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Resources.Pokemon.GrowthRates;
 using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Models.Interfaces;

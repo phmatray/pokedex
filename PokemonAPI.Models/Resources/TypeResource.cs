@@ -24,10 +24,10 @@ namespace PokemonAPI.Models.Resources
         /// </summary>
         public TypeRelationsResource DamageRelations { get; set; }
 
-        /// <summary>
-        /// A non-sorted list of how effective or non-effecive this type is toward others showing damage factors
-        /// </summary>
-        public List<TypeEfficacyResource> DamageFactors { get; set; }
+        ///// <summary>
+        ///// A non-sorted list of how effective or non-effecive this type is toward others showing damage factors
+        ///// </summary>
+        //public List<TypeEfficacyResource> DamageFactors { get; set; }
 
         /// <summary>
         /// A list of game indices relevent to this item by generation

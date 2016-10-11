@@ -4228,7 +4228,7 @@
       },
       "PokemonAPI.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v1.3",
+        "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
           "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
           "NETStandard.Library": "1.6.0"

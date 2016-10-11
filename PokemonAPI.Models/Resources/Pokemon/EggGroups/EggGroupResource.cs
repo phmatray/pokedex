@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PokemonAPI.Models.Resources
+namespace PokemonAPI.Models.Resources.Pokemon.EggGroups
 {
     public class EggGroupResource : NamedAPIResource
     {

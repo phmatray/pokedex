@@ -42,7 +42,7 @@ namespace PokemonAPI.WebService.Controllers
                     Id              = type.Id,
                     Identifier      = type.Identifier,
                     DamageRelations = await GetDamageRelations(type),
-                    DamageFactors   = await GetDamageFactors(type),
+                    //DamageFactors   = await GetDamageFactors(type),
                     GameIndices     = await GetGameIndices(type),
                     Generation      = await GetGeneration(type),
                     MoveDamageClass = await GetMoveDamageClass(type),

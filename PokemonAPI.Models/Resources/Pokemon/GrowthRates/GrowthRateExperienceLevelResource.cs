@@ -1,4 +1,4 @@
-﻿namespace PokemonAPI.Models.Resources
+﻿namespace PokemonAPI.Models.Resources.Pokemon.GrowthRates
 {
     public class GrowthRateExperienceLevelResource
     {

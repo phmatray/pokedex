@@ -39,6 +39,10 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Pokemon\Abilities\AbilityEffectChangeResource.cs" />
+    <Compile Include="Resources\Pokemon\Abilities\AbilityFlavorTextResource.cs" />
+    <Compile Include="Resources\Pokemon\Abilities\AbilityPokemonResource.cs" />
+    <Compile Include="Resources\Pokemon\Abilities\AbilityResource.cs" />
     <Compile Include="Resources\Class1.cs" />
     <Compile Include="Resources\Common\APIResource.cs" />
     <Compile Include="Resources\Common\APIResourceBase.cs" />
@@ -46,6 +50,7 @@
     <Compile Include="Resources\Common\IResource.cs" />
     <Compile Include="Resources\Common\NamedAPIResourceList.cs" />
     <Compile Include="Resources\Common\APIResourceListBase.cs" />
+    <Compile Include="Resources\EffectResource.cs" />
     <Compile Include="Resources\EncounterMethodResource.cs" />
     <Compile Include="Resources\EncounterResource.cs" />
     <Compile Include="Resources\GenerationGameIndexResource.cs" />
@@ -53,13 +58,17 @@
     <Compile Include="Resources\PokemonAbilityResource.cs" />
     <Compile Include="Resources\PokemonColorResource.cs" />
     <Compile Include="Resources\DescriptionResource.cs" />
-    <Compile Include="Resources\EggGroupResource.cs" />
+    <Compile Include="Resources\Pokemon\EggGroups\EggGroupResource.cs" />
     <Compile Include="Resources\FlavorTextResource.cs" />
     <Compile Include="Resources\GenerationResource.cs" />
     <Compile Include="Resources\GenusResource.cs" />
-    <Compile Include="Resources\GrowthRateExperienceLevelResource.cs" />
-    <Compile Include="Resources\GrowthRateResource.cs" />
+    <Compile Include="Resources\Pokemon\GrowthRates\GrowthRateExperienceLevelResource.cs" />
+    <Compile Include="Resources\Pokemon\GrowthRates\GrowthRateResource.cs" />
     <Compile Include="Resources\Common\IIdentifier.cs" />
+    <Compile Include="Resources\Pokemon\Characteristics\CharacteristicResource.cs" />
+    <Compile Include="Resources\Pokemon\Genders\GenderResource.cs" />
+    <Compile Include="Resources\Pokemon\Genders\PokemonSpeciesGenderResource.cs" />
+    <Compile Include="Resources\Pokemon\Natures\NatureResources.cs" />
     <Compile Include="Resources\TypePokemonResource.cs" />
     <Compile Include="Resources\TypeRelationsResource.cs" />
     <Compile Include="Resources\TypeResource.cs" />
@@ -82,6 +91,7 @@
     <Compile Include="Resources\PokemonStatResource.cs" />
     <Compile Include="Resources\PokemonTypeResource.cs" />
     <Compile Include="Resources\RegionResource.cs" />
+    <Compile Include="Resources\VerboseEffectResource.cs" />
     <Compile Include="Resources\VersionEncounterDetailResource.cs" />
     <Compile Include="Resources\VersionGameIndexResource.cs" />
     <Compile Include="Resources\VersionGroupResource.cs" />
@@ -100,7 +110,6 @@
     <Folder Include="Resources\Locations\" />
     <Folder Include="Resources\Machines\" />
     <Folder Include="Resources\Moves\" />
-    <Folder Include="Resources\Pokemon\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
