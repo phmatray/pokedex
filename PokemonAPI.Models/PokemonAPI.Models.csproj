@@ -39,6 +39,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Class1.cs" />
     <Compile Include="Resources\Common\APIResource.cs" />
     <Compile Include="Resources\Common\APIResourceBase.cs" />
     <Compile Include="Resources\Common\APIResourceList.cs" />

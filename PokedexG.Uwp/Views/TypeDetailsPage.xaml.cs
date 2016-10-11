@@ -19,6 +19,11 @@ namespace PokedexG.Uwp.Views
             var pokemonFormId = ((PokemonLite)((FrameworkElement)sender).DataContext).PokemonId;
             ((TypeDetailsPageViewModel)DataContext).GotoDetailsPage(pokemonFormId);
         }
+
+        private void Type_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

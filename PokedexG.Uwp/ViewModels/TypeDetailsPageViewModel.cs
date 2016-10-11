@@ -36,7 +36,8 @@ namespace PokedexG.Uwp.ViewModels
         public string TypeName { get; set; }
         public GenerationResource Generation { get; set; }
         public string GenerationName { get; set; }
-        public List<TypeResource> DamageFrom { get; set; }
+        public List<TypeEfficacyResource> DamageFrom { get; set; }
+        public List<TypeEfficacyResource> DamageTo { get; set; }
 
         #endregion
 
@@ -75,12 +76,8 @@ namespace PokedexG.Uwp.ViewModels
             Type = await dataFetcher.GetType(CurrentTypeId);
             TypeName = Type.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
 
-            var damageFrom = new List<APIResourceBase>();
-            damageFrom.AddRange(Type.DamageRelations.NoDamageFrom);
-            damageFrom.AddRange(Type.DamageRelations.HalfDamageFrom);
-            damageFrom.AddRange(Type.DamageRelations.NormalDamageFrom);
-            damageFrom.AddRange(Type.DamageRelations.DoubleDamageFrom);
-            DamageFrom = await dataFetcher.LoadChildren<TypeResource>(damageFrom);
+            DamageTo = Type.DamageFactors.Where(x => x.DamageType.Id == Type.Id).ToList();
+            DamageFrom = Type.DamageFactors.Where(x => x.TargetType.Id == Type.Id).ToList();
 
             // TEST
             var apiResourceList = await dataFetcher.GetGenerations();

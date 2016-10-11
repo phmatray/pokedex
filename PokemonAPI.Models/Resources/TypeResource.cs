@@ -25,6 +25,11 @@ namespace PokemonAPI.Models.Resources
         public TypeRelationsResource DamageRelations { get; set; }
 
         /// <summary>
+        /// A non-sorted list of how effective or non-effecive this type is toward others showing damage factors
+        /// </summary>
+        public List<TypeEfficacyResource> DamageFactors { get; set; }
+
+        /// <summary>
         /// A list of game indices relevent to this item by generation
         /// </summary>
         public List<GenerationGameIndexResource> GameIndices { get; set; }
@@ -53,5 +58,6 @@ namespace PokemonAPI.Models.Resources
         /// A list of moves that have this type
         /// </summary>
         public List<NamedAPIResource> Moves { get; set; }
+
     }
 }

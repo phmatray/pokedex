@@ -2974,6 +2974,9 @@
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\UserControlWeaknessNew.xaml.cs">
+      <DependentUpon>UserControlWeaknessNew.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\UserControlWeakness.xaml.cs">
       <DependentUpon>UserControlWeakness.xaml</DependentUpon>
     </Compile>
@@ -3070,6 +3073,10 @@
     <Page Include="Views\Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\UserControlWeaknessNew.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UserControls\UserControlWeakness.xaml">
       <Generator>MSBuild:Compile</Generator>

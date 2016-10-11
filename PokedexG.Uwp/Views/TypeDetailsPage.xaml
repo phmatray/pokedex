@@ -7,6 +7,7 @@
       xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
       xmlns:userControls="using:PokedexG.Uwp.Views.UserControls"
       xmlns:models="using:PokedexG.Uwp.Models"
+      xmlns:resources="using:PokemonAPI.Models.Resources"
       mc:Ignorable="d">
 
     <Page.DataContext>
@@ -88,9 +89,28 @@
                             <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,10">
                                 <StackPanel x:Name="SectionDamageFrom">
                                     <userControls:UserControlTitle Title="Damage From"/>
+                                    <GridView ItemsSource="{x:Bind ViewModel.DamageFrom}" SelectionMode="None">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate x:DataType="resources:TypeResource">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+
                                 </StackPanel>
                                 <StackPanel x:Name="SectionDamageTo">
                                     <userControls:UserControlTitle Title="Damage To"/>
+                                    <GridView ItemsSource="{x:Bind ViewModel.DamageTo}" SelectionMode="None">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate x:DataType="resources:TypeResource">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
 
                                     <!--<GridView ItemsSource="{x:Bind ViewModel.Weaknesses}" SelectionMode="None"
                                               HorizontalAlignment="Left" MaxWidth="520">

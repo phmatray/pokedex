@@ -42,6 +42,7 @@ namespace PokemonAPI.WebService.Controllers
                     Id              = type.Id,
                     Identifier      = type.Identifier,
                     DamageRelations = await GetDamageRelations(type),
+                    DamageFactors   = await GetDamageFactors(type),
                     GameIndices     = await GetGameIndices(type),
                     Generation      = await GetGeneration(type),
                     MoveDamageClass = await GetMoveDamageClass(type),
@@ -88,10 +89,27 @@ namespace PokemonAPI.WebService.Controllers
         {
             return (await Context
                     .TypeEfficacy
-                    .Include(x => x.TargetType)
+                    .Include(x => x.DamageType)
                     .Where(expression)
                     .ToListAsync())
                 .Select(x => x.DamageType.ToNamedApiResource())
+                .ToList();
+        }
+
+        private async Task<List<TypeEfficacyResource>> GetDamageFactors(Types type)
+        {
+            return (await Context
+                    .TypeEfficacy
+                    .Include(x => x.DamageType)
+                    .Include(x => x.TargetType)
+                    .Where(x => x.DamageTypeId == type.Id || x.TargetTypeId == type.Id)
+                    .ToListAsync())
+                .Select(x => new TypeEfficacyResource
+                {
+                    DamageFactor = x.DamageFactor,
+                    DamageType = x.DamageType.ToNamedApiResource(),
+                    TargetType = x.TargetType.ToNamedApiResource()
+                })
                 .ToList();
         }
 
