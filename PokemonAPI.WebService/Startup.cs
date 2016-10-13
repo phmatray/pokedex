@@ -35,8 +35,8 @@ namespace PokemonAPI.WebService
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=veekun;Trusted_Connection=True;";
-            //var connection = @"Server=.\SQLEXPRESS;Database=Veekun;Trusted_Connection=True;";
+            //var connection = @"Server=(localdb)\MSSQLLocalDB;Database=veekun;Trusted_Connection=True;";
+            var connection = @"Server=.\SQLEXPRESS;Database=Veekun;Trusted_Connection=True;";
             services.AddDbContext<VeekunContext>(options => options.UseSqlServer(connection));
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied

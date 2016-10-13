@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonSpeciesVariety
     {
+        public PokemonSpeciesVariety(bool isDefault, NamedAPIResource pokemon)
+        {
+            IsDefault = isDefault;
+            Pokemon = pokemon;
+        }
+
         /// <summary>
         /// Whether this variety is the default variety
         /// </summary>

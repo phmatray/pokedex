@@ -151,9 +151,6 @@
     <Compile Include="Rsc\_Common\VersionGameIndex.cs" />
     <Compile Include="Rsc\Games\VersionGroups\VersionGroup.cs" />
     <Compile Include="Rsc\_Common\VersionGroupFlavorText.cs" />
-    <Compile Include="SourceTypeEnums\PokedexVersionGroupsSourceType.cs" />
-    <Compile Include="SourceTypeEnums\PokemonEggGroupsSourceType.cs" />
-    <Compile Include="SourceTypeEnums\VersionGroupRegionSourceType.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

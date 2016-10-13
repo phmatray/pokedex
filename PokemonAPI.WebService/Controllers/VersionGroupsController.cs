@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -64,7 +63,11 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.PokemonMoveMethod)
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => new NamedAPIResource
+                (
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}move-methods/{x.PokemonMoveMethodId}/",
+                    x.PokemonMoveMethod.Identifier
+                ))
                 .ToList();
         }
 
@@ -93,7 +96,11 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Region)
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(VersionGroupRegionSourceType.VersionGroup))
+                .Select(x => new NamedAPIResource
+                (
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}regions/{x.RegionId}/",
+                    x.Region.Identifier
+                ))
                 .ToList();
         }
 
@@ -104,7 +111,11 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Pokedex)
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(PokedexVersionGroupsSourceType.VersionGroup))
+                .Select(x => new NamedAPIResource
+                (
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}pokedexes/{x.PokedexId}/",
+                    x.Pokedex.Identifier
+                ))
                 .ToList();
         }
     }

@@ -71,7 +71,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Experience
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
-                .Select(x => x.ToGrowthRateExperienceLevelResource())
+                .Select(x => new GrowthRateExperienceLevel(x.Level, x.Experience1))
                 .ToList();
         }
 

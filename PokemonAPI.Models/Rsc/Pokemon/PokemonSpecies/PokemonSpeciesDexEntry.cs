@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonSpeciesDexEntry
     {
+        public PokemonSpeciesDexEntry(int entryNumber, NamedAPIResource pokedex)
+        {
+            EntryNumber = entryNumber;
+            Pokedex = pokedex;
+        }
+
         /// <summary>
         /// The index number within the Pokédex
         /// </summary>

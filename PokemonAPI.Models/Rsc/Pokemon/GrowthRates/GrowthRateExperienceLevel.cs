@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class GrowthRateExperienceLevel
     {
+        public GrowthRateExperienceLevel(int level, int experience)
+        {
+            Level = level;
+            Experience = experience;
+        }
+
         /// <summary>
         /// The level gained
         /// </summary>

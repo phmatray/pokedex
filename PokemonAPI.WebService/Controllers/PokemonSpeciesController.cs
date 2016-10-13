@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -89,7 +88,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Pokedex)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => x.ToPokemonSpeciesDexEntryResource())
+                .Select(x => new PokemonSpeciesDexEntry(x.PokedexNumber, x.Pokedex.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -100,7 +99,12 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.EggGroup)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(PokemonEggGroupsSourceType.Species))
+                .Select(x =>
+                    new NamedAPIResource
+                    (
+                        $"{Constants.SiteUrl}{Constants.BaseUrl}egggroups/{x.EggGroupId}/",
+                        x.EggGroup.Identifier
+                    ))
                 .ToList();
         }
 
@@ -182,7 +186,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Area)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => x.ToPalParkEncounterAreaResource())
+                .Select(x => new PalParkEncounterArea(x.BaseScore, x.Rate, x.Area.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -194,7 +198,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Version)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => x.ToFlavorTextResource())
+                .Select(x => new FlavorText(x.FlavorText, x.Version.ToNamedApiResource(), x.Language.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -226,7 +230,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Pokemon
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => x.ToPokemonSpeciesVarietyResource())
+                .Select(x => new PokemonSpeciesVariety(x.IsDefault, x.Species.ToNamedApiResource()))
                 .ToList();
         }
     }

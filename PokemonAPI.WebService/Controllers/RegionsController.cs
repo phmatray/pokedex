@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -73,7 +72,11 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.VersionGroup)
                     .Where(x => x.RegionId == region.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(VersionGroupRegionSourceType.Region))
+                .Select(x => new NamedAPIResource
+                (
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}version-groups/{x.VersionGroupId}/",
+                    x.VersionGroup.Identifier
+                ))
                 .ToList();
         }
 
