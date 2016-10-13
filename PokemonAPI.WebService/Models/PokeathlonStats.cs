@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PokeathlonStats
+    public partial class EFPokeathlonStats : IEFModel, IEFIdentifier
     {
-        public PokeathlonStats()
+        public EFPokeathlonStats()
         {
-            NaturePokeathlonStats = new HashSet<NaturePokeathlonStats>();
-            PokeathlonStatNames = new HashSet<PokeathlonStatNames>();
-            PokemonFormPokeathlonStats = new HashSet<PokemonFormPokeathlonStats>();
+            NaturePokeathlonStats = new HashSet<EFNaturePokeathlonStats>();
+            PokeathlonStatNames = new HashSet<EFPokeathlonStatNames>();
+            PokemonFormPokeathlonStats = new HashSet<EFPokemonFormPokeathlonStats>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<NaturePokeathlonStats> NaturePokeathlonStats { get; set; }
-        public virtual ICollection<PokeathlonStatNames> PokeathlonStatNames { get; set; }
-        public virtual ICollection<PokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
+        public virtual ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
+        public virtual ICollection<EFPokeathlonStatNames> PokeathlonStatNames { get; set; }
+        public virtual ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
     }
 }

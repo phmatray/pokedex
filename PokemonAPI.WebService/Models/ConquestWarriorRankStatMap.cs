@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriorRankStatMap
+    public partial class EFConquestWarriorRankStatMap : IEFModel
     {
         public int WarriorRankId { get; set; }
         public int WarriorStatId { get; set; }
         public int BaseStat { get; set; }
 
-        public virtual ConquestWarriorRanks WarriorRank { get; set; }
-        public virtual ConquestWarriorStats WarriorStat { get; set; }
+        public virtual EFConquestWarriorRanks WarriorRank { get; set; }
+        public virtual EFConquestWarriorStats WarriorStat { get; set; }
     }
 }

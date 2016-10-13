@@ -1,11 +1,13 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class VersionGroupRegions
+    public partial class EFVersionGroupRegions : IEFModel
     {
         public int VersionGroupId { get; set; }
         public int RegionId { get; set; }
 
-        public virtual Regions Region { get; set; }
-        public virtual VersionGroups VersionGroup { get; set; }
+        public virtual EFRegions Region { get; set; }
+        public virtual EFVersionGroups VersionGroup { get; set; }
     }
 }

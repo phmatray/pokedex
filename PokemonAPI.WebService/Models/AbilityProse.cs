@@ -1,13 +1,15 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class AbilityProse
+    public partial class EFAbilityProse : IEFModel
     {
         public int AbilityId { get; set; }
         public int LocalLanguageId { get; set; }
         public string ShortEffect { get; set; }
         public string Effect { get; set; }
 
-        public virtual Abilities Ability { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFAbilities Ability { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

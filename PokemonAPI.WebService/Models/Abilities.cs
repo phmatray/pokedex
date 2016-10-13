@@ -3,16 +3,16 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Abilities : INamedModel
+    public partial class EFAbilities : IEFModel, IEFIdentifier
     {
-        public Abilities()
+        public EFAbilities()
         {
-            AbilityChangelog = new HashSet<AbilityChangelog>();
-            AbilityFlavorText = new HashSet<AbilityFlavorText>();
-            AbilityNames = new HashSet<AbilityNames>();
-            AbilityProse = new HashSet<AbilityProse>();
-            ConquestPokemonAbilities = new HashSet<ConquestPokemonAbilities>();
-            PokemonAbilities = new HashSet<PokemonAbilities>();
+            AbilityChangelog = new HashSet<EFAbilityChangelog>();
+            AbilityFlavorText = new HashSet<EFAbilityFlavorText>();
+            AbilityNames = new HashSet<EFAbilityNames>();
+            AbilityProse = new HashSet<EFAbilityProse>();
+            ConquestPokemonAbilities = new HashSet<EFConquestPokemonAbilities>();
+            PokemonAbilities = new HashSet<EFPokemonAbilities>();
         }
 
         public int Id { get; set; }
@@ -20,12 +20,12 @@ namespace PokemonAPI.WebService.Models
         public int GenerationId { get; set; }
         public bool IsMainSeries { get; set; }
 
-        public virtual ICollection<AbilityChangelog> AbilityChangelog { get; set; }
-        public virtual ICollection<AbilityFlavorText> AbilityFlavorText { get; set; }
-        public virtual ICollection<AbilityNames> AbilityNames { get; set; }
-        public virtual ICollection<AbilityProse> AbilityProse { get; set; }
-        public virtual ICollection<ConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
-        public virtual ICollection<PokemonAbilities> PokemonAbilities { get; set; }
-        public virtual Generations Generation { get; set; }
+        public virtual ICollection<EFAbilityChangelog> AbilityChangelog { get; set; }
+        public virtual ICollection<EFAbilityFlavorText> AbilityFlavorText { get; set; }
+        public virtual ICollection<EFAbilityNames> AbilityNames { get; set; }
+        public virtual ICollection<EFAbilityProse> AbilityProse { get; set; }
+        public virtual ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
+        public virtual ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
+        public virtual EFGenerations Generation { get; set; }
     }
 }

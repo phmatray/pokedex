@@ -3,13 +3,13 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class LocationAreas : INamedModel
+    public partial class EFLocationAreas : IEFModel, IEFIdentifier
     {
-        public LocationAreas()
+        public EFLocationAreas()
         {
-            Encounters = new HashSet<Encounters>();
-            LocationAreaEncounterRates = new HashSet<LocationAreaEncounterRates>();
-            LocationAreaProse = new HashSet<LocationAreaProse>();
+            Encounters = new HashSet<EFEncounters>();
+            LocationAreaEncounterRates = new HashSet<EFLocationAreaEncounterRates>();
+            LocationAreaProse = new HashSet<EFLocationAreaProse>();
         }
 
         public int Id { get; set; }
@@ -17,9 +17,9 @@ namespace PokemonAPI.WebService.Models
         public int GameIndex { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<Encounters> Encounters { get; set; }
-        public virtual ICollection<LocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
-        public virtual ICollection<LocationAreaProse> LocationAreaProse { get; set; }
-        public virtual Locations Location { get; set; }
+        public virtual ICollection<EFEncounters> Encounters { get; set; }
+        public virtual ICollection<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
+        public virtual ICollection<EFLocationAreaProse> LocationAreaProse { get; set; }
+        public virtual EFLocations Location { get; set; }
     }
 }

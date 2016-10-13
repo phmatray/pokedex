@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonEvolution
+    public partial class EFPokemonEvolution : IEFModel
     {
         public int Id { get; set; }
         public int EvolvedSpeciesId { get; set; }
@@ -23,16 +25,16 @@
         public bool NeedsOverworldRain { get; set; }
         public bool TurnUpsideDown { get; set; }
 
-        public virtual EvolutionTriggers EvolutionTrigger { get; set; }
-        public virtual PokemonSpecies EvolvedSpecies { get; set; }
-        public virtual Genders Gender { get; set; }
-        public virtual Items HeldItem { get; set; }
-        public virtual Moves KnownMove { get; set; }
-        public virtual Types KnownMoveType { get; set; }
-        public virtual Locations Location { get; set; }
-        public virtual PokemonSpecies PartySpecies { get; set; }
-        public virtual Types PartyType { get; set; }
-        public virtual PokemonSpecies TradeSpecies { get; set; }
-        public virtual Items TriggerItem { get; set; }
+        public virtual EFEvolutionTriggers EvolutionTrigger { get; set; }
+        public virtual EFPokemonSpecies EvolvedSpecies { get; set; }
+        public virtual EFGenders Gender { get; set; }
+        public virtual EFItems HeldItem { get; set; }
+        public virtual EFMoves KnownMove { get; set; }
+        public virtual EFTypes KnownMoveType { get; set; }
+        public virtual EFLocations Location { get; set; }
+        public virtual EFPokemonSpecies PartySpecies { get; set; }
+        public virtual EFTypes PartyType { get; set; }
+        public virtual EFPokemonSpecies TradeSpecies { get; set; }
+        public virtual EFItems TriggerItem { get; set; }
     }
 }

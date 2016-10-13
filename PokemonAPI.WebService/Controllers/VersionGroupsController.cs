@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
@@ -13,10 +13,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class VersionGroupsController : ApiController<VersionGroups>
+    public class VersionGroupsController : ApiController<EFVersionGroups>
     {
         public VersionGroupsController(VeekunContext context) 
-            : base(context)
+            : base(context, "VersionGroups", "version-groups")
         {
         }
 
@@ -37,11 +37,11 @@ namespace PokemonAPI.WebService.Controllers
                 var versionGroup = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var result = new VersionGroupResource
+                var result = new VersionGroup
                 {
                     Id               = versionGroup.Id,
-                    Identifier       = versionGroup.Identifier,
-                    Order            = versionGroup.Order,
+                    Name             = versionGroup.Identifier,
+                    Order            = versionGroup.Order ?? -1,
                     MoveLearnMethods = await GetMoveLearnMethods(versionGroup),
                     Versions         = await GetVersions(versionGroup),
                     Generation       = await GetGeneration(versionGroup),
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetMoveLearnMethods(VersionGroups versionGroup)
+        private async Task<List<NamedAPIResource>> GetMoveLearnMethods(EFVersionGroups versionGroup)
         {
             return (await Context
                     .VersionGroupPokemonMoveMethods
@@ -68,7 +68,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersions(VersionGroups versionGroup)
+        private async Task<List<NamedAPIResource>> GetVersions(EFVersionGroups versionGroup)
         {
             return (await Context
                     .Versions
@@ -78,7 +78,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetGeneration(VersionGroups versionGroup)
+        private async Task<NamedAPIResource> GetGeneration(EFVersionGroups versionGroup)
         {
             return (await Context
                     .Generations
@@ -86,7 +86,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetRegions(VersionGroups versionGroup)
+        private async Task<List<NamedAPIResource>> GetRegions(EFVersionGroups versionGroup)
         {
             return (await Context
                     .VersionGroupRegions
@@ -97,7 +97,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokedexes(VersionGroups versionGroup)
+        private async Task<List<NamedAPIResource>> GetPokedexes(EFVersionGroups versionGroup)
         {
             return (await Context
                     .PokedexVersionGroups

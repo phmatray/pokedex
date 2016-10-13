@@ -3,18 +3,18 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonColors : INamedModel
+    public partial class EFPokemonColors : IEFModel, IEFIdentifier
     {
-        public PokemonColors()
+        public EFPokemonColors()
         {
-            PokemonColorNames = new HashSet<PokemonColorNames>();
-            PokemonSpecies = new HashSet<PokemonSpecies>();
+            PokemonColorNames = new HashSet<EFPokemonColorNames>();
+            PokemonSpecies = new HashSet<EFPokemonSpecies>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<PokemonColorNames> PokemonColorNames { get; set; }
-        public virtual ICollection<PokemonSpecies> PokemonSpecies { get; set; }
+        public virtual ICollection<EFPokemonColorNames> PokemonColorNames { get; set; }
+        public virtual ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
     }
 }

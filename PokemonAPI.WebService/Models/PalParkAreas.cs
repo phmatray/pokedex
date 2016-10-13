@@ -3,18 +3,18 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PalParkAreas : INamedModel
+    public partial class EFPalParkAreas : IEFModel, IEFIdentifier
     {
-        public PalParkAreas()
+        public EFPalParkAreas()
         {
-            PalPark = new HashSet<PalPark>();
-            PalParkAreaNames = new HashSet<PalParkAreaNames>();
+            PalPark = new HashSet<EFPalPark>();
+            PalParkAreaNames = new HashSet<EFPalParkAreaNames>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<PalPark> PalPark { get; set; }
-        public virtual ICollection<PalParkAreaNames> PalParkAreaNames { get; set; }
+        public virtual ICollection<EFPalPark> PalPark { get; set; }
+        public virtual ICollection<EFPalParkAreaNames> PalParkAreaNames { get; set; }
     }
 }

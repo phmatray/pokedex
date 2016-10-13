@@ -12,5 +12,6 @@ namespace PokemonAPI.Models.Rsc
         /// </summary>
         public NamedAPIResource Language { get; set; }
 
+        public NamedAPIResource Version { get; set; }
     }
 }

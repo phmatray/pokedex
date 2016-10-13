@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriorTransformation
+    public partial class EFConquestWarriorTransformation : IEFModel
     {
-        public ConquestWarriorTransformation()
+        public EFConquestWarriorTransformation()
         {
-            ConquestTransformationPokemon = new HashSet<ConquestTransformationPokemon>();
-            ConquestTransformationWarriors = new HashSet<ConquestTransformationWarriors>();
+            ConquestTransformationPokemon = new HashSet<EFConquestTransformationPokemon>();
+            ConquestTransformationWarriors = new HashSet<EFConquestTransformationWarriors>();
         }
 
         public int TransformedWarriorRankId { get; set; }
@@ -21,12 +22,12 @@ namespace PokemonAPI.WebService.Models
         public int? CollectionTypeId { get; set; }
         public int? WarriorCount { get; set; }
 
-        public virtual ICollection<ConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
-        public virtual ICollection<ConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
-        public virtual Types CollectionType { get; set; }
-        public virtual ConquestEpisodes CompletedEpisode { get; set; }
-        public virtual ConquestEpisodes CurrentEpisode { get; set; }
-        public virtual ConquestWarriors DistantWarrior { get; set; }
-        public virtual ConquestWarriorRanks TransformedWarriorRank { get; set; }
+        public virtual ICollection<EFConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
+        public virtual ICollection<EFConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
+        public virtual EFTypes CollectionType { get; set; }
+        public virtual EFConquestEpisodes CompletedEpisode { get; set; }
+        public virtual EFConquestEpisodes CurrentEpisode { get; set; }
+        public virtual EFConquestWarriors DistantWarrior { get; set; }
+        public virtual EFConquestWarriorRanks TransformedWarriorRank { get; set; }
     }
 }

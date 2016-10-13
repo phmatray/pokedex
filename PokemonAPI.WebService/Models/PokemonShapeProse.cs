@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonShapeProse
+    public partial class EFPokemonShapeProse : IEFModel
     {
         public int PokemonShapeId { get; set; }
         public int LocalLanguageId { get; set; }
@@ -8,7 +10,7 @@
         public string AwesomeName { get; set; }
         public string Description { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual PokemonShapes PokemonShape { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFPokemonShapes PokemonShape { get; set; }
     }
 }

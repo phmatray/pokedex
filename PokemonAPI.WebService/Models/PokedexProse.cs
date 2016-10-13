@@ -2,14 +2,14 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PokedexProse : IName, IDescription
+    public partial class EFPokedexProse : IEFModel
     {
         public int PokedexId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual Pokedexes Pokedex { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFPokedexes Pokedex { get; set; }
     }
 }

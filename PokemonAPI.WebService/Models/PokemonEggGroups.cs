@@ -1,11 +1,13 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonEggGroups
+    public partial class EFPokemonEggGroups : IEFModel
     {
         public int SpeciesId { get; set; }
         public int EggGroupId { get; set; }
 
-        public virtual EggGroups EggGroup { get; set; }
-        public virtual PokemonSpecies Species { get; set; }
+        public virtual EFEggGroups EggGroup { get; set; }
+        public virtual EFPokemonSpecies Species { get; set; }
     }
 }

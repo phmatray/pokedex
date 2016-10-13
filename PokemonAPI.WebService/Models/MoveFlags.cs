@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveFlags
+    public partial class EFMoveFlags : IEFModel, IEFIdentifier
     {
-        public MoveFlags()
+        public EFMoveFlags()
         {
-            MoveFlagMap = new HashSet<MoveFlagMap>();
-            MoveFlagProse = new HashSet<MoveFlagProse>();
+            MoveFlagMap = new HashSet<EFMoveFlagMap>();
+            MoveFlagProse = new HashSet<EFMoveFlagProse>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<MoveFlagMap> MoveFlagMap { get; set; }
-        public virtual ICollection<MoveFlagProse> MoveFlagProse { get; set; }
+        public virtual ICollection<EFMoveFlagMap> MoveFlagMap { get; set; }
+        public virtual ICollection<EFMoveFlagProse> MoveFlagProse { get; set; }
     }
 }

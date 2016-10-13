@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokeathlonStatNames
+    public partial class EFPokeathlonStatNames : IEFModel
     {
         public int PokeathlonStatId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual PokeathlonStats PokeathlonStat { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFPokeathlonStats PokeathlonStat { get; set; }
     }
 }

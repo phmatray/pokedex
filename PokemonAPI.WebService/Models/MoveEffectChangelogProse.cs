@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveEffectChangelogProse
+    public partial class EFMoveEffectChangelogProse : IEFModel
     {
         public int MoveEffectChangelogId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Effect { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual MoveEffectChangelog MoveEffectChangelog { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFMoveEffectChangelog MoveEffectChangelog { get; set; }
     }
 }

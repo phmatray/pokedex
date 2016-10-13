@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriorStats
+    public partial class EFConquestWarriorStats : IEFModel, IEFIdentifier
     {
-        public ConquestWarriorStats()
+        public EFConquestWarriorStats()
         {
-            ConquestWarriorRankStatMap = new HashSet<ConquestWarriorRankStatMap>();
-            ConquestWarriorStatNames = new HashSet<ConquestWarriorStatNames>();
+            ConquestWarriorRankStatMap = new HashSet<EFConquestWarriorRankStatMap>();
+            ConquestWarriorStatNames = new HashSet<EFConquestWarriorStatNames>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<ConquestWarriorRankStatMap> ConquestWarriorRankStatMap { get; set; }
-        public virtual ICollection<ConquestWarriorStatNames> ConquestWarriorStatNames { get; set; }
+        public virtual ICollection<EFConquestWarriorRankStatMap> ConquestWarriorRankStatMap { get; set; }
+        public virtual ICollection<EFConquestWarriorStatNames> ConquestWarriorStatNames { get; set; }
     }
 }

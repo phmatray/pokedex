@@ -1,14 +1,16 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class Machines
+    public partial class EFMachines : IEFModel
     {
         public int MachineNumber { get; set; }
         public int VersionGroupId { get; set; }
         public int ItemId { get; set; }
         public int MoveId { get; set; }
 
-        public virtual Items Item { get; set; }
-        public virtual Moves Move { get; set; }
-        public virtual VersionGroups VersionGroup { get; set; }
+        public virtual EFItems Item { get; set; }
+        public virtual EFMoves Move { get; set; }
+        public virtual EFVersionGroups VersionGroup { get; set; }
     }
 }

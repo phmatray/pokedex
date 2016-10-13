@@ -11,6 +11,5 @@ namespace PokemonAPI.Models.Rsc
         /// The URL of the referenced resource
         /// </summary>
         public string Url { get; set; }
-
     }
 }

@@ -3,36 +3,36 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Generations : INamedModel
+    public partial class EFGenerations : IEFModel, IEFIdentifier
     {
-        public Generations()
+        public EFGenerations()
         {
-            Abilities = new HashSet<Abilities>();
-            GenerationNames = new HashSet<GenerationNames>();
-            ItemGameIndices = new HashSet<ItemGameIndices>();
-            LocationGameIndices = new HashSet<LocationGameIndices>();
-            Moves = new HashSet<Moves>();
-            PokemonFormGenerations = new HashSet<PokemonFormGenerations>();
-            PokemonSpecies = new HashSet<PokemonSpecies>();
-            TypeGameIndices = new HashSet<TypeGameIndices>();
-            Types = new HashSet<Types>();
-            VersionGroups = new HashSet<VersionGroups>();
+            Abilities = new HashSet<EFAbilities>();
+            GenerationNames = new HashSet<EFGenerationNames>();
+            ItemGameIndices = new HashSet<EFItemGameIndices>();
+            LocationGameIndices = new HashSet<EFLocationGameIndices>();
+            Moves = new HashSet<EFMoves>();
+            PokemonFormGenerations = new HashSet<EFPokemonFormGenerations>();
+            PokemonSpecies = new HashSet<EFPokemonSpecies>();
+            TypeGameIndices = new HashSet<EFTypeGameIndices>();
+            Types = new HashSet<EFTypes>();
+            VersionGroups = new HashSet<EFVersionGroups>();
         }
 
         public int Id { get; set; }
         public int MainRegionId { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<Abilities> Abilities { get; set; }
-        public virtual ICollection<GenerationNames> GenerationNames { get; set; }
-        public virtual ICollection<ItemGameIndices> ItemGameIndices { get; set; }
-        public virtual ICollection<LocationGameIndices> LocationGameIndices { get; set; }
-        public virtual ICollection<Moves> Moves { get; set; }
-        public virtual ICollection<PokemonFormGenerations> PokemonFormGenerations { get; set; }
-        public virtual ICollection<PokemonSpecies> PokemonSpecies { get; set; }
-        public virtual ICollection<TypeGameIndices> TypeGameIndices { get; set; }
-        public virtual ICollection<Types> Types { get; set; }
-        public virtual ICollection<VersionGroups> VersionGroups { get; set; }
-        public virtual Regions MainRegion { get; set; }
+        public virtual ICollection<EFAbilities> Abilities { get; set; }
+        public virtual ICollection<EFGenerationNames> GenerationNames { get; set; }
+        public virtual ICollection<EFItemGameIndices> ItemGameIndices { get; set; }
+        public virtual ICollection<EFLocationGameIndices> LocationGameIndices { get; set; }
+        public virtual ICollection<EFMoves> Moves { get; set; }
+        public virtual ICollection<EFPokemonFormGenerations> PokemonFormGenerations { get; set; }
+        public virtual ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
+        public virtual ICollection<EFTypeGameIndices> TypeGameIndices { get; set; }
+        public virtual ICollection<EFTypes> Types { get; set; }
+        public virtual ICollection<EFVersionGroups> VersionGroups { get; set; }
+        public virtual EFRegions MainRegion { get; set; }
     }
 }

@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriorSkillNames
+    public partial class EFConquestWarriorSkillNames : IEFModel
     {
         public int SkillId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual ConquestWarriorSkills Skill { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFConquestWarriorSkills Skill { get; set; }
     }
 }

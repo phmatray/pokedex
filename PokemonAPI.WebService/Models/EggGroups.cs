@@ -3,18 +3,18 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EggGroups : INamedModel
+    public partial class EFEggGroups : IEFModel, IEFIdentifier
     {
-        public EggGroups()
+        public EFEggGroups()
         {
-            EggGroupProse = new HashSet<EggGroupProse>();
-            PokemonEggGroups = new HashSet<PokemonEggGroups>();
+            EggGroupProse = new HashSet<EFEggGroupProse>();
+            PokemonEggGroups = new HashSet<EFPokemonEggGroups>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EggGroupProse> EggGroupProse { get; set; }
-        public virtual ICollection<PokemonEggGroups> PokemonEggGroups { get; set; }
+        public virtual ICollection<EFEggGroupProse> EggGroupProse { get; set; }
+        public virtual ICollection<EFPokemonEggGroups> PokemonEggGroups { get; set; }
     }
 }

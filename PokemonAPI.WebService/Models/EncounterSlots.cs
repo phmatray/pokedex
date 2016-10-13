@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EncounterSlots
+    public partial class EFEncounterSlots : IEFModel
     {
-        public EncounterSlots()
+        public EFEncounterSlots()
         {
-            Encounters = new HashSet<Encounters>();
+            Encounters = new HashSet<EFEncounters>();
         }
 
         public int Id { get; set; }
@@ -15,8 +16,8 @@ namespace PokemonAPI.WebService.Models
         public int? Slot { get; set; }
         public int? Rarity { get; set; }
 
-        public virtual ICollection<Encounters> Encounters { get; set; }
-        public virtual EncounterMethods EncounterMethod { get; set; }
-        public virtual VersionGroups VersionGroup { get; set; }
+        public virtual ICollection<EFEncounters> Encounters { get; set; }
+        public virtual EFEncounterMethods EncounterMethod { get; set; }
+        public virtual EFVersionGroups VersionGroup { get; set; }
     }
 }

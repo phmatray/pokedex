@@ -3,18 +3,18 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Pokemon : INamedModel
+    public partial class EFPokemon : IEFModel, IEFIdentifier
     {
-        public Pokemon()
+        public EFPokemon()
         {
-            Encounters = new HashSet<Encounters>();
-            PokemonAbilities = new HashSet<PokemonAbilities>();
-            PokemonForms = new HashSet<PokemonForms>();
-            PokemonGameIndices = new HashSet<PokemonGameIndices>();
-            PokemonItems = new HashSet<PokemonItems>();
-            PokemonMoves = new HashSet<PokemonMoves>();
-            PokemonStats = new HashSet<PokemonStats>();
-            PokemonTypes = new HashSet<PokemonTypes>();
+            Encounters = new HashSet<EFEncounters>();
+            PokemonAbilities = new HashSet<EFPokemonAbilities>();
+            PokemonForms = new HashSet<EFPokemonForms>();
+            PokemonGameIndices = new HashSet<EFPokemonGameIndices>();
+            PokemonItems = new HashSet<EFPokemonItems>();
+            PokemonMoves = new HashSet<EFPokemonMoves>();
+            PokemonStats = new HashSet<EFPokemonStats>();
+            PokemonTypes = new HashSet<EFPokemonTypes>();
         }
 
         public int Id { get; set; }
@@ -26,14 +26,14 @@ namespace PokemonAPI.WebService.Models
         public int Order { get; set; }
         public bool IsDefault { get; set; }
 
-        public virtual ICollection<Encounters> Encounters { get; set; }
-        public virtual ICollection<PokemonAbilities> PokemonAbilities { get; set; }
-        public virtual ICollection<PokemonForms> PokemonForms { get; set; }
-        public virtual ICollection<PokemonGameIndices> PokemonGameIndices { get; set; }
-        public virtual ICollection<PokemonItems> PokemonItems { get; set; }
-        public virtual ICollection<PokemonMoves> PokemonMoves { get; set; }
-        public virtual ICollection<PokemonStats> PokemonStats { get; set; }
-        public virtual ICollection<PokemonTypes> PokemonTypes { get; set; }
-        public virtual PokemonSpecies Species { get; set; }
+        public virtual ICollection<EFEncounters> Encounters { get; set; }
+        public virtual ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
+        public virtual ICollection<EFPokemonForms> PokemonForms { get; set; }
+        public virtual ICollection<EFPokemonGameIndices> PokemonGameIndices { get; set; }
+        public virtual ICollection<EFPokemonItems> PokemonItems { get; set; }
+        public virtual ICollection<EFPokemonMoves> PokemonMoves { get; set; }
+        public virtual ICollection<EFPokemonStats> PokemonStats { get; set; }
+        public virtual ICollection<EFPokemonTypes> PokemonTypes { get; set; }
+        public virtual EFPokemonSpecies Species { get; set; }
     }
 }

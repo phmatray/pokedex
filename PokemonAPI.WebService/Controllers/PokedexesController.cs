@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
@@ -13,10 +13,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class PokedexesController : ApiController<Pokedexes>
+    public class PokedexesController : ApiController<EFPokedexes>
     {
         public PokedexesController(VeekunContext context)
-            : base(context)
+            : base(context, "Pokedexes", "podedexes")
         {
         }
 
@@ -37,10 +37,10 @@ namespace PokemonAPI.WebService.Controllers
                 var pokedex = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var result = new PokedexResource
+                var result = new Pokedex
                 {
                     Id             = pokedex.Id,
-                    Identifier     = pokedex.Identifier,
+                    Name           = pokedex.Identifier,
                     IsMainSeries   = pokedex.IsMainSeries,
                     Region         = await GetRegion(pokedex),
                     VersionGroups  = await GetVersionGroups(pokedex),
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetRegion(Pokedexes pokedex)
+        private async Task<NamedAPIResource> GetRegion(EFPokedexes pokedex)
         {
             return (await Context
                     .Regions
@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersionGroups(Pokedexes pokedex)
+        private async Task<List<NamedAPIResource>> GetVersionGroups(EFPokedexes pokedex)
         {
             return (await Context
                     .PokedexVersionGroups
@@ -76,18 +76,18 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<DescriptionResource>> GetDescriptions(Pokedexes pokedex)
+        private async Task<List<Description>> GetDescriptions(EFPokedexes pokedex)
         {
             return (await Context
                     .PokedexProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
-                .Select(x => x.ToDescriptionResource())
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<PokemonEntryResource>> GetEntries(Pokedexes pokedex)
+        private async Task<List<PokemonEntry>> GetEntries(EFPokedexes pokedex)
         {
             return (await Context
                     .PokemonDexNumbers
@@ -99,14 +99,14 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NameResource>> GetNames(Pokedexes pokedex)
+        private async Task<List<Name>> GetNames(EFPokedexes pokedex)
         {
             return (await Context
                     .PokedexProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
-                .Select(x => x.ToNameResource())
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

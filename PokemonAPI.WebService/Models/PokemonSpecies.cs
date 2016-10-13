@@ -3,24 +3,24 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonSpecies : INamedModel
+    public partial class EFPokemonSpecies : IEFModel, IEFIdentifier
     {
-        public PokemonSpecies()
+        public EFPokemonSpecies()
         {
-            ConquestMaxLinks = new HashSet<ConquestMaxLinks>();
-            ConquestPokemonAbilities = new HashSet<ConquestPokemonAbilities>();
-            ConquestPokemonStats = new HashSet<ConquestPokemonStats>();
-            ConquestTransformationPokemon = new HashSet<ConquestTransformationPokemon>();
-            Pokemon = new HashSet<Pokemon>();
-            PokemonDexNumbers = new HashSet<PokemonDexNumbers>();
-            PokemonEggGroups = new HashSet<PokemonEggGroups>();
-            PokemonEvolutionEvolvedSpecies = new HashSet<PokemonEvolution>();
-            PokemonEvolutionPartySpecies = new HashSet<PokemonEvolution>();
-            PokemonEvolutionTradeSpecies = new HashSet<PokemonEvolution>();
-            PokemonSpeciesFlavorSummaries = new HashSet<PokemonSpeciesFlavorSummaries>();
-            PokemonSpeciesFlavorText = new HashSet<PokemonSpeciesFlavorText>();
-            PokemonSpeciesNames = new HashSet<PokemonSpeciesNames>();
-            PokemonSpeciesProse = new HashSet<PokemonSpeciesProse>();
+            ConquestMaxLinks = new HashSet<EFConquestMaxLinks>();
+            ConquestPokemonAbilities = new HashSet<EFConquestPokemonAbilities>();
+            ConquestPokemonStats = new HashSet<EFConquestPokemonStats>();
+            ConquestTransformationPokemon = new HashSet<EFConquestTransformationPokemon>();
+            Pokemon = new HashSet<EFPokemon>();
+            PokemonDexNumbers = new HashSet<EFPokemonDexNumbers>();
+            PokemonEggGroups = new HashSet<EFPokemonEggGroups>();
+            PokemonEvolutionEvolvedSpecies = new HashSet<EFPokemonEvolution>();
+            PokemonEvolutionPartySpecies = new HashSet<EFPokemonEvolution>();
+            PokemonEvolutionTradeSpecies = new HashSet<EFPokemonEvolution>();
+            PokemonSpeciesFlavorSummaries = new HashSet<EFPokemonSpeciesFlavorSummaries>();
+            PokemonSpeciesFlavorText = new HashSet<EFPokemonSpeciesFlavorText>();
+            PokemonSpeciesNames = new HashSet<EFPokemonSpeciesNames>();
+            PokemonSpeciesProse = new HashSet<EFPokemonSpeciesProse>();
         }
 
         public int Id { get; set; }
@@ -42,30 +42,30 @@ namespace PokemonAPI.WebService.Models
         public int Order { get; set; }
         public int? ConquestOrder { get; set; }
 
-        public virtual ICollection<ConquestMaxLinks> ConquestMaxLinks { get; set; }
-        public virtual ICollection<ConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
-        public virtual ConquestPokemonEvolution ConquestPokemonEvolution { get; set; }
-        public virtual ConquestPokemonMoves ConquestPokemonMoves { get; set; }
-        public virtual ICollection<ConquestPokemonStats> ConquestPokemonStats { get; set; }
-        public virtual ICollection<ConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
-        public virtual PalPark PalPark { get; set; }
-        public virtual ICollection<Pokemon> Pokemon { get; set; }
-        public virtual ICollection<PokemonDexNumbers> PokemonDexNumbers { get; set; }
-        public virtual ICollection<PokemonEggGroups> PokemonEggGroups { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolutionEvolvedSpecies { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolutionPartySpecies { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolutionTradeSpecies { get; set; }
-        public virtual ICollection<PokemonSpeciesFlavorSummaries> PokemonSpeciesFlavorSummaries { get; set; }
-        public virtual ICollection<PokemonSpeciesFlavorText> PokemonSpeciesFlavorText { get; set; }
-        public virtual ICollection<PokemonSpeciesNames> PokemonSpeciesNames { get; set; }
-        public virtual ICollection<PokemonSpeciesProse> PokemonSpeciesProse { get; set; }
-        public virtual PokemonColors Color { get; set; }
-        public virtual EvolutionChains EvolutionChain { get; set; }
-        public virtual PokemonSpecies EvolvesFromSpecies { get; set; }
-        public virtual ICollection<PokemonSpecies> InverseEvolvesFromSpecies { get; set; }
-        public virtual Generations Generation { get; set; }
-        public virtual GrowthRates GrowthRate { get; set; }
-        public virtual PokemonHabitats Habitat { get; set; }
-        public virtual PokemonShapes Shape { get; set; }
+        public virtual ICollection<EFConquestMaxLinks> ConquestMaxLinks { get; set; }
+        public virtual ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
+        public virtual EFConquestPokemonEvolution ConquestPokemonEvolution { get; set; }
+        public virtual EFConquestPokemonMoves ConquestPokemonMoves { get; set; }
+        public virtual ICollection<EFConquestPokemonStats> ConquestPokemonStats { get; set; }
+        public virtual ICollection<EFConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
+        public virtual EFPalPark PalPark { get; set; }
+        public virtual ICollection<EFPokemon> Pokemon { get; set; }
+        public virtual ICollection<EFPokemonDexNumbers> PokemonDexNumbers { get; set; }
+        public virtual ICollection<EFPokemonEggGroups> PokemonEggGroups { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionEvolvedSpecies { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionPartySpecies { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionTradeSpecies { get; set; }
+        public virtual ICollection<EFPokemonSpeciesFlavorSummaries> PokemonSpeciesFlavorSummaries { get; set; }
+        public virtual ICollection<EFPokemonSpeciesFlavorText> PokemonSpeciesFlavorText { get; set; }
+        public virtual ICollection<EFPokemonSpeciesNames> PokemonSpeciesNames { get; set; }
+        public virtual ICollection<EFPokemonSpeciesProse> PokemonSpeciesProse { get; set; }
+        public virtual EFPokemonColors Color { get; set; }
+        public virtual EFEvolutionChains EvolutionChain { get; set; }
+        public virtual EFPokemonSpecies EvolvesFromSpecies { get; set; }
+        public virtual ICollection<EFPokemonSpecies> InverseEvolvesFromSpecies { get; set; }
+        public virtual EFGenerations Generation { get; set; }
+        public virtual EFGrowthRates GrowthRate { get; set; }
+        public virtual EFPokemonHabitats Habitat { get; set; }
+        public virtual EFPokemonShapes Shape { get; set; }
     }
 }

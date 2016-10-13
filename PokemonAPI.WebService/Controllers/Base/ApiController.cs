@@ -4,17 +4,18 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Controllers.Base
 {
     public abstract class ApiController<TModel> : Controller
-        where TModel: class, INamedModel
+        where TModel: class, IEFIdentifier
     {
         protected VeekunContext Context { get; }
         protected DbSet<TModel> MainDbSet { get; }
+        protected string UriSection { get; }
 
         protected string ControllerUrl
             => $"{Constants.SiteUrl}{Constants.BaseUrl}{UriSection}";
@@ -25,20 +26,18 @@ namespace PokemonAPI.WebService.Controllers.Base
         protected string ModelName
             => GetType().Name.Replace("Controller", "");
 
-        protected string UriSection
-            => GetType().Name.Replace("Controller", "").ToLower();
 
-
-        protected ApiController(VeekunContext context)
+        protected ApiController(VeekunContext context, string dbSetName, string uriSection)
         {
-            Context = context;
-            MainDbSet = (DbSet<TModel>) GetValueByReflection(context, ModelName);
-        }
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (string.IsNullOrWhiteSpace(dbSetName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(dbSetName));
+            if (string.IsNullOrWhiteSpace(uriSection))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(uriSection));
 
-        protected ApiController(VeekunContext context, string dbSetName)
-        {
             Context = context;
             MainDbSet = (DbSet<TModel>) GetValueByReflection(context, dbSetName);
+            UriSection = uriSection;
         }
 
 
@@ -46,6 +45,9 @@ namespace PokemonAPI.WebService.Controllers.Base
         {
             try
             {
+                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
+                if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+
                 var count = await MainDbSet.CountAsync();
                 var previous = Previous(limit, offset);
                 var next = Next(limit, offset, count);
@@ -54,8 +56,7 @@ namespace PokemonAPI.WebService.Controllers.Base
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => x.ToNamedApiResource())
-                    .Cast<APIResourceBase>()
+                    .Select(x => x.ToApiResource())
                     .ToList();
 
                 var results = new APIResourceList

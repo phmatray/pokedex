@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestStats
+    public partial class EFConquestStats : IEFModel, IEFIdentifier
     {
-        public ConquestStats()
+        public EFConquestStats()
         {
-            ConquestPokemonEvolution = new HashSet<ConquestPokemonEvolution>();
-            ConquestPokemonStats = new HashSet<ConquestPokemonStats>();
-            ConquestStatNames = new HashSet<ConquestStatNames>();
+            ConquestPokemonEvolution = new HashSet<EFConquestPokemonEvolution>();
+            ConquestPokemonStats = new HashSet<EFConquestPokemonStats>();
+            ConquestStatNames = new HashSet<EFConquestStatNames>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
         public bool IsBase { get; set; }
 
-        public virtual ICollection<ConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
-        public virtual ICollection<ConquestPokemonStats> ConquestPokemonStats { get; set; }
-        public virtual ICollection<ConquestStatNames> ConquestStatNames { get; set; }
+        public virtual ICollection<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
+        public virtual ICollection<EFConquestPokemonStats> ConquestPokemonStats { get; set; }
+        public virtual ICollection<EFConquestStatNames> ConquestStatNames { get; set; }
     }
 }

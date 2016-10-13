@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
-using PokemonAPI.Models.Resources.Utility;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -13,10 +12,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class LanguagesController : ApiController<Languages>
+    public class LanguagesController : ApiController<EFLanguages>
     {
         public LanguagesController(VeekunContext context)
-            : base(context)
+            : base(context, "Languages", "languages")
         {
         }
 
@@ -37,10 +36,10 @@ namespace PokemonAPI.WebService.Controllers
                 var language = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var result = new LanguageResource
+                var result = new Language
                 {
                     Id         = language.Id,
-                    Identifier = language.Identifier,
+                    Name       = language.Identifier,
                     Iso639     = language.Iso639,
                     Iso3166    = language.Iso3166,
                     Official   = language.Official,
@@ -55,14 +54,14 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NameResource>> GetNames(Languages language)
+        private async Task<List<Name>> GetNames(EFLanguages language)
         {
             return (await Context
                     .LanguageNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.LanguageId == language.Id)
                     .ToListAsync())
-                .Select(x => x.ToNameResource())
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

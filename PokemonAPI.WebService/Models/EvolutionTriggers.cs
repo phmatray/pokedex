@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EvolutionTriggers
+    public partial class EFEvolutionTriggers : IEFModel, IEFIdentifier
     {
-        public EvolutionTriggers()
+        public EFEvolutionTriggers()
         {
-            EvolutionTriggerProse = new HashSet<EvolutionTriggerProse>();
-            PokemonEvolution = new HashSet<PokemonEvolution>();
+            EvolutionTriggerProse = new HashSet<EFEvolutionTriggerProse>();
+            PokemonEvolution = new HashSet<EFPokemonEvolution>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EvolutionTriggerProse> EvolutionTriggerProse { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolution { get; set; }
+        public virtual ICollection<EFEvolutionTriggerProse> EvolutionTriggerProse { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolution { get; set; }
     }
 }

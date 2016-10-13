@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ItemFlags
+    public partial class EFItemFlags : IEFModel, IEFIdentifier
     {
-        public ItemFlags()
+        public EFItemFlags()
         {
-            ItemFlagMap = new HashSet<ItemFlagMap>();
-            ItemFlagProse = new HashSet<ItemFlagProse>();
+            ItemFlagMap = new HashSet<EFItemFlagMap>();
+            ItemFlagProse = new HashSet<EFItemFlagProse>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<ItemFlagMap> ItemFlagMap { get; set; }
-        public virtual ICollection<ItemFlagProse> ItemFlagProse { get; set; }
+        public virtual ICollection<EFItemFlagMap> ItemFlagMap { get; set; }
+        public virtual ICollection<EFItemFlagProse> ItemFlagProse { get; set; }
     }
 }

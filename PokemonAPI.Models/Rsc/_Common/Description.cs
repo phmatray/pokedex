@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class Description
     {
+        public Description(string descriptionValue, NamedAPIResource language)
+        {
+            DescriptionValue = descriptionValue;
+            Language = language;
+        }
+
         /// <summary>
         /// The localized description for an API resource in a specific language
         /// </summary>

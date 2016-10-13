@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Encounters
+    public partial class EFEncounters : IEFModel
     {
-        public Encounters()
+        public EFEncounters()
         {
-            EncounterConditionValueMap = new HashSet<EncounterConditionValueMap>();
+            EncounterConditionValueMap = new HashSet<EFEncounterConditionValueMap>();
         }
 
         public int Id { get; set; }
@@ -17,10 +18,10 @@ namespace PokemonAPI.WebService.Models
         public int MinLevel { get; set; }
         public int MaxLevel { get; set; }
 
-        public virtual ICollection<EncounterConditionValueMap> EncounterConditionValueMap { get; set; }
-        public virtual EncounterSlots EncounterSlot { get; set; }
-        public virtual LocationAreas LocationArea { get; set; }
-        public virtual Pokemon Pokemon { get; set; }
-        public virtual Versions Version { get; set; }
+        public virtual ICollection<EFEncounterConditionValueMap> EncounterConditionValueMap { get; set; }
+        public virtual EFEncounterSlots EncounterSlot { get; set; }
+        public virtual EFLocationAreas LocationArea { get; set; }
+        public virtual EFPokemon Pokemon { get; set; }
+        public virtual EFVersions Version { get; set; }
     }
 }

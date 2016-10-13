@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveChangelog
+    public partial class EFMoveChangelog : IEFModel
     {
         public int MoveId { get; set; }
         public int ChangedInVersionGroupId { get; set; }
@@ -11,9 +13,9 @@
         public int? EffectId { get; set; }
         public int? EffectChance { get; set; }
 
-        public virtual VersionGroups ChangedInVersionGroup { get; set; }
-        public virtual MoveEffects Effect { get; set; }
-        public virtual Moves Move { get; set; }
-        public virtual Types Type { get; set; }
+        public virtual EFVersionGroups ChangedInVersionGroup { get; set; }
+        public virtual EFMoveEffects Effect { get; set; }
+        public virtual EFMoves Move { get; set; }
+        public virtual EFTypes Type { get; set; }
     }
 }

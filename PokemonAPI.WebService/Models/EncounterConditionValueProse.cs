@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class EncounterConditionValueProse
+    public partial class EFEncounterConditionValueProse : IEFModel
     {
         public int EncounterConditionValueId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual EncounterConditionValues EncounterConditionValue { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFEncounterConditionValues EncounterConditionValue { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

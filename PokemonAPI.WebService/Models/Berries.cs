@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Berries
+    public partial class EFBerries : IEFModel
     {
-        public Berries()
+        public EFBerries()
         {
-            BerryFlavors = new HashSet<BerryFlavors>();
+            BerryFlavors = new HashSet<EFBerryFlavors>();
         }
 
         public int Id { get; set; }
@@ -20,9 +21,9 @@ namespace PokemonAPI.WebService.Models
         public int SoilDryness { get; set; }
         public int Smoothness { get; set; }
 
-        public virtual ICollection<BerryFlavors> BerryFlavors { get; set; }
-        public virtual BerryFirmness Firmness { get; set; }
-        public virtual Items Item { get; set; }
-        public virtual Types NaturalGiftType { get; set; }
+        public virtual ICollection<EFBerryFlavors> BerryFlavors { get; set; }
+        public virtual EFBerryFirmness Firmness { get; set; }
+        public virtual EFItems Item { get; set; }
+        public virtual EFTypes NaturalGiftType { get; set; }
     }
 }

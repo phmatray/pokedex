@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class BerryFirmnessNames
+    public partial class EFBerryFirmnessNames : IEFModel
     {
         public int BerryFirmnessId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual BerryFirmness BerryFirmness { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFBerryFirmness BerryFirmness { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

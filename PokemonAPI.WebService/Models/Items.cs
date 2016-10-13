@@ -3,23 +3,23 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Items : INamedModel
+    public partial class EFItems : IEFModel, IEFIdentifier
     {
-        public Items()
+        public EFItems()
         {
-            Berries = new HashSet<Berries>();
-            ConquestPokemonEvolution = new HashSet<ConquestPokemonEvolution>();
-            EvolutionChains = new HashSet<EvolutionChains>();
-            ItemFlagMap = new HashSet<ItemFlagMap>();
-            ItemFlavorSummaries = new HashSet<ItemFlavorSummaries>();
-            ItemFlavorText = new HashSet<ItemFlavorText>();
-            ItemGameIndices = new HashSet<ItemGameIndices>();
-            ItemNames = new HashSet<ItemNames>();
-            ItemProse = new HashSet<ItemProse>();
-            Machines = new HashSet<Machines>();
-            PokemonEvolutionHeldItem = new HashSet<PokemonEvolution>();
-            PokemonEvolutionTriggerItem = new HashSet<PokemonEvolution>();
-            PokemonItems = new HashSet<PokemonItems>();
+            Berries = new HashSet<EFBerries>();
+            ConquestPokemonEvolution = new HashSet<EFConquestPokemonEvolution>();
+            EvolutionChains = new HashSet<EFEvolutionChains>();
+            ItemFlagMap = new HashSet<EFItemFlagMap>();
+            ItemFlavorSummaries = new HashSet<EFItemFlavorSummaries>();
+            ItemFlavorText = new HashSet<EFItemFlavorText>();
+            ItemGameIndices = new HashSet<EFItemGameIndices>();
+            ItemNames = new HashSet<EFItemNames>();
+            ItemProse = new HashSet<EFItemProse>();
+            Machines = new HashSet<EFMachines>();
+            PokemonEvolutionHeldItem = new HashSet<EFPokemonEvolution>();
+            PokemonEvolutionTriggerItem = new HashSet<EFPokemonEvolution>();
+            PokemonItems = new HashSet<EFPokemonItems>();
         }
 
         public int Id { get; set; }
@@ -29,20 +29,20 @@ namespace PokemonAPI.WebService.Models
         public int? FlingPower { get; set; }
         public int? FlingEffectId { get; set; }
 
-        public virtual ICollection<Berries> Berries { get; set; }
-        public virtual ICollection<ConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
-        public virtual ICollection<EvolutionChains> EvolutionChains { get; set; }
-        public virtual ICollection<ItemFlagMap> ItemFlagMap { get; set; }
-        public virtual ICollection<ItemFlavorSummaries> ItemFlavorSummaries { get; set; }
-        public virtual ICollection<ItemFlavorText> ItemFlavorText { get; set; }
-        public virtual ICollection<ItemGameIndices> ItemGameIndices { get; set; }
-        public virtual ICollection<ItemNames> ItemNames { get; set; }
-        public virtual ICollection<ItemProse> ItemProse { get; set; }
-        public virtual ICollection<Machines> Machines { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolutionHeldItem { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolutionTriggerItem { get; set; }
-        public virtual ICollection<PokemonItems> PokemonItems { get; set; }
-        public virtual ItemCategories Category { get; set; }
-        public virtual ItemFlingEffects FlingEffect { get; set; }
+        public virtual ICollection<EFBerries> Berries { get; set; }
+        public virtual ICollection<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
+        public virtual ICollection<EFEvolutionChains> EvolutionChains { get; set; }
+        public virtual ICollection<EFItemFlagMap> ItemFlagMap { get; set; }
+        public virtual ICollection<EFItemFlavorSummaries> ItemFlavorSummaries { get; set; }
+        public virtual ICollection<EFItemFlavorText> ItemFlavorText { get; set; }
+        public virtual ICollection<EFItemGameIndices> ItemGameIndices { get; set; }
+        public virtual ICollection<EFItemNames> ItemNames { get; set; }
+        public virtual ICollection<EFItemProse> ItemProse { get; set; }
+        public virtual ICollection<EFMachines> Machines { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionHeldItem { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionTriggerItem { get; set; }
+        public virtual ICollection<EFPokemonItems> PokemonItems { get; set; }
+        public virtual EFItemCategories Category { get; set; }
+        public virtual EFItemFlingEffects FlingEffect { get; set; }
     }
 }

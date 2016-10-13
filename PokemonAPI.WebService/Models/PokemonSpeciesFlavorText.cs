@@ -1,14 +1,16 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonSpeciesFlavorText
+    public partial class EFPokemonSpeciesFlavorText : IEFModel
     {
         public int SpeciesId { get; set; }
         public int VersionId { get; set; }
         public int LanguageId { get; set; }
         public string FlavorText { get; set; }
 
-        public virtual Languages Language { get; set; }
-        public virtual PokemonSpecies Species { get; set; }
-        public virtual Versions Version { get; set; }
+        public virtual EFLanguages Language { get; set; }
+        public virtual EFPokemonSpecies Species { get; set; }
+        public virtual EFVersions Version { get; set; }
     }
 }

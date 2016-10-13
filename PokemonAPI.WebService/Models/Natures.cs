@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Natures
+    public partial class EFNatures : IEFModel, IEFIdentifier
     {
-        public Natures()
+        public EFNatures()
         {
-            NatureBattleStylePreferences = new HashSet<NatureBattleStylePreferences>();
-            NatureNames = new HashSet<NatureNames>();
-            NaturePokeathlonStats = new HashSet<NaturePokeathlonStats>();
+            NatureBattleStylePreferences = new HashSet<EFNatureBattleStylePreferences>();
+            NatureNames = new HashSet<EFNatureNames>();
+            NaturePokeathlonStats = new HashSet<EFNaturePokeathlonStats>();
         }
 
         public int Id { get; set; }
@@ -19,12 +20,12 @@ namespace PokemonAPI.WebService.Models
         public int LikesFlavorId { get; set; }
         public int GameIndex { get; set; }
 
-        public virtual ICollection<NatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
-        public virtual ICollection<NatureNames> NatureNames { get; set; }
-        public virtual ICollection<NaturePokeathlonStats> NaturePokeathlonStats { get; set; }
-        public virtual Stats DecreasedStat { get; set; }
-        public virtual ContestTypes HatesFlavor { get; set; }
-        public virtual Stats IncreasedStat { get; set; }
-        public virtual ContestTypes LikesFlavor { get; set; }
+        public virtual ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
+        public virtual ICollection<EFNatureNames> NatureNames { get; set; }
+        public virtual ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
+        public virtual EFStats DecreasedStat { get; set; }
+        public virtual EFContestTypes HatesFlavor { get; set; }
+        public virtual EFStats IncreasedStat { get; set; }
+        public virtual EFContestTypes LikesFlavor { get; set; }
     }
 }

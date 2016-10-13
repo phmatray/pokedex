@@ -1,13 +1,15 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonAbilities
+    public partial class EFPokemonAbilities : IEFModel
     {
         public int PokemonId { get; set; }
         public int AbilityId { get; set; }
         public bool IsHidden { get; set; }
         public int Slot { get; set; }
 
-        public virtual Abilities Ability { get; set; }
-        public virtual Pokemon Pokemon { get; set; }
+        public virtual EFAbilities Ability { get; set; }
+        public virtual EFPokemon Pokemon { get; set; }
     }
 }

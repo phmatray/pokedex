@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestMoveEffects
+    public partial class EFConquestMoveEffects : IEFModel
     {
-        public ConquestMoveEffects()
+        public EFConquestMoveEffects()
         {
-            ConquestMoveData = new HashSet<ConquestMoveData>();
-            ConquestMoveEffectProse = new HashSet<ConquestMoveEffectProse>();
+            ConquestMoveData = new HashSet<EFConquestMoveData>();
+            ConquestMoveEffectProse = new HashSet<EFConquestMoveEffectProse>();
         }
 
         public int Id { get; set; }
 
-        public virtual ICollection<ConquestMoveData> ConquestMoveData { get; set; }
-        public virtual ICollection<ConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
+        public virtual ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
+        public virtual ICollection<EFConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
     }
 }

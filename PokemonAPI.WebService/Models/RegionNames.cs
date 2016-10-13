@@ -2,13 +2,13 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class RegionNames : IName
+    public partial class EFRegionNames : IEFModel
     {
         public int RegionId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual Regions Region { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFRegions Region { get; set; }
     }
 }

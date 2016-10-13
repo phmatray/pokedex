@@ -1,11 +1,13 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestTransformationPokemon
+    public partial class EFConquestTransformationPokemon : IEFModel
     {
         public int TransformationId { get; set; }
         public int PokemonSpeciesId { get; set; }
 
-        public virtual PokemonSpecies PokemonSpecies { get; set; }
-        public virtual ConquestWarriorTransformation Transformation { get; set; }
+        public virtual EFPokemonSpecies PokemonSpecies { get; set; }
+        public virtual EFConquestWarriorTransformation Transformation { get; set; }
     }
 }

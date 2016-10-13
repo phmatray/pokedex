@@ -3,24 +3,24 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Moves : INamedModel
+    public partial class EFMoves : IEFModel, IEFIdentifier
     {
-        public Moves()
+        public EFMoves()
         {
-            ConquestPokemonMoves = new HashSet<ConquestPokemonMoves>();
-            ContestCombosFirstMove = new HashSet<ContestCombos>();
-            ContestCombosSecondMove = new HashSet<ContestCombos>();
-            Machines = new HashSet<Machines>();
-            MoveChangelog = new HashSet<MoveChangelog>();
-            MoveFlagMap = new HashSet<MoveFlagMap>();
-            MoveFlavorSummaries = new HashSet<MoveFlavorSummaries>();
-            MoveFlavorText = new HashSet<MoveFlavorText>();
-            MoveMetaStatChanges = new HashSet<MoveMetaStatChanges>();
-            MoveNames = new HashSet<MoveNames>();
-            PokemonEvolution = new HashSet<PokemonEvolution>();
-            PokemonMoves = new HashSet<PokemonMoves>();
-            SuperContestCombosFirstMove = new HashSet<SuperContestCombos>();
-            SuperContestCombosSecondMove = new HashSet<SuperContestCombos>();
+            ConquestPokemonMoves = new HashSet<EFConquestPokemonMoves>();
+            ContestCombosFirstMove = new HashSet<EFContestCombos>();
+            ContestCombosSecondMove = new HashSet<EFContestCombos>();
+            Machines = new HashSet<EFMachines>();
+            MoveChangelog = new HashSet<EFMoveChangelog>();
+            MoveFlagMap = new HashSet<EFMoveFlagMap>();
+            MoveFlavorSummaries = new HashSet<EFMoveFlavorSummaries>();
+            MoveFlavorText = new HashSet<EFMoveFlavorText>();
+            MoveMetaStatChanges = new HashSet<EFMoveMetaStatChanges>();
+            MoveNames = new HashSet<EFMoveNames>();
+            PokemonEvolution = new HashSet<EFPokemonEvolution>();
+            PokemonMoves = new HashSet<EFPokemonMoves>();
+            SuperContestCombosFirstMove = new HashSet<EFSuperContestCombos>();
+            SuperContestCombosSecondMove = new HashSet<EFSuperContestCombos>();
         }
 
         public int Id { get; set; }
@@ -39,29 +39,29 @@ namespace PokemonAPI.WebService.Models
         public int? ContestEffectId { get; set; }
         public int? SuperContestEffectId { get; set; }
 
-        public virtual ConquestMoveData ConquestMoveData { get; set; }
-        public virtual ICollection<ConquestPokemonMoves> ConquestPokemonMoves { get; set; }
-        public virtual ICollection<ContestCombos> ContestCombosFirstMove { get; set; }
-        public virtual ICollection<ContestCombos> ContestCombosSecondMove { get; set; }
-        public virtual ICollection<Machines> Machines { get; set; }
-        public virtual ICollection<MoveChangelog> MoveChangelog { get; set; }
-        public virtual ICollection<MoveFlagMap> MoveFlagMap { get; set; }
-        public virtual ICollection<MoveFlavorSummaries> MoveFlavorSummaries { get; set; }
-        public virtual ICollection<MoveFlavorText> MoveFlavorText { get; set; }
-        public virtual MoveMeta MoveMeta { get; set; }
-        public virtual ICollection<MoveMetaStatChanges> MoveMetaStatChanges { get; set; }
-        public virtual ICollection<MoveNames> MoveNames { get; set; }
-        public virtual ICollection<PokemonEvolution> PokemonEvolution { get; set; }
-        public virtual ICollection<PokemonMoves> PokemonMoves { get; set; }
-        public virtual ICollection<SuperContestCombos> SuperContestCombosFirstMove { get; set; }
-        public virtual ICollection<SuperContestCombos> SuperContestCombosSecondMove { get; set; }
-        public virtual ContestEffects ContestEffect { get; set; }
-        public virtual ContestTypes ContestType { get; set; }
-        public virtual MoveDamageClasses DamageClass { get; set; }
-        public virtual MoveEffects Effect { get; set; }
-        public virtual Generations Generation { get; set; }
-        public virtual SuperContestEffects SuperContestEffect { get; set; }
-        public virtual MoveTargets Target { get; set; }
-        public virtual Types Type { get; set; }
+        public virtual EFConquestMoveData ConquestMoveData { get; set; }
+        public virtual ICollection<EFConquestPokemonMoves> ConquestPokemonMoves { get; set; }
+        public virtual ICollection<EFContestCombos> ContestCombosFirstMove { get; set; }
+        public virtual ICollection<EFContestCombos> ContestCombosSecondMove { get; set; }
+        public virtual ICollection<EFMachines> Machines { get; set; }
+        public virtual ICollection<EFMoveChangelog> MoveChangelog { get; set; }
+        public virtual ICollection<EFMoveFlagMap> MoveFlagMap { get; set; }
+        public virtual ICollection<EFMoveFlavorSummaries> MoveFlavorSummaries { get; set; }
+        public virtual ICollection<EFMoveFlavorText> MoveFlavorText { get; set; }
+        public virtual EFMoveMeta MoveMeta { get; set; }
+        public virtual ICollection<EFMoveMetaStatChanges> MoveMetaStatChanges { get; set; }
+        public virtual ICollection<EFMoveNames> MoveNames { get; set; }
+        public virtual ICollection<EFPokemonEvolution> PokemonEvolution { get; set; }
+        public virtual ICollection<EFPokemonMoves> PokemonMoves { get; set; }
+        public virtual ICollection<EFSuperContestCombos> SuperContestCombosFirstMove { get; set; }
+        public virtual ICollection<EFSuperContestCombos> SuperContestCombosSecondMove { get; set; }
+        public virtual EFContestEffects ContestEffect { get; set; }
+        public virtual EFContestTypes ContestType { get; set; }
+        public virtual EFMoveDamageClasses DamageClass { get; set; }
+        public virtual EFMoveEffects Effect { get; set; }
+        public virtual EFGenerations Generation { get; set; }
+        public virtual EFSuperContestEffects SuperContestEffect { get; set; }
+        public virtual EFMoveTargets Target { get; set; }
+        public virtual EFTypes Type { get; set; }
     }
 }

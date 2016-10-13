@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class SuperContestEffects
+    public partial class EFSuperContestEffects : IEFModel
     {
-        public SuperContestEffects()
+        public EFSuperContestEffects()
         {
-            Moves = new HashSet<Moves>();
-            SuperContestEffectProse = new HashSet<SuperContestEffectProse>();
+            Moves = new HashSet<EFMoves>();
+            SuperContestEffectProse = new HashSet<EFSuperContestEffectProse>();
         }
 
         public int Id { get; set; }
         public short Appeal { get; set; }
 
-        public virtual ICollection<Moves> Moves { get; set; }
-        public virtual ICollection<SuperContestEffectProse> SuperContestEffectProse { get; set; }
+        public virtual ICollection<EFMoves> Moves { get; set; }
+        public virtual ICollection<EFSuperContestEffectProse> SuperContestEffectProse { get; set; }
     }
 }

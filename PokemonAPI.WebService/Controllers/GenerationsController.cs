@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -12,10 +12,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class GenerationsController : ApiController<Generations>
+    public class GenerationsController : ApiController<EFGenerations>
     {
         public GenerationsController(VeekunContext context)
-            : base(context)
+            : base(context, "Generations", "generations")
         {
         }
 
@@ -36,10 +36,10 @@ namespace PokemonAPI.WebService.Controllers
                 var generation = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var results = new GenerationResource
+                var results = new Generation
                 {
                     Id             = generation.Id,
-                    Identifier     = generation.Identifier,
+                    Name           = generation.Identifier,
                     Abilities      = await GetAbilities(generation),
                     VersionGroups  = await GetVersionGroups(generation),
                     Names          = await GetNames(generation),
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetTypes(Generations generation)
+        private async Task<List<NamedAPIResource>> GetTypes(EFGenerations generation)
         {
             return (await Context
                     .Types
@@ -67,7 +67,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetMainRegion(Generations generation)
+        private async Task<NamedAPIResource> GetMainRegion(EFGenerations generation)
         {
             return (await Context
                     .Regions
@@ -75,7 +75,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetMoves(Generations generation)
+        private async Task<List<NamedAPIResource>> GetMoves(EFGenerations generation)
         {
             return (await Context
                     .Moves
@@ -85,7 +85,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(Generations generation)
+        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFGenerations generation)
         {
             return (await Context
                     .PokemonSpecies
@@ -96,18 +96,18 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NameResource>> GetNames(Generations generation)
+        private async Task<List<Name>> GetNames(EFGenerations generation)
         {
             return (await Context
                     .GenerationNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.GenerationId == generation.Id)
                     .ToListAsync())
-                .Select(x => x.ToNameResource())
+                .Select(x => new Name(x.Name, x.Generation.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersionGroups(Generations generation)
+        private async Task<List<NamedAPIResource>> GetVersionGroups(EFGenerations generation)
         {
             return (await Context
                     .VersionGroups
@@ -117,7 +117,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetAbilities(Generations generation)
+        private async Task<List<NamedAPIResource>> GetAbilities(EFGenerations generation)
         {
             return (await Context
                     .Abilities

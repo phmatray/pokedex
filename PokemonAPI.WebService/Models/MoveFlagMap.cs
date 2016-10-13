@@ -1,11 +1,13 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveFlagMap
+    public partial class EFMoveFlagMap : IEFModel
     {
         public int MoveId { get; set; }
         public int MoveFlagId { get; set; }
 
-        public virtual MoveFlags MoveFlag { get; set; }
-        public virtual Moves Move { get; set; }
+        public virtual EFMoveFlags MoveFlag { get; set; }
+        public virtual EFMoves Move { get; set; }
     }
 }

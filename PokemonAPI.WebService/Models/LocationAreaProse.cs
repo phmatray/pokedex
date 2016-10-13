@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class LocationAreaProse
+    public partial class EFLocationAreaProse : IEFModel
     {
         public int LocationAreaId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual LocationAreas LocationArea { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFLocationAreas LocationArea { get; set; }
     }
 }

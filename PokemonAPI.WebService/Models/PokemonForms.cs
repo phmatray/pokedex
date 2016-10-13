@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonForms : INamedModel
+    public partial class EFPokemonForms : IEFModel, IEFIdentifier
     {
-        public PokemonForms()
+        public EFPokemonForms()
         {
-            PokemonFormGenerations = new HashSet<PokemonFormGenerations>();
-            PokemonFormNames = new HashSet<PokemonFormNames>();
-            PokemonFormPokeathlonStats = new HashSet<PokemonFormPokeathlonStats>();
+            PokemonFormGenerations = new HashSet<EFPokemonFormGenerations>();
+            PokemonFormNames = new HashSet<EFPokemonFormNames>();
+            PokemonFormPokeathlonStats = new HashSet<EFPokemonFormPokeathlonStats>();
         }
 
         public int Id { get; set; }
@@ -23,10 +24,10 @@ namespace PokemonAPI.WebService.Models
         public int FormOrder { get; set; }
         public int Order { get; set; }
 
-        public virtual ICollection<PokemonFormGenerations> PokemonFormGenerations { get; set; }
-        public virtual ICollection<PokemonFormNames> PokemonFormNames { get; set; }
-        public virtual ICollection<PokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
-        public virtual VersionGroups IntroducedInVersionGroup { get; set; }
-        public virtual Pokemon Pokemon { get; set; }
+        public virtual ICollection<EFPokemonFormGenerations> PokemonFormGenerations { get; set; }
+        public virtual ICollection<EFPokemonFormNames> PokemonFormNames { get; set; }
+        public virtual ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
+        public virtual EFVersionGroups IntroducedInVersionGroup { get; set; }
+        public virtual EFPokemon Pokemon { get; set; }
     }
 }

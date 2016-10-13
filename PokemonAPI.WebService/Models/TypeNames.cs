@@ -2,13 +2,13 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class TypeNames : IName
+    public partial class EFTypeNames : IEFModel
     {
         public int TypeId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual Types Type { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFTypes Type { get; set; }
     }
 }

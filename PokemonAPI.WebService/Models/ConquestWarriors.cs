@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriors
+    public partial class EFConquestWarriors : IEFModel, IEFIdentifier
     {
-        public ConquestWarriors()
+        public EFConquestWarriors()
         {
-            ConquestEpisodeWarriors = new HashSet<ConquestEpisodeWarriors>();
-            ConquestTransformationWarriors = new HashSet<ConquestTransformationWarriors>();
-            ConquestWarriorNames = new HashSet<ConquestWarriorNames>();
-            ConquestWarriorRanks = new HashSet<ConquestWarriorRanks>();
-            ConquestWarriorSpecialties = new HashSet<ConquestWarriorSpecialties>();
-            ConquestWarriorTransformation = new HashSet<ConquestWarriorTransformation>();
+            ConquestEpisodeWarriors = new HashSet<EFConquestEpisodeWarriors>();
+            ConquestTransformationWarriors = new HashSet<EFConquestTransformationWarriors>();
+            ConquestWarriorNames = new HashSet<EFConquestWarriorNames>();
+            ConquestWarriorRanks = new HashSet<EFConquestWarriorRanks>();
+            ConquestWarriorSpecialties = new HashSet<EFConquestWarriorSpecialties>();
+            ConquestWarriorTransformation = new HashSet<EFConquestWarriorTransformation>();
         }
 
         public int Id { get; set; }
@@ -19,13 +20,13 @@ namespace PokemonAPI.WebService.Models
         public int GenderId { get; set; }
         public int? ArchetypeId { get; set; }
 
-        public virtual ICollection<ConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
-        public virtual ICollection<ConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
-        public virtual ICollection<ConquestWarriorNames> ConquestWarriorNames { get; set; }
-        public virtual ICollection<ConquestWarriorRanks> ConquestWarriorRanks { get; set; }
-        public virtual ICollection<ConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
-        public virtual ICollection<ConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
-        public virtual ConquestWarriorArchetypes Archetype { get; set; }
-        public virtual Genders Gender { get; set; }
+        public virtual ICollection<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
+        public virtual ICollection<EFConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
+        public virtual ICollection<EFConquestWarriorNames> ConquestWarriorNames { get; set; }
+        public virtual ICollection<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
+        public virtual ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
+        public virtual ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
+        public virtual EFConquestWarriorArchetypes Archetype { get; set; }
+        public virtual EFGenders Gender { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -12,10 +12,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class PokemonColorsController : ApiController<PokemonColors>
+    public class PokemonColorsController : ApiController<EFPokemonColors>
     {
         public PokemonColorsController(VeekunContext context)
-            : base(context)
+            : base(context, "PokemonColors", "pokemon-colors")
         {
         }
 
@@ -36,10 +36,10 @@ namespace PokemonAPI.WebService.Controllers
                 var pokemonColor = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var result = new PokemonColorResource
+                var result = new PokemonColor
                 {
                     Id             = pokemonColor.Id,
-                    Identifier     = pokemonColor.Identifier,
+                    Name           = pokemonColor.Identifier,
                     Names          = await GetNames(pokemonColor),
                     PokemonSpecies = await GetPokemonSpecies(pokemonColor)
                 };
@@ -52,18 +52,18 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NameResource>> GetNames(PokemonColors pokemonColor)
+        private async Task<List<Name>> GetNames(EFPokemonColors pokemonColor)
         {
             return (await Context
                     .PokemonColorNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonColorId == pokemonColor.Id)
                     .ToListAsync())
-                .Select(x => x.ToNameResource())
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(PokemonColors pokemonColor)
+        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFPokemonColors pokemonColor)
         {
             return (await Context
                     .PokemonSpecies

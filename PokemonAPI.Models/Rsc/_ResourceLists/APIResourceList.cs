@@ -17,7 +17,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The URL for the previous page in the list
         /// </summary>
-        public bool Previous { get; set; }
+        public string Previous { get; set; }
 
         /// <summary>
         /// A list of unnamed API resources

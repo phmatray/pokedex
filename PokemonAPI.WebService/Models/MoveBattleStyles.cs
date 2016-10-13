@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveBattleStyles
+    public partial class EFMoveBattleStyles : IEFModel, IEFIdentifier
     {
-        public MoveBattleStyles()
+        public EFMoveBattleStyles()
         {
-            MoveBattleStyleProse = new HashSet<MoveBattleStyleProse>();
-            NatureBattleStylePreferences = new HashSet<NatureBattleStylePreferences>();
+            MoveBattleStyleProse = new HashSet<EFMoveBattleStyleProse>();
+            NatureBattleStylePreferences = new HashSet<EFNatureBattleStylePreferences>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<MoveBattleStyleProse> MoveBattleStyleProse { get; set; }
-        public virtual ICollection<NatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
+        public virtual ICollection<EFMoveBattleStyleProse> MoveBattleStyleProse { get; set; }
+        public virtual ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
     }
 }

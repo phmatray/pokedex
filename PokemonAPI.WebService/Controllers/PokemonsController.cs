@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
@@ -12,10 +12,10 @@ using PokemonAPI.WebService.Models;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class PokemonsController : ApiController<Pokemon>
+    public class PokemonsController : ApiController<EFPokemon>
     {
         public PokemonsController(VeekunContext context)
-            : base(context, "Pokemon")
+            : base(context, "Pokemon", "pokemons")
         {
         }
 
@@ -36,10 +36,10 @@ namespace PokemonAPI.WebService.Controllers
                 var pokemon = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var results = new PokemonResource
+                var results = new Pokemon
                 {
                     Id                     = pokemon.Id,
-                    Identifier             = pokemon.Identifier,
+                    Name                   = pokemon.Identifier,
                     BaseExperience         = pokemon.BaseExperience,
                     Height                 = pokemon.Height,
                     IsDefault              = pokemon.IsDefault,
@@ -80,11 +80,11 @@ namespace PokemonAPI.WebService.Controllers
 
                 var results = nonGroupedEncounters
                     .GroupBy(x => x.LocationArea, (g, elements) =>
-                        new LocationAreaEncounterResource
+                        new LocationAreaEncounter
                         {
                             LocationArea = g.ToNamedApiResource(),
                             VersionDetails = elements
-                                .Select(z => new VersionEncounterDetailResource
+                                .Select(z => new VersionEncounterDetail
                                 {
                                     Version = z.Version.ToNamedApiResource(),
                                 //MaxChance = 0,
@@ -113,14 +113,14 @@ namespace PokemonAPI.WebService.Controllers
         }
 
 
-        private async Task<List<PokemonAbilityResource>> GetAbilities(Pokemon pokemon)
+        private async Task<List<PokemonAbility>> GetAbilities(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonAbilities
                     .Include(x => x.Ability)
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => new PokemonAbilityResource
+                .Select(x => new PokemonAbility
                 {
                     IsHidden = x.IsHidden,
                     Slot = x.Slot,
@@ -129,7 +129,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetForms(Pokemon pokemon)
+        private async Task<List<NamedAPIResource>> GetForms(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonForms
@@ -139,14 +139,14 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<VersionGameIndexResource>> GetGameIndices(Pokemon pokemon)
+        private async Task<List<VersionGameIndex>> GetGameIndices(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonGameIndices
                     .Include(x => x.Version)
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => new VersionGameIndexResource
+                .Select(x => new VersionGameIndex
                 {
                     GameIndex = x.GameIndex,
                     Version = x.Version.ToNamedApiResource()
@@ -154,7 +154,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<PokemonHeldItemResource>> GetHeldItems(Pokemon pokemon)
+        private async Task<List<PokemonHeldItem>> GetHeldItems(EFPokemon pokemon)
         {
             var nonGroupedHeldItems = await Context
                 .PokemonItems
@@ -165,11 +165,11 @@ namespace PokemonAPI.WebService.Controllers
 
             var heldItems = nonGroupedHeldItems
                 .GroupBy(x => x.Item, (g, elements) =>
-                    new PokemonHeldItemResource
+                    new PokemonHeldItem
                     {
                         Item = g.ToNamedApiResource(),
                         VersionDetails = elements
-                            .Select(z => new PokemonHeldItemVersionResource
+                            .Select(z => new PokemonHeldItemVersion
                             {
                                 Rarity = z.Rarity,
                                 Version = z.Version?.ToNamedApiResource()
@@ -181,12 +181,12 @@ namespace PokemonAPI.WebService.Controllers
             return heldItems;
         }
 
-        private string GetLocationAreaEncounters(Pokemon pokemon)
+        private string GetLocationAreaEncounters(EFPokemon pokemon)
         {
             return $"{Constants.SiteUrl}{Constants.BaseUrl}pokemons/{pokemon.Id}/encounters";
         }
 
-        private async Task<List<PokemonMoveResource>> GetMoves(Pokemon pokemon)
+        private async Task<List<PokemonMove>> GetMoves(EFPokemon pokemon)
         {
             var nonGroupedPokemonMoves = await Context
                 .PokemonMoves
@@ -198,11 +198,11 @@ namespace PokemonAPI.WebService.Controllers
 
             return nonGroupedPokemonMoves
                 .GroupBy(x => x.Move, (g, elements) =>
-                    new PokemonMoveResource
+                    new PokemonMove
                     {
                         Move = g.ToNamedApiResource(),
                         VersionGroupDetails = elements
-                            .Select(z => new PokemonMoveVersionResource
+                            .Select(z => new PokemonMoveVersion
                             {
                                 MoveLearnMethod = z.PokemonMoveMethod.ToNamedApiResource(),
                                 VersionGroup = z.VersionGroup.ToNamedApiResource(),
@@ -213,9 +213,9 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private PokemonSpritesResource GetSprites(Pokemon pokemon)
+        private PokemonSprites GetSprites(EFPokemon pokemon)
         {
-            return new PokemonSpritesResource
+            return new PokemonSprites
             {
                 FrontDefault = null,
                 FrontShiny = null,
@@ -228,7 +228,7 @@ namespace PokemonAPI.WebService.Controllers
             };
         }
 
-        private async Task<NamedAPIResource> GetSpecies(Pokemon pokemon)
+        private async Task<NamedAPIResource> GetSpecies(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonSpecies
@@ -237,14 +237,14 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<List<PokemonStatResource>> GetStats(Pokemon pokemon)
+        private async Task<List<PokemonStat>> GetStats(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonStats
                     .Include(x => x.Stat)
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => new PokemonStatResource
+                .Select(x => new PokemonStat
                 {
                     Stat = x.Stat.ToNamedApiResource(),
                     Effort = x.Effort,
@@ -253,14 +253,14 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<PokemonTypeResource>> GetTypes(Pokemon pokemon)
+        private async Task<List<PokemonType>> GetTypes(EFPokemon pokemon)
         {
             return (await Context
                     .PokemonTypes
                     .Include(x => x.Type)
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => new PokemonTypeResource
+                .Select(x => new PokemonType
                 {
                     Slot = x.Slot,
                     Type = x.Type.ToNamedApiResource()

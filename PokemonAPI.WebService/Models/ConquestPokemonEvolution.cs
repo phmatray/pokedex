@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestPokemonEvolution
+    public partial class EFConquestPokemonEvolution : IEFModel
     {
         public int EvolvedSpeciesId { get; set; }
         public int? RequiredStatId { get; set; }
@@ -11,10 +13,10 @@
         public int? ItemId { get; set; }
         public bool RecruitingKoRequired { get; set; }
 
-        public virtual PokemonSpecies EvolvedSpecies { get; set; }
-        public virtual Items Item { get; set; }
-        public virtual ConquestKingdoms Kingdom { get; set; }
-        public virtual ConquestStats RequiredStat { get; set; }
-        public virtual Genders WarriorGender { get; set; }
+        public virtual EFPokemonSpecies EvolvedSpecies { get; set; }
+        public virtual EFItems Item { get; set; }
+        public virtual EFConquestKingdoms Kingdom { get; set; }
+        public virtual EFConquestStats RequiredStat { get; set; }
+        public virtual EFGenders WarriorGender { get; set; }
     }
 }

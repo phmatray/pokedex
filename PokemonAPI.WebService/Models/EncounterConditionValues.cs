@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EncounterConditionValues
+    public partial class EFEncounterConditionValues : IEFModel, IEFIdentifier
     {
-        public EncounterConditionValues()
+        public EFEncounterConditionValues()
         {
-            EncounterConditionValueMap = new HashSet<EncounterConditionValueMap>();
-            EncounterConditionValueProse = new HashSet<EncounterConditionValueProse>();
+            EncounterConditionValueMap = new HashSet<EFEncounterConditionValueMap>();
+            EncounterConditionValueProse = new HashSet<EFEncounterConditionValueProse>();
         }
 
         public int Id { get; set; }
@@ -15,8 +16,8 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public bool IsDefault { get; set; }
 
-        public virtual ICollection<EncounterConditionValueMap> EncounterConditionValueMap { get; set; }
-        public virtual ICollection<EncounterConditionValueProse> EncounterConditionValueProse { get; set; }
-        public virtual EncounterConditions EncounterCondition { get; set; }
+        public virtual ICollection<EFEncounterConditionValueMap> EncounterConditionValueMap { get; set; }
+        public virtual ICollection<EFEncounterConditionValueProse> EncounterConditionValueProse { get; set; }
+        public virtual EFEncounterConditions EncounterCondition { get; set; }
     }
 }

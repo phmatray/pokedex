@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestMaxLinks
+    public partial class EFConquestMaxLinks : IEFModel
     {
         public int WarriorRankId { get; set; }
         public int PokemonSpeciesId { get; set; }
         public int MaxLink { get; set; }
 
-        public virtual PokemonSpecies PokemonSpecies { get; set; }
-        public virtual ConquestWarriorRanks WarriorRank { get; set; }
+        public virtual EFPokemonSpecies PokemonSpecies { get; set; }
+        public virtual EFConquestWarriorRanks WarriorRank { get; set; }
     }
 }

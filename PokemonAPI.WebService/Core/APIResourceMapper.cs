@@ -1,6 +1,5 @@
 ﻿using System;
-using PokemonAPI.Models.Resources;
-using PokemonAPI.Models.Resources.Pokemon.GrowthRates;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.Models.SourceTypeEnums;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Models.Interfaces;
@@ -9,38 +8,35 @@ namespace PokemonAPI.WebService.Core
 {
     internal static class APIResourceMapper
     {
-        internal static APIResource ToApiResource(this IIdModel idModel)
+        internal static APIResource ToApiResource(this IEFId id)
         {
-            var name = idModel.GetType().Name.ToLower();
+            var name = id.GetType().Name.ToLower();
             return new APIResource
             {
-                Id = idModel.Id,
-                Url = $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{idModel.Id}/",
+                Url = $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{id.Id}/",
             };
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this INamedModel namedModel)
+        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier)
         {
-            var name = namedModel.GetType().Name.ToLower();
+            var name = identifier.GetType().Name.ToLower();
             return new NamedAPIResource
             {
-                Id = namedModel.Id,
-                Url = $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{namedModel.Id}/",
-                Identifier = namedModel.Identifier
+                Url = $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{identifier.Id}/",
+                Name = identifier.Identifier
             };
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this VersionGroupPokemonMoveMethods moveMethod)
+        internal static NamedAPIResource ToNamedApiResource(this EFVersionGroupPokemonMoveMethods moveMethod)
         {
             return new NamedAPIResource
             {
-                Id = moveMethod.PokemonMoveMethodId,
                 Url = $"{Constants.SiteUrl}{Constants.BaseUrl}movemethods/{moveMethod.PokemonMoveMethodId}/",
-                Identifier = moveMethod.PokemonMoveMethod.Identifier
+                Name = moveMethod.PokemonMoveMethod.Identifier
             };
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this VersionGroupRegions source,
+        internal static NamedAPIResource ToNamedApiResource(this EFVersionGroupRegions source,
             VersionGroupRegionSourceType sourceType)
         {
             switch (sourceType)
@@ -48,23 +44,21 @@ namespace PokemonAPI.WebService.Core
                 case VersionGroupRegionSourceType.VersionGroup:
                     return new NamedAPIResource
                     {
-                        Id = source.RegionId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}regions/{source.RegionId}/",
-                        Identifier = source.Region.Identifier
+                        Name = source.Region.Identifier
                     };
                 case VersionGroupRegionSourceType.Region:
                     return new NamedAPIResource
                     {
-                        Id = source.VersionGroupId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}versiongroups/{source.VersionGroupId}/",
-                        Identifier = source.VersionGroup.Identifier
+                        Name = source.VersionGroup.Identifier
                     };
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sourceType), sourceType, null);
             }
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this PokedexVersionGroups source,
+        internal static NamedAPIResource ToNamedApiResource(this EFPokedexVersionGroups source,
             PokedexVersionGroupsSourceType sourceType)
         {
             switch (sourceType)
@@ -72,23 +66,21 @@ namespace PokemonAPI.WebService.Core
                 case PokedexVersionGroupsSourceType.Pokedex:
                     return new NamedAPIResource
                     {
-                        Id = source.VersionGroupId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}versiongroups/{source.VersionGroupId}/",
-                        Identifier = source.VersionGroup.Identifier
+                        Name = source.VersionGroup.Identifier
                     };
                 case PokedexVersionGroupsSourceType.VersionGroup:
                     return new NamedAPIResource
                     {
-                        Id = source.PokedexId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}pokedexes/{source.PokedexId}/",
-                        Identifier = source.Pokedex.Identifier
+                        Name = source.Pokedex.Identifier
                     };
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sourceType), sourceType, null);
             }
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this PokemonEggGroups source,
+        internal static NamedAPIResource ToNamedApiResource(this EFPokemonEggGroups source,
             PokemonEggGroupsSourceType sourceType)
         {
             switch (sourceType)
@@ -96,25 +88,23 @@ namespace PokemonAPI.WebService.Core
                 case PokemonEggGroupsSourceType.Species:
                     return new NamedAPIResource
                     {
-                        Id = source.EggGroupId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}egggroups/{source.EggGroupId}/",
-                        Identifier = source.EggGroup.Identifier
+                        Name = source.EggGroup.Identifier
                     };
                 case PokemonEggGroupsSourceType.EggGroup:
                     return new NamedAPIResource
                     {
-                        Id = source.SpeciesId,
                         Url = $"{Constants.SiteUrl}{Constants.BaseUrl}pokemonspecies/{source.SpeciesId}/",
-                        Identifier = source.Species.Identifier
+                        Name = source.Species.Identifier
                     };
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sourceType), sourceType, null);
             }
         }
 
-        internal static PalParkEncounterAreaResource ToPalParkEncounterAreaResource(this PalPark source)
+        internal static PalParkEncounterArea ToPalParkEncounterAreaResource(this EFPalPark source)
         {
-            return new PalParkEncounterAreaResource
+            return new PalParkEncounterArea
             {
                 BaseScore = source.BaseScore,
                 Rate = source.Rate,
@@ -122,55 +112,55 @@ namespace PokemonAPI.WebService.Core
             };
         }
 
-        internal static FlavorTextResource ToFlavorTextResource(this PokemonSpeciesFlavorText source)
+        internal static FlavorText ToFlavorTextResource(this EFPokemonSpeciesFlavorText source)
         {
-            return new FlavorTextResource
+            return new FlavorText
             {
-                FlavorText = source.FlavorText,
+                FlavorTextValue = source.FlavorText,
                 Version = source.Version.ToNamedApiResource(),
                 Language = source.Language.ToNamedApiResource()
             };
         }
 
-        internal static PokemonSpeciesDexEntryResource ToPokemonSpeciesDexEntryResource(this PokemonDexNumbers source)
+        internal static PokemonSpeciesDexEntry ToPokemonSpeciesDexEntryResource(this EFPokemonDexNumbers source)
         {
-            return new PokemonSpeciesDexEntryResource
+            return new PokemonSpeciesDexEntry
             {
                 EntryNumber = source.PokedexNumber,
                 Pokedex = source.Pokedex.ToNamedApiResource()
             };
         }
 
-        internal static PokemonEntryResource ToPokemonEntryResource(this PokemonDexNumbers source)
+        internal static PokemonEntry ToPokemonEntryResource(this EFPokemonDexNumbers source)
         {
-            return new PokemonEntryResource
+            return new PokemonEntry
             {
                 EntryNumber = source.PokedexNumber,
                 PokemonSpecies = source.Species.ToNamedApiResource()
             };
         }
 
-        internal static NameResource ToNameResource(this IName name)
-        {
-            return new NameResource
-            {
-                Name = name.Name,
-                Language = name.LocalLanguage.ToNamedApiResource()
-            };
-        }
+        //internal static Name ToNameResource(this IName name)
+        //{
+        //    return new Name
+        //    {
+        //        NameValue = name.Name,
+        //        Language = name.LocalLanguage.ToNamedApiResource()
+        //    };
+        //}
 
-        internal static GenusResource ToGenusResource(this IGenus genus)
-        {
-            return new GenusResource
-            {
-                Genus = genus.Genus,
-                Language = genus.LocalLanguage.ToNamedApiResource()
-            };
-        }
+        //internal static Genus ToGenusResource(this IGenus genus)
+        //{
+        //    return new Genus
+        //    {
+        //        GenusValue = genus.Genus,
+        //        Language = genus.LocalLanguage.ToNamedApiResource()
+        //    };
+        //}
 
-        internal static PokemonSpeciesVarietyResource ToPokemonSpeciesVarietyResource(this Pokemon pokemon)
+        internal static PokemonSpeciesVariety ToPokemonSpeciesVarietyResource(this EFPokemon pokemon)
         {
-            return new PokemonSpeciesVarietyResource
+            return new PokemonSpeciesVariety
             {
                 IsDefault = pokemon.IsDefault,
                 Pokemon = pokemon.ToNamedApiResource()
@@ -179,40 +169,40 @@ namespace PokemonAPI.WebService.Core
 
         #region DescriptionResource
 
-        internal static DescriptionResource ToDescriptionResource(this IDescription description)
-        {
-            return new DescriptionResource
-            {
-                Description = description.Description,
-                Language = description.LocalLanguage.ToNamedApiResource()
-            };
-        }
+        //internal static Description ToDescriptionResource(this IDescription description)
+        //{
+        //    return new Description
+        //    {
+        //        DescriptionValue = description.Description,
+        //        Language = description.LocalLanguage.ToNamedApiResource()
+        //    };
+        //}
 
-        internal static DescriptionResource ToDescriptionResource(this PokemonSpeciesFlavorSummaries source)
-        {
-            return new DescriptionResource
-            {
-                Description = source.FlavorSummary,
-                Language = source.LocalLanguage.ToNamedApiResource()
-            };
-        }
+        //internal static Description ToDescriptionResource(this EFPokemonSpeciesFlavorSummaries source)
+        //{
+        //    return new Description
+        //    {
+        //        DescriptionValue = source.FlavorSummary,
+        //        Language = source.LocalLanguage.ToNamedApiResource()
+        //    };
+        //}
 
-        internal static DescriptionResource ToDescriptionResource(this GrowthRateProse source)
-        {
-            return new DescriptionResource
-            {
-                Description = source.Name,
-                Language = source.LocalLanguage.ToNamedApiResource()
-            };
-        }
+        //internal static Description ToDescriptionResource(this EFGrowthRateProse source)
+        //{
+        //    return new Description
+        //    {
+        //        DescriptionValue = source.Name,
+        //        Language = source.LocalLanguage.ToNamedApiResource()
+        //    };
+        //}
 
         #endregion
 
         #region Experience
 
-        internal static GrowthRateExperienceLevelResource ToGrowthRateExperienceLevelResource(this Experience source)
+        internal static GrowthRateExperienceLevel ToGrowthRateExperienceLevelResource(this EFExperience source)
         {
-            return new GrowthRateExperienceLevelResource
+            return new GrowthRateExperienceLevel
             {
                 Experience = source.Experience1,
                 Level = source.Level

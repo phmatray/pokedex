@@ -3,16 +3,16 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class Stats : INamedModel
+    public partial class EFStats : IEFModel, IEFIdentifier
     {
-        public Stats()
+        public EFStats()
         {
-            Characteristics = new HashSet<Characteristics>();
-            MoveMetaStatChanges = new HashSet<MoveMetaStatChanges>();
-            NaturesDecreasedStat = new HashSet<Natures>();
-            NaturesIncreasedStat = new HashSet<Natures>();
-            PokemonStats = new HashSet<PokemonStats>();
-            StatNames = new HashSet<StatNames>();
+            Characteristics = new HashSet<EFCharacteristics>();
+            MoveMetaStatChanges = new HashSet<EFMoveMetaStatChanges>();
+            NaturesDecreasedStat = new HashSet<EFNatures>();
+            NaturesIncreasedStat = new HashSet<EFNatures>();
+            PokemonStats = new HashSet<EFPokemonStats>();
+            StatNames = new HashSet<EFStatNames>();
         }
 
         public int Id { get; set; }
@@ -21,12 +21,12 @@ namespace PokemonAPI.WebService.Models
         public bool IsBattleOnly { get; set; }
         public int? GameIndex { get; set; }
 
-        public virtual ICollection<Characteristics> Characteristics { get; set; }
-        public virtual ICollection<MoveMetaStatChanges> MoveMetaStatChanges { get; set; }
-        public virtual ICollection<Natures> NaturesDecreasedStat { get; set; }
-        public virtual ICollection<Natures> NaturesIncreasedStat { get; set; }
-        public virtual ICollection<PokemonStats> PokemonStats { get; set; }
-        public virtual ICollection<StatNames> StatNames { get; set; }
-        public virtual MoveDamageClasses DamageClass { get; set; }
+        public virtual ICollection<EFCharacteristics> Characteristics { get; set; }
+        public virtual ICollection<EFMoveMetaStatChanges> MoveMetaStatChanges { get; set; }
+        public virtual ICollection<EFNatures> NaturesDecreasedStat { get; set; }
+        public virtual ICollection<EFNatures> NaturesIncreasedStat { get; set; }
+        public virtual ICollection<EFPokemonStats> PokemonStats { get; set; }
+        public virtual ICollection<EFStatNames> StatNames { get; set; }
+        public virtual EFMoveDamageClasses DamageClass { get; set; }
     }
 }

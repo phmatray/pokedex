@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class PokemonMoves
+    public partial class EFPokemonMoves : IEFModel
     {
         public int PokemonId { get; set; }
         public int VersionGroupId { get; set; }
@@ -9,9 +11,9 @@
         public int Level { get; set; }
         public int? Order { get; set; }
 
-        public virtual Moves Move { get; set; }
-        public virtual Pokemon Pokemon { get; set; }
-        public virtual PokemonMoveMethods PokemonMoveMethod { get; set; }
-        public virtual VersionGroups VersionGroup { get; set; }
+        public virtual EFMoves Move { get; set; }
+        public virtual EFPokemon Pokemon { get; set; }
+        public virtual EFPokemonMoveMethods PokemonMoveMethod { get; set; }
+        public virtual EFVersionGroups VersionGroup { get; set; }
     }
 }

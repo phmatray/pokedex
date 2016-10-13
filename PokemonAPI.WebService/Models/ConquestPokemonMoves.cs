@@ -1,11 +1,13 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestPokemonMoves
+    public partial class EFConquestPokemonMoves : IEFModel
     {
         public int PokemonSpeciesId { get; set; }
         public int MoveId { get; set; }
 
-        public virtual Moves Move { get; set; }
-        public virtual PokemonSpecies PokemonSpecies { get; set; }
+        public virtual EFMoves Move { get; set; }
+        public virtual EFPokemonSpecies PokemonSpecies { get; set; }
     }
 }

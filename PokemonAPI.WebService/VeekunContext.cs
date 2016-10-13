@@ -12,7 +12,7 @@ namespace PokemonAPI.WebService
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Abilities>(entity =>
+            modelBuilder.Entity<EFAbilities>(entity =>
             {
                 entity.ToTable("abilities");
 
@@ -37,7 +37,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__abilities__gener__76619304");
             });
 
-            modelBuilder.Entity<AbilityChangelog>(entity =>
+            modelBuilder.Entity<EFAbilityChangelog>(entity =>
             {
                 entity.ToTable("ability_changelog");
 
@@ -60,7 +60,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__ability_c__chang__55BFB948");
             });
 
-            modelBuilder.Entity<AbilityChangelogProse>(entity =>
+            modelBuilder.Entity<EFAbilityChangelogProse>(entity =>
             {
                 entity.HasKey(e => new { e.AbilityChangelogId, e.LocalLanguageId })
                     .HasName("PK__ability___DBE8365D8E8B4030");
@@ -88,7 +88,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__ability_c__local__4830B400");
             });
 
-            modelBuilder.Entity<AbilityFlavorText>(entity =>
+            modelBuilder.Entity<EFAbilityFlavorText>(entity =>
             {
                 entity.HasKey(e => new { e.AbilityId, e.VersionGroupId, e.LanguageId })
                     .HasName("PK__ability___06A0348CDD215EAD");
@@ -124,7 +124,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__ability_f__versi__4959E263");
             });
 
-            modelBuilder.Entity<AbilityNames>(entity =>
+            modelBuilder.Entity<EFAbilityNames>(entity =>
             {
                 entity.HasKey(e => new { e.AbilityId, e.LocalLanguageId })
                     .HasName("PK__ability___8C380F12A8CB8760");
@@ -156,7 +156,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__ability_n__local__41B8C09B");
             });
 
-            modelBuilder.Entity<AbilityProse>(entity =>
+            modelBuilder.Entity<EFAbilityProse>(entity =>
             {
                 entity.HasKey(e => new { e.AbilityId, e.LocalLanguageId })
                     .HasName("PK__ability___8C380F12217DFCA0");
@@ -184,7 +184,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__ability_p__local__4E1E9780");
             });
 
-            modelBuilder.Entity<Berries>(entity =>
+            modelBuilder.Entity<EFBerries>(entity =>
             {
                 entity.ToTable("berries");
 
@@ -226,7 +226,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__berries__natural__370627FE");
             });
 
-            modelBuilder.Entity<BerryFirmness>(entity =>
+            modelBuilder.Entity<EFBerryFirmness>(entity =>
             {
                 entity.ToTable("berry_firmness");
 
@@ -238,7 +238,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<BerryFirmnessNames>(entity =>
+            modelBuilder.Entity<EFBerryFirmnessNames>(entity =>
             {
                 entity.HasKey(e => new { e.BerryFirmnessId, e.LocalLanguageId })
                     .HasName("PK__berry_fi__0DC2BD4D8813E1FD");
@@ -270,7 +270,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__berry_fir__local__40058253");
             });
 
-            modelBuilder.Entity<BerryFlavors>(entity =>
+            modelBuilder.Entity<EFBerryFlavors>(entity =>
             {
                 entity.HasKey(e => new { e.BerryId, e.ContestTypeId })
                     .HasName("PK__berry_fl__E6F327CB79B4A2D7");
@@ -296,7 +296,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__berry_fla__conte__6D6238AF");
             });
 
-            modelBuilder.Entity<CharacteristicText>(entity =>
+            modelBuilder.Entity<EFCharacteristicText>(entity =>
             {
                 entity.HasKey(e => new { e.CharacteristicId, e.LocalLanguageId })
                     .HasName("PK__characte__BAB5BF0D037023EE");
@@ -328,7 +328,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__character__local__2AA05119");
             });
 
-            modelBuilder.Entity<Characteristics>(entity =>
+            modelBuilder.Entity<EFCharacteristics>(entity =>
             {
                 entity.ToTable("characteristics");
 
@@ -348,7 +348,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__character__stat___1F63A897");
             });
 
-            modelBuilder.Entity<ConquestEpisodeNames>(entity =>
+            modelBuilder.Entity<EFConquestEpisodeNames>(entity =>
             {
                 entity.HasKey(e => new { e.EpisodeId, e.LocalLanguageId })
                     .HasName("PK__conquest__106D067F2001E0E1");
@@ -380,7 +380,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___local__0F624AF8");
             });
 
-            modelBuilder.Entity<ConquestEpisodeWarriors>(entity =>
+            modelBuilder.Entity<EFConquestEpisodeWarriors>(entity =>
             {
                 entity.HasKey(e => new { e.EpisodeId, e.WarriorId })
                     .HasName("PK__conquest__6262FE3C5FCDD03D");
@@ -404,7 +404,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__2334397B");
             });
 
-            modelBuilder.Entity<ConquestEpisodes>(entity =>
+            modelBuilder.Entity<EFConquestEpisodes>(entity =>
             {
                 entity.ToTable("conquest_episodes");
 
@@ -416,7 +416,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ConquestKingdomNames>(entity =>
+            modelBuilder.Entity<EFConquestKingdomNames>(entity =>
             {
                 entity.HasKey(e => new { e.KingdomId, e.LocalLanguageId })
                     .HasName("PK__conquest__2E837C6B3ED3E3C5");
@@ -448,7 +448,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___local__75035A77");
             });
 
-            modelBuilder.Entity<ConquestKingdoms>(entity =>
+            modelBuilder.Entity<EFConquestKingdoms>(entity =>
             {
                 entity.ToTable("conquest_kingdoms");
 
@@ -468,7 +468,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___type___1F2E9E6D");
             });
 
-            modelBuilder.Entity<ConquestMaxLinks>(entity =>
+            modelBuilder.Entity<EFConquestMaxLinks>(entity =>
             {
                 entity.HasKey(e => new { e.WarriorRankId, e.PokemonSpeciesId })
                     .HasName("PK__conquest__77F8B733733949D4");
@@ -494,7 +494,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__536D5C82");
             });
 
-            modelBuilder.Entity<ConquestMoveData>(entity =>
+            modelBuilder.Entity<EFConquestMoveData>(entity =>
             {
                 entity.HasKey(e => e.MoveId)
                     .HasName("PK__conquest__2037E4BDC0192F39");
@@ -530,7 +530,7 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.Move)
                     .WithOne(p => p.ConquestMoveData)
-                    .HasForeignKey<ConquestMoveData>(d => d.MoveId)
+                    .HasForeignKey<EFConquestMoveData>(d => d.MoveId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__conquest___move___39E294A9");
 
@@ -541,7 +541,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___range__3BCADD1B");
             });
 
-            modelBuilder.Entity<ConquestMoveDisplacementProse>(entity =>
+            modelBuilder.Entity<EFConquestMoveDisplacementProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveDisplacementId, e.LocalLanguageId })
                     .HasName("PK__conquest__0ECEA225718B42B8");
@@ -573,7 +573,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___move___339FAB6E");
             });
 
-            modelBuilder.Entity<ConquestMoveDisplacements>(entity =>
+            modelBuilder.Entity<EFConquestMoveDisplacements>(entity =>
             {
                 entity.ToTable("conquest_move_displacements");
 
@@ -587,7 +587,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ConquestMoveEffectProse>(entity =>
+            modelBuilder.Entity<EFConquestMoveEffectProse>(entity =>
             {
                 entity.HasKey(e => new { e.ConquestMoveEffectId, e.LocalLanguageId })
                     .HasName("PK__conquest__111D63394155D035");
@@ -615,14 +615,14 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___local__71D1E811");
             });
 
-            modelBuilder.Entity<ConquestMoveEffects>(entity =>
+            modelBuilder.Entity<EFConquestMoveEffects>(entity =>
             {
                 entity.ToTable("conquest_move_effects");
 
                 entity.Property(e => e.Id).HasColumnName("id");
             });
 
-            modelBuilder.Entity<ConquestMoveRangeProse>(entity =>
+            modelBuilder.Entity<EFConquestMoveRangeProse>(entity =>
             {
                 entity.HasKey(e => new { e.ConquestMoveRangeId, e.LocalLanguageId })
                     .HasName("PK__conquest__7883795284F9C9D1");
@@ -652,7 +652,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___local__56E8E7AB");
             });
 
-            modelBuilder.Entity<ConquestMoveRanges>(entity =>
+            modelBuilder.Entity<EFConquestMoveRanges>(entity =>
             {
                 entity.ToTable("conquest_move_ranges");
 
@@ -666,7 +666,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.Targets).HasColumnName("targets");
             });
 
-            modelBuilder.Entity<ConquestPokemonAbilities>(entity =>
+            modelBuilder.Entity<EFConquestPokemonAbilities>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonSpeciesId, e.Slot })
                     .HasName("PK__conquest__95AA72878CD0CE98");
@@ -692,7 +692,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___pokem__4707859D");
             });
 
-            modelBuilder.Entity<ConquestPokemonEvolution>(entity =>
+            modelBuilder.Entity<EFConquestPokemonEvolution>(entity =>
             {
                 entity.HasKey(e => e.EvolvedSpeciesId)
                     .HasName("PK__conquest__A4E233A9CB929B17");
@@ -719,7 +719,7 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.EvolvedSpecies)
                     .WithOne(p => p.ConquestPokemonEvolution)
-                    .HasForeignKey<ConquestPokemonEvolution>(d => d.EvolvedSpeciesId)
+                    .HasForeignKey<EFConquestPokemonEvolution>(d => d.EvolvedSpeciesId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__conquest___evolv__15702A09");
 
@@ -744,7 +744,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__184C96B4");
             });
 
-            modelBuilder.Entity<ConquestPokemonMoves>(entity =>
+            modelBuilder.Entity<EFConquestPokemonMoves>(entity =>
             {
                 entity.HasKey(e => e.PokemonSpeciesId)
                     .HasName("PK__conquest__F687A066E912B5E2");
@@ -765,12 +765,12 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.PokemonSpecies)
                     .WithOne(p => p.ConquestPokemonMoves)
-                    .HasForeignKey<ConquestPokemonMoves>(d => d.PokemonSpeciesId)
+                    .HasForeignKey<EFConquestPokemonMoves>(d => d.PokemonSpeciesId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__conquest___pokem__37C5420D");
             });
 
-            modelBuilder.Entity<ConquestPokemonStats>(entity =>
+            modelBuilder.Entity<EFConquestPokemonStats>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonSpeciesId, e.ConquestStatId })
                     .HasName("PK__conquest__5529CE8751AEE3C4");
@@ -796,7 +796,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___pokem__119F9925");
             });
 
-            modelBuilder.Entity<ConquestStatNames>(entity =>
+            modelBuilder.Entity<EFConquestStatNames>(entity =>
             {
                 entity.HasKey(e => new { e.ConquestStatId, e.LocalLanguageId })
                     .HasName("PK__conquest__AEF3EB314DE7FCF2");
@@ -828,7 +828,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___local__66603565");
             });
 
-            modelBuilder.Entity<ConquestStats>(entity =>
+            modelBuilder.Entity<EFConquestStats>(entity =>
             {
                 entity.ToTable("conquest_stats");
 
@@ -842,7 +842,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.IsBase).HasColumnName("is_base");
             });
 
-            modelBuilder.Entity<ConquestTransformationPokemon>(entity =>
+            modelBuilder.Entity<EFConquestTransformationPokemon>(entity =>
             {
                 entity.HasKey(e => new { e.TransformationId, e.PokemonSpeciesId })
                     .HasName("PK__conquest__86DB86AAE1D6545F");
@@ -866,7 +866,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___trans__3F6663D5");
             });
 
-            modelBuilder.Entity<ConquestTransformationWarriors>(entity =>
+            modelBuilder.Entity<EFConquestTransformationWarriors>(entity =>
             {
                 entity.HasKey(e => new { e.TransformationId, e.PresentWarriorId })
                     .HasName("PK__conquest__85AB98215F09CB18");
@@ -890,7 +890,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___trans__3F9B6DFF");
             });
 
-            modelBuilder.Entity<ConquestWarriorArchetypes>(entity =>
+            modelBuilder.Entity<EFConquestWarriorArchetypes>(entity =>
             {
                 entity.ToTable("conquest_warrior_archetypes");
 
@@ -902,7 +902,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ConquestWarriorNames>(entity =>
+            modelBuilder.Entity<EFConquestWarriorNames>(entity =>
             {
                 entity.HasKey(e => new { e.WarriorId, e.LocalLanguageId })
                     .HasName("PK__conquest__F5BAD3B5D065B03C");
@@ -934,7 +934,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__0C50D423");
             });
 
-            modelBuilder.Entity<ConquestWarriorRankStatMap>(entity =>
+            modelBuilder.Entity<EFConquestWarriorRankStatMap>(entity =>
             {
                 entity.HasKey(e => new { e.WarriorRankId, e.WarriorStatId })
                     .HasName("PK__conquest__96C591FF9FAB7365");
@@ -960,7 +960,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__4589517F");
             });
 
-            modelBuilder.Entity<ConquestWarriorRanks>(entity =>
+            modelBuilder.Entity<EFConquestWarriorRanks>(entity =>
             {
                 entity.ToTable("conquest_warrior_ranks");
 
@@ -989,7 +989,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__2704CA5F");
             });
 
-            modelBuilder.Entity<ConquestWarriorSkillNames>(entity =>
+            modelBuilder.Entity<EFConquestWarriorSkillNames>(entity =>
             {
                 entity.HasKey(e => new { e.SkillId, e.LocalLanguageId })
                     .HasName("PK__conquest__6FAF8653F3085789");
@@ -1021,7 +1021,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___skill__19DFD96B");
             });
 
-            modelBuilder.Entity<ConquestWarriorSkills>(entity =>
+            modelBuilder.Entity<EFConquestWarriorSkills>(entity =>
             {
                 entity.ToTable("conquest_warrior_skills");
 
@@ -1033,7 +1033,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ConquestWarriorSpecialties>(entity =>
+            modelBuilder.Entity<EFConquestWarriorSpecialties>(entity =>
             {
                 entity.HasKey(e => new { e.WarriorId, e.TypeId, e.Slot })
                     .HasName("PK__conquest__E55D0BE8173E5BDF");
@@ -1059,7 +1059,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__50FB042B");
             });
 
-            modelBuilder.Entity<ConquestWarriorStatNames>(entity =>
+            modelBuilder.Entity<EFConquestWarriorStatNames>(entity =>
             {
                 entity.HasKey(e => new { e.WarriorStatId, e.LocalLanguageId })
                     .HasName("PK__conquest__7140C9827C7F56E8");
@@ -1091,7 +1091,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___warri__06CD04F7");
             });
 
-            modelBuilder.Entity<ConquestWarriorStats>(entity =>
+            modelBuilder.Entity<EFConquestWarriorStats>(entity =>
             {
                 entity.ToTable("conquest_warrior_stats");
 
@@ -1103,7 +1103,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ConquestWarriorTransformation>(entity =>
+            modelBuilder.Entity<EFConquestWarriorTransformation>(entity =>
             {
                 entity.HasKey(e => e.TransformedWarriorRankId)
                     .HasName("PK__conquest__F0F63296F723C694");
@@ -1154,12 +1154,12 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.TransformedWarriorRank)
                     .WithOne(p => p.ConquestWarriorTransformation)
-                    .HasForeignKey<ConquestWarriorTransformation>(d => d.TransformedWarriorRankId)
+                    .HasForeignKey<EFConquestWarriorTransformation>(d => d.TransformedWarriorRankId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__conquest___trans__2D7CBDC4");
             });
 
-            modelBuilder.Entity<ConquestWarriors>(entity =>
+            modelBuilder.Entity<EFConquestWarriors>(entity =>
             {
                 entity.ToTable("conquest_warriors");
 
@@ -1186,7 +1186,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__conquest___gende__208CD6FA");
             });
 
-            modelBuilder.Entity<ContestCombos>(entity =>
+            modelBuilder.Entity<EFContestCombos>(entity =>
             {
                 entity.HasKey(e => new { e.FirstMoveId, e.SecondMoveId })
                     .HasName("PK__contest___456AD1D30792A6CA");
@@ -1210,7 +1210,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__contest_c__secon__0AF29B96");
             });
 
-            modelBuilder.Entity<ContestEffectProse>(entity =>
+            modelBuilder.Entity<EFContestEffectProse>(entity =>
             {
                 entity.HasKey(e => new { e.ContestEffectId, e.LocalLanguageId })
                     .HasName("PK__contest___66D916E0F2428503");
@@ -1238,7 +1238,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__contest_e__local__4B7734FF");
             });
 
-            modelBuilder.Entity<ContestEffects>(entity =>
+            modelBuilder.Entity<EFContestEffects>(entity =>
             {
                 entity.ToTable("contest_effects");
 
@@ -1249,7 +1249,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.Jam).HasColumnName("jam");
             });
 
-            modelBuilder.Entity<ContestTypeNames>(entity =>
+            modelBuilder.Entity<EFContestTypeNames>(entity =>
             {
                 entity.HasKey(e => new { e.ContestTypeId, e.LocalLanguageId })
                     .HasName("PK__contest___2017DBB3DB5EE9A9");
@@ -1284,7 +1284,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__contest_t__local__29221CFB");
             });
 
-            modelBuilder.Entity<ContestTypes>(entity =>
+            modelBuilder.Entity<EFContestTypes>(entity =>
             {
                 entity.ToTable("contest_types");
 
@@ -1296,7 +1296,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<EggGroupProse>(entity =>
+            modelBuilder.Entity<EFEggGroupProse>(entity =>
             {
                 entity.HasKey(e => new { e.EggGroupId, e.LocalLanguageId })
                     .HasName("PK__egg_grou__3195380DBB41B354");
@@ -1328,7 +1328,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__egg_group__local__4F47C5E3");
             });
 
-            modelBuilder.Entity<EggGroups>(entity =>
+            modelBuilder.Entity<EFEggGroups>(entity =>
             {
                 entity.ToTable("egg_groups");
 
@@ -1340,7 +1340,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<EncounterConditionProse>(entity =>
+            modelBuilder.Entity<EFEncounterConditionProse>(entity =>
             {
                 entity.HasKey(e => new { e.EncounterConditionId, e.LocalLanguageId })
                     .HasName("PK__encounte__214144F2425E0CEE");
@@ -1372,7 +1372,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__local__17036CC0");
             });
 
-            modelBuilder.Entity<EncounterConditionValueMap>(entity =>
+            modelBuilder.Entity<EFEncounterConditionValueMap>(entity =>
             {
                 entity.HasKey(e => new { e.EncounterId, e.EncounterConditionValueId })
                     .HasName("PK__encounte__7D09CDF17F573180");
@@ -1396,7 +1396,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__encou__09C96D33");
             });
 
-            modelBuilder.Entity<EncounterConditionValueProse>(entity =>
+            modelBuilder.Entity<EFEncounterConditionValueProse>(entity =>
             {
                 entity.HasKey(e => new { e.EncounterConditionValueId, e.LocalLanguageId })
                     .HasName("PK__encounte__9B9A9AC0CBA89442");
@@ -1428,7 +1428,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__local__09746778");
             });
 
-            modelBuilder.Entity<EncounterConditionValues>(entity =>
+            modelBuilder.Entity<EFEncounterConditionValues>(entity =>
             {
                 entity.ToTable("encounter_condition_values");
 
@@ -1450,7 +1450,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__encou__693CA210");
             });
 
-            modelBuilder.Entity<EncounterConditions>(entity =>
+            modelBuilder.Entity<EFEncounterConditions>(entity =>
             {
                 entity.ToTable("encounter_conditions");
 
@@ -1462,7 +1462,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<EncounterMethodProse>(entity =>
+            modelBuilder.Entity<EFEncounterMethodProse>(entity =>
             {
                 entity.HasKey(e => new { e.EncounterMethodId, e.LocalLanguageId })
                     .HasName("PK__encounte__5E3A51BCB68D7E27");
@@ -1494,7 +1494,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__local__681373AD");
             });
 
-            modelBuilder.Entity<EncounterMethods>(entity =>
+            modelBuilder.Entity<EFEncounterMethods>(entity =>
             {
                 entity.ToTable("encounter_methods");
 
@@ -1516,7 +1516,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.Order).HasColumnName("order");
             });
 
-            modelBuilder.Entity<EncounterSlots>(entity =>
+            modelBuilder.Entity<EFEncounterSlots>(entity =>
             {
                 entity.ToTable("encounter_slots");
 
@@ -1543,7 +1543,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__versi__589C25F3");
             });
 
-            modelBuilder.Entity<Encounters>(entity =>
+            modelBuilder.Entity<EFEncounters>(entity =>
             {
                 entity.ToTable("encounters");
 
@@ -1586,7 +1586,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__encounter__versi__668030F6");
             });
 
-            modelBuilder.Entity<EvolutionChains>(entity =>
+            modelBuilder.Entity<EFEvolutionChains>(entity =>
             {
                 entity.ToTable("evolution_chains");
 
@@ -1600,7 +1600,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__evolution__baby___1C5231C2");
             });
 
-            modelBuilder.Entity<EvolutionTriggerProse>(entity =>
+            modelBuilder.Entity<EFEvolutionTriggerProse>(entity =>
             {
                 entity.HasKey(e => new { e.EvolutionTriggerId, e.LocalLanguageId })
                     .HasName("PK__evolutio__9E2DD70599BCD2A6");
@@ -1632,7 +1632,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__evolution__local__3C34F16F");
             });
 
-            modelBuilder.Entity<EvolutionTriggers>(entity =>
+            modelBuilder.Entity<EFEvolutionTriggers>(entity =>
             {
                 entity.ToTable("evolution_triggers");
 
@@ -1644,7 +1644,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<Experience>(entity =>
+            modelBuilder.Entity<EFExperience>(entity =>
             {
                 entity.HasKey(e => new { e.GrowthRateId, e.Level })
                     .HasName("PK__experien__C0E5A517EE10D360");
@@ -1664,7 +1664,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__experienc__growt__1DB06A4F");
             });
 
-            modelBuilder.Entity<Genders>(entity =>
+            modelBuilder.Entity<EFGenders>(entity =>
             {
                 entity.ToTable("genders");
 
@@ -1676,7 +1676,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<GenerationNames>(entity =>
+            modelBuilder.Entity<EFGenerationNames>(entity =>
             {
                 entity.HasKey(e => new { e.GenerationId, e.LocalLanguageId })
                     .HasName("PK__generati__6C92D370B83AB166");
@@ -1708,7 +1708,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__generatio__local__14E61A24");
             });
 
-            modelBuilder.Entity<Generations>(entity =>
+            modelBuilder.Entity<EFGenerations>(entity =>
             {
                 entity.ToTable("generations");
 
@@ -1728,7 +1728,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__generatio__main___7C4F7684");
             });
 
-            modelBuilder.Entity<GrowthRateProse>(entity =>
+            modelBuilder.Entity<EFGrowthRateProse>(entity =>
             {
                 entity.HasKey(e => new { e.GrowthRateId, e.LocalLanguageId })
                     .HasName("PK__growth_r__F8F3017D58006C43");
@@ -1760,7 +1760,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__growth_ra__local__03F0984C");
             });
 
-            modelBuilder.Entity<GrowthRates>(entity =>
+            modelBuilder.Entity<EFGrowthRates>(entity =>
             {
                 entity.ToTable("growth_rates");
 
@@ -1776,7 +1776,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ItemCategories>(entity =>
+            modelBuilder.Entity<EFItemCategories>(entity =>
             {
                 entity.ToTable("item_categories");
 
@@ -1796,7 +1796,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_cate__pocke__6442E2C9");
             });
 
-            modelBuilder.Entity<ItemCategoryProse>(entity =>
+            modelBuilder.Entity<EFItemCategoryProse>(entity =>
             {
                 entity.HasKey(e => new { e.ItemCategoryId, e.LocalLanguageId })
                     .HasName("PK__item_cat__A0BC1FE043A15B7D");
@@ -1828,7 +1828,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_cate__local__05A3D694");
             });
 
-            modelBuilder.Entity<ItemFlagMap>(entity =>
+            modelBuilder.Entity<EFItemFlagMap>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.ItemFlagId })
                     .HasName("PK__item_fla__B874091F6F08FB7A");
@@ -1852,7 +1852,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_flag__item___74444068");
             });
 
-            modelBuilder.Entity<ItemFlagProse>(entity =>
+            modelBuilder.Entity<EFItemFlagProse>(entity =>
             {
                 entity.HasKey(e => new { e.ItemFlagId, e.LocalLanguageId })
                     .HasName("PK__item_fla__33756905417A6AF2");
@@ -1885,7 +1885,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_flag__local__3864608B");
             });
 
-            modelBuilder.Entity<ItemFlags>(entity =>
+            modelBuilder.Entity<EFItemFlags>(entity =>
             {
                 entity.ToTable("item_flags");
 
@@ -1897,7 +1897,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ItemFlavorSummaries>(entity =>
+            modelBuilder.Entity<EFItemFlavorSummaries>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.LocalLanguageId })
                     .HasName("PK__item_fla__C6170AF7F782633E");
@@ -1923,7 +1923,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_flav__local__61316BF4");
             });
 
-            modelBuilder.Entity<ItemFlavorText>(entity =>
+            modelBuilder.Entity<EFItemFlavorText>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.VersionGroupId, e.LanguageId })
                     .HasName("PK__item_fla__4C8F3169B62ADF3B");
@@ -1959,7 +1959,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_flav__versi__6CA31EA0");
             });
 
-            modelBuilder.Entity<ItemFlingEffectProse>(entity =>
+            modelBuilder.Entity<EFItemFlingEffectProse>(entity =>
             {
                 entity.HasKey(e => new { e.ItemFlingEffectId, e.LocalLanguageId })
                     .HasName("PK__item_fli__4DA7B86E307A0939");
@@ -1987,14 +1987,14 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_flin__local__6166761E");
             });
 
-            modelBuilder.Entity<ItemFlingEffects>(entity =>
+            modelBuilder.Entity<EFItemFlingEffects>(entity =>
             {
                 entity.ToTable("item_fling_effects");
 
                 entity.Property(e => e.Id).HasColumnName("id");
             });
 
-            modelBuilder.Entity<ItemGameIndices>(entity =>
+            modelBuilder.Entity<EFItemGameIndices>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.GenerationId })
                     .HasName("PK__item_gam__ED8A72B8F7DFF401");
@@ -2020,7 +2020,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_game__item___7073AF84");
             });
 
-            modelBuilder.Entity<ItemNames>(entity =>
+            modelBuilder.Entity<EFItemNames>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.LocalLanguageId })
                     .HasName("PK__item_nam__C6170AF7E26AB727");
@@ -2052,7 +2052,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_name__local__5D60DB10");
             });
 
-            modelBuilder.Entity<ItemPocketNames>(entity =>
+            modelBuilder.Entity<EFItemPocketNames>(entity =>
             {
                 entity.HasKey(e => new { e.ItemPocketId, e.LocalLanguageId })
                     .HasName("PK__item_poc__B94D561377303403");
@@ -2084,7 +2084,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_pock__local__43D61337");
             });
 
-            modelBuilder.Entity<ItemPockets>(entity =>
+            modelBuilder.Entity<EFItemPockets>(entity =>
             {
                 entity.ToTable("item_pockets");
 
@@ -2096,7 +2096,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<ItemProse>(entity =>
+            modelBuilder.Entity<EFItemProse>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.LocalLanguageId })
                     .HasName("PK__item_pro__C6170AF7C7555520");
@@ -2124,7 +2124,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__item_pros__local__7DCDAAA2");
             });
 
-            modelBuilder.Entity<Items>(entity =>
+            modelBuilder.Entity<EFItems>(entity =>
             {
                 entity.ToTable("items");
 
@@ -2155,7 +2155,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__items__fling_eff__11158940");
             });
 
-            modelBuilder.Entity<LanguageNames>(entity =>
+            modelBuilder.Entity<EFLanguageNames>(entity =>
             {
                 entity.HasKey(e => new { e.LanguageId, e.LocalLanguageId })
                     .HasName("PK__language__1459F39996E6BF75");
@@ -2187,7 +2187,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__language___local__73852659");
             });
 
-            modelBuilder.Entity<Languages>(entity =>
+            modelBuilder.Entity<EFLanguages>(entity =>
             {
                 entity.ToTable("languages");
 
@@ -2216,7 +2216,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.Order).HasColumnName("order");
             });
 
-            modelBuilder.Entity<LocationAreaEncounterRates>(entity =>
+            modelBuilder.Entity<EFLocationAreaEncounterRates>(entity =>
             {
                 entity.HasKey(e => new { e.LocationAreaId, e.EncounterMethodId, e.VersionId })
                     .HasName("PK__location__AF7A15D5BEDC8B65");
@@ -2250,7 +2250,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__location___versi__7E8CC4B1");
             });
 
-            modelBuilder.Entity<LocationAreaProse>(entity =>
+            modelBuilder.Entity<EFLocationAreaProse>(entity =>
             {
                 entity.HasKey(e => new { e.LocationAreaId, e.LocalLanguageId })
                     .HasName("PK__location__2FCA403E01DEC2D1");
@@ -2281,7 +2281,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__location___locat__3CF40B7E");
             });
 
-            modelBuilder.Entity<LocationAreas>(entity =>
+            modelBuilder.Entity<EFLocationAreas>(entity =>
             {
                 entity.ToTable("location_areas");
 
@@ -2302,7 +2302,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__location___locat__7A3223E8");
             });
 
-            modelBuilder.Entity<LocationGameIndices>(entity =>
+            modelBuilder.Entity<EFLocationGameIndices>(entity =>
             {
                 entity.HasKey(e => new { e.LocationId, e.GenerationId, e.GameIndex })
                     .HasName("PK__location__A6EA3804EE0DB799");
@@ -2328,7 +2328,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__location___locat__00DF2177");
             });
 
-            modelBuilder.Entity<LocationNames>(entity =>
+            modelBuilder.Entity<EFLocationNames>(entity =>
             {
                 entity.HasKey(e => new { e.LocationId, e.LocalLanguageId })
                     .HasName("PK__location__E30D34C03B6BFB7C");
@@ -2360,7 +2360,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__location___locat__1B9317B3");
             });
 
-            modelBuilder.Entity<Locations>(entity =>
+            modelBuilder.Entity<EFLocations>(entity =>
             {
                 entity.ToTable("locations");
 
@@ -2379,7 +2379,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__locations__regio__5D95E53A");
             });
 
-            modelBuilder.Entity<Machines>(entity =>
+            modelBuilder.Entity<EFMachines>(entity =>
             {
                 entity.HasKey(e => new { e.MachineNumber, e.VersionGroupId })
                     .HasName("PK__machines__1CA5287D881B0184");
@@ -2413,7 +2413,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__machines__versio__61F08603");
             });
 
-            modelBuilder.Entity<MoveBattleStyleProse>(entity =>
+            modelBuilder.Entity<EFMoveBattleStyleProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveBattleStyleId, e.LocalLanguageId })
                     .HasName("PK__move_bat__3E7F9AB0FE82405A");
@@ -2445,7 +2445,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_batt__move___6D0D32F4");
             });
 
-            modelBuilder.Entity<MoveBattleStyles>(entity =>
+            modelBuilder.Entity<EFMoveBattleStyles>(entity =>
             {
                 entity.ToTable("move_battle_styles");
 
@@ -2457,7 +2457,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<MoveChangelog>(entity =>
+            modelBuilder.Entity<EFMoveChangelog>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.ChangedInVersionGroupId })
                     .HasName("PK__move_cha__744A61DDCE6A5AEE");
@@ -2503,7 +2503,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_chan__type___689D8392");
             });
 
-            modelBuilder.Entity<MoveDamageClassProse>(entity =>
+            modelBuilder.Entity<EFMoveDamageClassProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveDamageClassId, e.LocalLanguageId })
                     .HasName("PK__move_dam__6129E414E2F35F8A");
@@ -2536,7 +2536,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_dama__move___787EE5A0");
             });
 
-            modelBuilder.Entity<MoveDamageClasses>(entity =>
+            modelBuilder.Entity<EFMoveDamageClasses>(entity =>
             {
                 entity.ToTable("move_damage_classes");
 
@@ -2548,7 +2548,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<MoveEffectChangelog>(entity =>
+            modelBuilder.Entity<EFMoveEffectChangelog>(entity =>
             {
                 entity.ToTable("move_effect_changelog");
 
@@ -2575,7 +2575,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_effe__effec__7908F585");
             });
 
-            modelBuilder.Entity<MoveEffectChangelogProse>(entity =>
+            modelBuilder.Entity<EFMoveEffectChangelogProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveEffectChangelogId, e.LocalLanguageId })
                     .HasName("PK__move_eff__B7FA025F11FA833D");
@@ -2603,7 +2603,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_effe__move___0DCF0841");
             });
 
-            modelBuilder.Entity<MoveEffectProse>(entity =>
+            modelBuilder.Entity<EFMoveEffectProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveEffectId, e.LocalLanguageId })
                     .HasName("PK__move_eff__F8C9BD71C3E759A6");
@@ -2631,14 +2631,14 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_effe__move___5224328E");
             });
 
-            modelBuilder.Entity<MoveEffects>(entity =>
+            modelBuilder.Entity<EFMoveEffects>(entity =>
             {
                 entity.ToTable("move_effects");
 
                 entity.Property(e => e.Id).HasColumnName("id");
             });
 
-            modelBuilder.Entity<MoveFlagMap>(entity =>
+            modelBuilder.Entity<EFMoveFlagMap>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.MoveFlagId })
                     .HasName("PK__move_fla__4864B7B6D690A26D");
@@ -2662,7 +2662,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_flag__move___4EDDB18F");
             });
 
-            modelBuilder.Entity<MoveFlagProse>(entity =>
+            modelBuilder.Entity<EFMoveFlagProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveFlagId, e.LocalLanguageId })
                     .HasName("PK__move_fla__1120359DFA7DAE09");
@@ -2695,7 +2695,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_flag__move___59FA5E80");
             });
 
-            modelBuilder.Entity<MoveFlags>(entity =>
+            modelBuilder.Entity<EFMoveFlags>(entity =>
             {
                 entity.ToTable("move_flags");
 
@@ -2707,7 +2707,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<MoveFlavorSummaries>(entity =>
+            modelBuilder.Entity<EFMoveFlavorSummaries>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.LocalLanguageId })
                     .HasName("PK__move_fla__B422E197C5E739B5");
@@ -2733,7 +2733,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_flav__move___436BFEE3");
             });
 
-            modelBuilder.Entity<MoveFlavorText>(entity =>
+            modelBuilder.Entity<EFMoveFlavorText>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.VersionGroupId, e.LanguageId })
                     .HasName("PK__move_fla__3EBADA094E1156D8");
@@ -2769,7 +2769,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_flav__versi__78D3EB5B");
             });
 
-            modelBuilder.Entity<MoveMeta>(entity =>
+            modelBuilder.Entity<EFMoveMeta>(entity =>
             {
                 entity.HasKey(e => e.MoveId)
                     .HasName("PK__move_met__2037E4BDCCDBE814");
@@ -2848,12 +2848,12 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.Move)
                     .WithOne(p => p.MoveMeta)
-                    .HasForeignKey<MoveMeta>(d => d.MoveId)
+                    .HasForeignKey<EFMoveMeta>(d => d.MoveId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__move_meta__move___0539C240");
             });
 
-            modelBuilder.Entity<MoveMetaAilmentNames>(entity =>
+            modelBuilder.Entity<EFMoveMetaAilmentNames>(entity =>
             {
                 entity.HasKey(e => new { e.MoveMetaAilmentId, e.LocalLanguageId })
                     .HasName("PK__move_met__5A7ED5356FD110E9");
@@ -2885,7 +2885,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_meta__move___74AE54BC");
             });
 
-            modelBuilder.Entity<MoveMetaAilments>(entity =>
+            modelBuilder.Entity<EFMoveMetaAilments>(entity =>
             {
                 entity.ToTable("move_meta_ailments");
 
@@ -2903,7 +2903,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<MoveMetaCategories>(entity =>
+            modelBuilder.Entity<EFMoveMetaCategories>(entity =>
             {
                 entity.ToTable("move_meta_categories");
 
@@ -2921,7 +2921,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<MoveMetaCategoryProse>(entity =>
+            modelBuilder.Entity<EFMoveMetaCategoryProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveMetaCategoryId, e.LocalLanguageId })
                     .HasName("PK__move_met__41C12A60EC228807");
@@ -2949,7 +2949,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_meta__move___245D67DE");
             });
 
-            modelBuilder.Entity<MoveMetaStatChanges>(entity =>
+            modelBuilder.Entity<EFMoveMetaStatChanges>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.StatId })
                     .HasName("PK__move_met__3BBDB6EB4F5EBC51");
@@ -2978,7 +2978,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_meta__stat___53A266AC");
             });
 
-            modelBuilder.Entity<MoveNames>(entity =>
+            modelBuilder.Entity<EFMoveNames>(entity =>
             {
                 entity.HasKey(e => new { e.MoveId, e.LocalLanguageId })
                     .HasName("PK__move_nam__B422E19750420CF9");
@@ -3010,7 +3010,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_name__move___0169315C");
             });
 
-            modelBuilder.Entity<MoveTargetProse>(entity =>
+            modelBuilder.Entity<EFMoveTargetProse>(entity =>
             {
                 entity.HasKey(e => new { e.MoveTargetId, e.LocalLanguageId })
                     .HasName("PK__move_tar__CA9D3447E739B3F9");
@@ -3043,7 +3043,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__move_targ__move___2FCF1A8A");
             });
 
-            modelBuilder.Entity<MoveTargets>(entity =>
+            modelBuilder.Entity<EFMoveTargets>(entity =>
             {
                 entity.ToTable("move_targets");
 
@@ -3055,7 +3055,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<Moves>(entity =>
+            modelBuilder.Entity<EFMoves>(entity =>
             {
                 entity.ToTable("moves");
 
@@ -3138,7 +3138,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__moves__type_id__0FEC5ADD");
             });
 
-            modelBuilder.Entity<NatureBattleStylePreferences>(entity =>
+            modelBuilder.Entity<EFNatureBattleStylePreferences>(entity =>
             {
                 entity.HasKey(e => new { e.NatureId, e.MoveBattleStyleId })
                     .HasName("PK__nature_b__7B4AD51B86BF54F7");
@@ -3166,7 +3166,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__nature_ba__natur__220B0B18");
             });
 
-            modelBuilder.Entity<NatureNames>(entity =>
+            modelBuilder.Entity<EFNatureNames>(entity =>
             {
                 entity.HasKey(e => new { e.NatureId, e.LocalLanguageId })
                     .HasName("PK__nature_n__55F979C8C403A8E6");
@@ -3198,7 +3198,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__nature_na__natur__075714DC");
             });
 
-            modelBuilder.Entity<NaturePokeathlonStats>(entity =>
+            modelBuilder.Entity<EFNaturePokeathlonStats>(entity =>
             {
                 entity.HasKey(e => new { e.NatureId, e.PokeathlonStatId })
                     .HasName("PK__nature_p__B7E2297D1028F748");
@@ -3224,7 +3224,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__nature_po__pokea__68D28DBC");
             });
 
-            modelBuilder.Entity<Natures>(entity =>
+            modelBuilder.Entity<EFNatures>(entity =>
             {
                 entity.ToTable("natures");
 
@@ -3274,7 +3274,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__natures__likes_f__32767D0B");
             });
 
-            modelBuilder.Entity<PalPark>(entity =>
+            modelBuilder.Entity<EFPalPark>(entity =>
             {
                 entity.HasKey(e => e.SpeciesId)
                     .HasName("PK__pal_park__B23DC5C23459BD64");
@@ -3299,12 +3299,12 @@ namespace PokemonAPI.WebService
 
                 entity.HasOne(d => d.Species)
                     .WithOne(p => p.PalPark)
-                    .HasForeignKey<PalPark>(d => d.SpeciesId)
+                    .HasForeignKey<EFPalPark>(d => d.SpeciesId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK__pal_park__specie__4336F4B9");
             });
 
-            modelBuilder.Entity<PalParkAreaNames>(entity =>
+            modelBuilder.Entity<EFPalParkAreaNames>(entity =>
             {
                 entity.HasKey(e => new { e.PalParkAreaId, e.LocalLanguageId })
                     .HasName("PK__pal_park__7249099876F18E0F");
@@ -3336,7 +3336,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pal_park___pal_p__123EB7A3");
             });
 
-            modelBuilder.Entity<PalParkAreas>(entity =>
+            modelBuilder.Entity<EFPalParkAreas>(entity =>
             {
                 entity.ToTable("pal_park_areas");
 
@@ -3348,7 +3348,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokeathlonStatNames>(entity =>
+            modelBuilder.Entity<EFPokeathlonStatNames>(entity =>
             {
                 entity.HasKey(e => new { e.PokeathlonStatId, e.LocalLanguageId })
                     .HasName("PK__pokeathl__F4F05CDC16345186");
@@ -3380,7 +3380,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokeathlo__pokea__6EC0713C");
             });
 
-            modelBuilder.Entity<PokeathlonStats>(entity =>
+            modelBuilder.Entity<EFPokeathlonStats>(entity =>
             {
                 entity.ToTable("pokeathlon_stats");
 
@@ -3392,7 +3392,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokedexProse>(entity =>
+            modelBuilder.Entity<EFPokedexProse>(entity =>
             {
                 entity.HasKey(e => new { e.PokedexId, e.LocalLanguageId })
                     .HasName("PK__pokedex___FD3A611E2E92FECE");
@@ -3425,7 +3425,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokedex_p__poked__3552E9B6");
             });
 
-            modelBuilder.Entity<PokedexVersionGroups>(entity =>
+            modelBuilder.Entity<EFPokedexVersionGroups>(entity =>
             {
                 entity.HasKey(e => new { e.PokedexId, e.VersionGroupId })
                     .HasName("PK__pokedex___C5221676196AFB71");
@@ -3449,7 +3449,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokedex_v__versi__6501FCD8");
             });
 
-            modelBuilder.Entity<Pokedexes>(entity =>
+            modelBuilder.Entity<EFPokedexes>(entity =>
             {
                 entity.ToTable("pokedexes");
 
@@ -3470,7 +3470,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokedexes__regio__5DCAEF64");
             });
 
-            modelBuilder.Entity<Pokemon>(entity =>
+            modelBuilder.Entity<EFPokemon>(entity =>
             {
                 entity.ToTable("pokemon");
 
@@ -3505,7 +3505,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon__species__20E1DCB5");
             });
 
-            modelBuilder.Entity<PokemonAbilities>(entity =>
+            modelBuilder.Entity<EFPokemonAbilities>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.Slot })
                     .HasName("PK__pokemon___4BB604E4F568D2BD");
@@ -3536,7 +3536,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_a__pokem__70099B30");
             });
 
-            modelBuilder.Entity<PokemonColorNames>(entity =>
+            modelBuilder.Entity<EFPokemonColorNames>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonColorId, e.LocalLanguageId })
                     .HasName("PK__pokemon___622AE750DF7A23B0");
@@ -3568,7 +3568,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_c__pokem__6AEFE058");
             });
 
-            modelBuilder.Entity<PokemonColors>(entity =>
+            modelBuilder.Entity<EFPokemonColors>(entity =>
             {
                 entity.ToTable("pokemon_colors");
 
@@ -3582,7 +3582,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokemonDexNumbers>(entity =>
+            modelBuilder.Entity<EFPokemonDexNumbers>(entity =>
             {
                 entity.HasKey(e => new { e.SpeciesId, e.PokedexId })
                     .HasName("PK__pokemon___E4AF33814F793847");
@@ -3608,7 +3608,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_d__speci__1D114BD1");
             });
 
-            modelBuilder.Entity<PokemonEggGroups>(entity =>
+            modelBuilder.Entity<EFPokemonEggGroups>(entity =>
             {
                 entity.HasKey(e => new { e.SpeciesId, e.EggGroupId })
                     .HasName("PK__pokemon___D865C610ADEDE2C8");
@@ -3632,7 +3632,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_e__speci__24B26D99");
             });
 
-            modelBuilder.Entity<PokemonEvolution>(entity =>
+            modelBuilder.Entity<EFPokemonEvolution>(entity =>
             {
                 entity.ToTable("pokemon_evolution");
 
@@ -3736,7 +3736,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_e__trigg__2A6B46EF");
             });
 
-            modelBuilder.Entity<PokemonFormGenerations>(entity =>
+            modelBuilder.Entity<EFPokemonFormGenerations>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonFormId, e.GenerationId })
                     .HasName("PK__pokemon___7BC254EA685116A8");
@@ -3762,7 +3762,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_f__pokem__02284B6B");
             });
 
-            modelBuilder.Entity<PokemonFormNames>(entity =>
+            modelBuilder.Entity<EFPokemonFormNames>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonFormId, e.LocalLanguageId })
                     .HasName("PK__pokemon___505F2CA5F8EA1A4C");
@@ -3800,7 +3800,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_f__pokem__05F8DC4F");
             });
 
-            modelBuilder.Entity<PokemonFormPokeathlonStats>(entity =>
+            modelBuilder.Entity<EFPokemonFormPokeathlonStats>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonFormId, e.PokeathlonStatId })
                     .HasName("PK__pokemon___B2447C10FCFC6310");
@@ -3830,7 +3830,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_f__pokem__0D99FE17");
             });
 
-            modelBuilder.Entity<PokemonForms>(entity =>
+            modelBuilder.Entity<EFPokemonForms>(entity =>
             {
                 entity.ToTable("pokemon_forms");
 
@@ -3871,7 +3871,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_f__pokem__5FD33367");
             });
 
-            modelBuilder.Entity<PokemonGameIndices>(entity =>
+            modelBuilder.Entity<EFPokemonGameIndices>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.VersionId })
                     .HasName("PK__pokemon___A8E18E83C80A06C6");
@@ -3897,7 +3897,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_g__versi__7B7B4DDC");
             });
 
-            modelBuilder.Entity<PokemonHabitatNames>(entity =>
+            modelBuilder.Entity<EFPokemonHabitatNames>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonHabitatId, e.LocalLanguageId })
                     .HasName("PK__pokemon___3C8CACCDCFBAFFC2");
@@ -3929,7 +3929,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_h__pokem__2BFE89A6");
             });
 
-            modelBuilder.Entity<PokemonHabitats>(entity =>
+            modelBuilder.Entity<EFPokemonHabitats>(entity =>
             {
                 entity.ToTable("pokemon_habitats");
 
@@ -3943,7 +3943,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokemonItems>(entity =>
+            modelBuilder.Entity<EFPokemonItems>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.VersionId, e.ItemId })
                     .HasName("PK__pokemon___74B38C8CEF2396B6");
@@ -3977,7 +3977,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_i__versi__5C02A283");
             });
 
-            modelBuilder.Entity<PokemonMoveMethodProse>(entity =>
+            modelBuilder.Entity<EFPokemonMoveMethodProse>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonMoveMethodId, e.LocalLanguageId })
                     .HasName("PK__pokemon___722CA42878130931");
@@ -4010,7 +4010,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_m__pokem__0A9D95DB");
             });
 
-            modelBuilder.Entity<PokemonMoveMethods>(entity =>
+            modelBuilder.Entity<EFPokemonMoveMethods>(entity =>
             {
                 entity.ToTable("pokemon_move_methods");
 
@@ -4024,7 +4024,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokemonMoves>(entity =>
+            modelBuilder.Entity<EFPokemonMoves>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.VersionGroupId, e.MoveId, e.PokemonMoveMethodId, e.Level })
                     .HasName("PK__pokemon___3C8230039D19A62B");
@@ -4083,7 +4083,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_m__versi__75C27486");
             });
 
-            modelBuilder.Entity<PokemonShapeProse>(entity =>
+            modelBuilder.Entity<EFPokemonShapeProse>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonShapeId, e.LocalLanguageId })
                     .HasName("PK__pokemon___F3FD34C2C4B06D16");
@@ -4120,7 +4120,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__pokem__59C55456");
             });
 
-            modelBuilder.Entity<PokemonShapes>(entity =>
+            modelBuilder.Entity<EFPokemonShapes>(entity =>
             {
                 entity.ToTable("pokemon_shapes");
 
@@ -4132,7 +4132,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<PokemonSpecies>(entity =>
+            modelBuilder.Entity<EFPokemonSpecies>(entity =>
             {
                 entity.ToTable("pokemon_species");
 
@@ -4220,7 +4220,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__shape__5A4F643B");
             });
 
-            modelBuilder.Entity<PokemonSpeciesFlavorSummaries>(entity =>
+            modelBuilder.Entity<EFPokemonSpeciesFlavorSummaries>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonSpeciesId, e.LocalLanguageId })
                     .HasName("PK__pokemon___6292A54C1F107F50");
@@ -4246,7 +4246,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__pokem__3B95D2F1");
             });
 
-            modelBuilder.Entity<PokemonSpeciesFlavorText>(entity =>
+            modelBuilder.Entity<EFPokemonSpeciesFlavorText>(entity =>
             {
                 entity.HasKey(e => new { e.SpeciesId, e.VersionId, e.LanguageId })
                     .HasName("PK__pokemon___80C7D1B2586BE6D1");
@@ -4282,7 +4282,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__versi__4F9CCB9E");
             });
 
-            modelBuilder.Entity<PokemonSpeciesNames>(entity =>
+            modelBuilder.Entity<EFPokemonSpeciesNames>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonSpeciesId, e.LocalLanguageId })
                     .HasName("PK__pokemon___6292A54CD8D323EE");
@@ -4315,7 +4315,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__pokem__573DED66");
             });
 
-            modelBuilder.Entity<PokemonSpeciesProse>(entity =>
+            modelBuilder.Entity<EFPokemonSpeciesProse>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonSpeciesId, e.LocalLanguageId })
                     .HasName("PK__pokemon___6292A54C319AF31C");
@@ -4341,7 +4341,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__pokem__4AD81681");
             });
 
-            modelBuilder.Entity<PokemonStats>(entity =>
+            modelBuilder.Entity<EFPokemonStats>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.StatId })
                     .HasName("PK__pokemon___331184538265E274");
@@ -4369,7 +4369,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_s__stat___7F4BDEC0");
             });
 
-            modelBuilder.Entity<PokemonTypes>(entity =>
+            modelBuilder.Entity<EFPokemonTypes>(entity =>
             {
                 entity.HasKey(e => new { e.PokemonId, e.Slot })
                     .HasName("PK__pokemon___4BB604E436502848");
@@ -4395,7 +4395,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__pokemon_t__type___6D2D2E85");
             });
 
-            modelBuilder.Entity<RegionNames>(entity =>
+            modelBuilder.Entity<EFRegionNames>(entity =>
             {
                 entity.HasKey(e => new { e.RegionId, e.LocalLanguageId })
                     .HasName("PK__region_n__95016E84F268F2C2");
@@ -4427,7 +4427,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__region_na__regio__7F2BE32F");
             });
 
-            modelBuilder.Entity<Regions>(entity =>
+            modelBuilder.Entity<EFRegions>(entity =>
             {
                 entity.ToTable("regions");
 
@@ -4439,7 +4439,7 @@ namespace PokemonAPI.WebService
                     .HasMaxLength(79);
             });
 
-            modelBuilder.Entity<StatNames>(entity =>
+            modelBuilder.Entity<EFStatNames>(entity =>
             {
                 entity.HasKey(e => new { e.StatId, e.LocalLanguageId })
                     .HasName("PK__stat_nam__2CB0204AB0638E73");
@@ -4471,7 +4471,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__stat_name__stat___7D0E9093");
             });
 
-            modelBuilder.Entity<Stats>(entity =>
+            modelBuilder.Entity<EFStats>(entity =>
             {
                 entity.ToTable("stats");
 
@@ -4494,7 +4494,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__stats__damage_cl__619B8048");
             });
 
-            modelBuilder.Entity<SuperContestCombos>(entity =>
+            modelBuilder.Entity<EFSuperContestCombos>(entity =>
             {
                 entity.HasKey(e => new { e.FirstMoveId, e.SecondMoveId })
                     .HasName("PK__super_co__456AD1D36E05CE75");
@@ -4518,7 +4518,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__super_con__secon__7132C993");
             });
 
-            modelBuilder.Entity<SuperContestEffectProse>(entity =>
+            modelBuilder.Entity<EFSuperContestEffectProse>(entity =>
             {
                 entity.HasKey(e => new { e.SuperContestEffectId, e.LocalLanguageId })
                     .HasName("PK__super_co__1D9CD2C4D79C4D05");
@@ -4546,7 +4546,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__super_con__super__46B27FE2");
             });
 
-            modelBuilder.Entity<SuperContestEffects>(entity =>
+            modelBuilder.Entity<EFSuperContestEffects>(entity =>
             {
                 entity.ToTable("super_contest_effects");
 
@@ -4555,7 +4555,7 @@ namespace PokemonAPI.WebService
                 entity.Property(e => e.Appeal).HasColumnName("appeal");
             });
 
-            modelBuilder.Entity<TypeEfficacy>(entity =>
+            modelBuilder.Entity<EFTypeEfficacy>(entity =>
             {
                 entity.HasKey(e => new { e.DamageTypeId, e.TargetTypeId })
                     .HasName("PK__type_eff__8F341AAAD7A8BF69");
@@ -4581,7 +4581,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__type_effi__targe__3A179ED3");
             });
 
-            modelBuilder.Entity<TypeGameIndices>(entity =>
+            modelBuilder.Entity<EFTypeGameIndices>(entity =>
             {
                 entity.HasKey(e => new { e.TypeId, e.GenerationId })
                     .HasName("PK__type_gam__938878FD45073882");
@@ -4607,7 +4607,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__type_game__type___25DB9BFC");
             });
 
-            modelBuilder.Entity<TypeNames>(entity =>
+            modelBuilder.Entity<EFTypeNames>(entity =>
             {
                 entity.HasKey(e => new { e.TypeId, e.LocalLanguageId })
                     .HasName("PK__type_nam__B81500B290F23E96");
@@ -4639,7 +4639,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__type_name__type___038683F8");
             });
 
-            modelBuilder.Entity<Types>(entity =>
+            modelBuilder.Entity<EFTypes>(entity =>
             {
                 entity.ToTable("types");
 
@@ -4666,7 +4666,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__types__generatio__17C286CF");
             });
 
-            modelBuilder.Entity<VersionGroupPokemonMoveMethods>(entity =>
+            modelBuilder.Entity<EFVersionGroupPokemonMoveMethods>(entity =>
             {
                 entity.HasKey(e => new { e.VersionGroupId, e.PokemonMoveMethodId })
                     .HasName("PK__version___FEB4BE3B73D8DD11");
@@ -4690,7 +4690,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__version_g__versi__0B27A5C0");
             });
 
-            modelBuilder.Entity<VersionGroupRegions>(entity =>
+            modelBuilder.Entity<EFVersionGroupRegions>(entity =>
             {
                 entity.HasKey(e => new { e.VersionGroupId, e.RegionId })
                     .HasName("PK__version___30C66291A7D097D3");
@@ -4714,7 +4714,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__version_g__versi__1881A0DE");
             });
 
-            modelBuilder.Entity<VersionGroups>(entity =>
+            modelBuilder.Entity<EFVersionGroups>(entity =>
             {
                 entity.ToTable("version_groups");
 
@@ -4740,7 +4740,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__version_g__gener__2BC97F7C");
             });
 
-            modelBuilder.Entity<VersionNames>(entity =>
+            modelBuilder.Entity<EFVersionNames>(entity =>
             {
                 entity.HasKey(e => new { e.VersionId, e.LocalLanguageId })
                     .HasName("PK__version___93B08D4340848693");
@@ -4772,7 +4772,7 @@ namespace PokemonAPI.WebService
                     .HasConstraintName("FK__version_n__versi__4B0D20AB");
             });
 
-            modelBuilder.Entity<Versions>(entity =>
+            modelBuilder.Entity<EFVersions>(entity =>
             {
                 entity.ToTable("versions");
 
@@ -4793,177 +4793,177 @@ namespace PokemonAPI.WebService
             });
         }
 
-        public virtual DbSet<Abilities> Abilities { get; set; }
-        public virtual DbSet<AbilityChangelog> AbilityChangelog { get; set; }
-        public virtual DbSet<AbilityChangelogProse> AbilityChangelogProse { get; set; }
-        public virtual DbSet<AbilityFlavorText> AbilityFlavorText { get; set; }
-        public virtual DbSet<AbilityNames> AbilityNames { get; set; }
-        public virtual DbSet<AbilityProse> AbilityProse { get; set; }
-        public virtual DbSet<Berries> Berries { get; set; }
-        public virtual DbSet<BerryFirmness> BerryFirmness { get; set; }
-        public virtual DbSet<BerryFirmnessNames> BerryFirmnessNames { get; set; }
-        public virtual DbSet<BerryFlavors> BerryFlavors { get; set; }
-        public virtual DbSet<CharacteristicText> CharacteristicText { get; set; }
-        public virtual DbSet<Characteristics> Characteristics { get; set; }
-        public virtual DbSet<ConquestEpisodeNames> ConquestEpisodeNames { get; set; }
-        public virtual DbSet<ConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
-        public virtual DbSet<ConquestEpisodes> ConquestEpisodes { get; set; }
-        public virtual DbSet<ConquestKingdomNames> ConquestKingdomNames { get; set; }
-        public virtual DbSet<ConquestKingdoms> ConquestKingdoms { get; set; }
-        public virtual DbSet<ConquestMaxLinks> ConquestMaxLinks { get; set; }
-        public virtual DbSet<ConquestMoveData> ConquestMoveData { get; set; }
-        public virtual DbSet<ConquestMoveDisplacementProse> ConquestMoveDisplacementProse { get; set; }
-        public virtual DbSet<ConquestMoveDisplacements> ConquestMoveDisplacements { get; set; }
-        public virtual DbSet<ConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
-        public virtual DbSet<ConquestMoveEffects> ConquestMoveEffects { get; set; }
-        public virtual DbSet<ConquestMoveRangeProse> ConquestMoveRangeProse { get; set; }
-        public virtual DbSet<ConquestMoveRanges> ConquestMoveRanges { get; set; }
-        public virtual DbSet<ConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
-        public virtual DbSet<ConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
-        public virtual DbSet<ConquestPokemonMoves> ConquestPokemonMoves { get; set; }
-        public virtual DbSet<ConquestPokemonStats> ConquestPokemonStats { get; set; }
-        public virtual DbSet<ConquestStatNames> ConquestStatNames { get; set; }
-        public virtual DbSet<ConquestStats> ConquestStats { get; set; }
-        public virtual DbSet<ConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
-        public virtual DbSet<ConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
-        public virtual DbSet<ConquestWarriorArchetypes> ConquestWarriorArchetypes { get; set; }
-        public virtual DbSet<ConquestWarriorNames> ConquestWarriorNames { get; set; }
-        public virtual DbSet<ConquestWarriorRankStatMap> ConquestWarriorRankStatMap { get; set; }
-        public virtual DbSet<ConquestWarriorRanks> ConquestWarriorRanks { get; set; }
-        public virtual DbSet<ConquestWarriorSkillNames> ConquestWarriorSkillNames { get; set; }
-        public virtual DbSet<ConquestWarriorSkills> ConquestWarriorSkills { get; set; }
-        public virtual DbSet<ConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
-        public virtual DbSet<ConquestWarriorStatNames> ConquestWarriorStatNames { get; set; }
-        public virtual DbSet<ConquestWarriorStats> ConquestWarriorStats { get; set; }
-        public virtual DbSet<ConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
-        public virtual DbSet<ConquestWarriors> ConquestWarriors { get; set; }
-        public virtual DbSet<ContestCombos> ContestCombos { get; set; }
-        public virtual DbSet<ContestEffectProse> ContestEffectProse { get; set; }
-        public virtual DbSet<ContestEffects> ContestEffects { get; set; }
-        public virtual DbSet<ContestTypeNames> ContestTypeNames { get; set; }
-        public virtual DbSet<ContestTypes> ContestTypes { get; set; }
-        public virtual DbSet<EggGroupProse> EggGroupProse { get; set; }
-        public virtual DbSet<EggGroups> EggGroups { get; set; }
-        public virtual DbSet<EncounterConditionProse> EncounterConditionProse { get; set; }
-        public virtual DbSet<EncounterConditionValueMap> EncounterConditionValueMap { get; set; }
-        public virtual DbSet<EncounterConditionValueProse> EncounterConditionValueProse { get; set; }
-        public virtual DbSet<EncounterConditionValues> EncounterConditionValues { get; set; }
-        public virtual DbSet<EncounterConditions> EncounterConditions { get; set; }
-        public virtual DbSet<EncounterMethodProse> EncounterMethodProse { get; set; }
-        public virtual DbSet<EncounterMethods> EncounterMethods { get; set; }
-        public virtual DbSet<EncounterSlots> EncounterSlots { get; set; }
-        public virtual DbSet<Encounters> Encounters { get; set; }
-        public virtual DbSet<EvolutionChains> EvolutionChains { get; set; }
-        public virtual DbSet<EvolutionTriggerProse> EvolutionTriggerProse { get; set; }
-        public virtual DbSet<EvolutionTriggers> EvolutionTriggers { get; set; }
-        public virtual DbSet<Experience> Experience { get; set; }
-        public virtual DbSet<Genders> Genders { get; set; }
-        public virtual DbSet<GenerationNames> GenerationNames { get; set; }
-        public virtual DbSet<Generations> Generations { get; set; }
-        public virtual DbSet<GrowthRateProse> GrowthRateProse { get; set; }
-        public virtual DbSet<GrowthRates> GrowthRates { get; set; }
-        public virtual DbSet<ItemCategories> ItemCategories { get; set; }
-        public virtual DbSet<ItemCategoryProse> ItemCategoryProse { get; set; }
-        public virtual DbSet<ItemFlagMap> ItemFlagMap { get; set; }
-        public virtual DbSet<ItemFlagProse> ItemFlagProse { get; set; }
-        public virtual DbSet<ItemFlags> ItemFlags { get; set; }
-        public virtual DbSet<ItemFlavorSummaries> ItemFlavorSummaries { get; set; }
-        public virtual DbSet<ItemFlavorText> ItemFlavorText { get; set; }
-        public virtual DbSet<ItemFlingEffectProse> ItemFlingEffectProse { get; set; }
-        public virtual DbSet<ItemFlingEffects> ItemFlingEffects { get; set; }
-        public virtual DbSet<ItemGameIndices> ItemGameIndices { get; set; }
-        public virtual DbSet<ItemNames> ItemNames { get; set; }
-        public virtual DbSet<ItemPocketNames> ItemPocketNames { get; set; }
-        public virtual DbSet<ItemPockets> ItemPockets { get; set; }
-        public virtual DbSet<ItemProse> ItemProse { get; set; }
-        public virtual DbSet<Items> Items { get; set; }
-        public virtual DbSet<LanguageNames> LanguageNames { get; set; }
-        public virtual DbSet<Languages> Languages { get; set; }
-        public virtual DbSet<LocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
-        public virtual DbSet<LocationAreaProse> LocationAreaProse { get; set; }
-        public virtual DbSet<LocationAreas> LocationAreas { get; set; }
-        public virtual DbSet<LocationGameIndices> LocationGameIndices { get; set; }
-        public virtual DbSet<LocationNames> LocationNames { get; set; }
-        public virtual DbSet<Locations> Locations { get; set; }
-        public virtual DbSet<Machines> Machines { get; set; }
-        public virtual DbSet<MoveBattleStyleProse> MoveBattleStyleProse { get; set; }
-        public virtual DbSet<MoveBattleStyles> MoveBattleStyles { get; set; }
-        public virtual DbSet<MoveChangelog> MoveChangelog { get; set; }
-        public virtual DbSet<MoveDamageClassProse> MoveDamageClassProse { get; set; }
-        public virtual DbSet<MoveDamageClasses> MoveDamageClasses { get; set; }
-        public virtual DbSet<MoveEffectChangelog> MoveEffectChangelog { get; set; }
-        public virtual DbSet<MoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
-        public virtual DbSet<MoveEffectProse> MoveEffectProse { get; set; }
-        public virtual DbSet<MoveEffects> MoveEffects { get; set; }
-        public virtual DbSet<MoveFlagMap> MoveFlagMap { get; set; }
-        public virtual DbSet<MoveFlagProse> MoveFlagProse { get; set; }
-        public virtual DbSet<MoveFlags> MoveFlags { get; set; }
-        public virtual DbSet<MoveFlavorSummaries> MoveFlavorSummaries { get; set; }
-        public virtual DbSet<MoveFlavorText> MoveFlavorText { get; set; }
-        public virtual DbSet<MoveMeta> MoveMeta { get; set; }
-        public virtual DbSet<MoveMetaAilmentNames> MoveMetaAilmentNames { get; set; }
-        public virtual DbSet<MoveMetaAilments> MoveMetaAilments { get; set; }
-        public virtual DbSet<MoveMetaCategories> MoveMetaCategories { get; set; }
-        public virtual DbSet<MoveMetaCategoryProse> MoveMetaCategoryProse { get; set; }
-        public virtual DbSet<MoveMetaStatChanges> MoveMetaStatChanges { get; set; }
-        public virtual DbSet<MoveNames> MoveNames { get; set; }
-        public virtual DbSet<MoveTargetProse> MoveTargetProse { get; set; }
-        public virtual DbSet<MoveTargets> MoveTargets { get; set; }
-        public virtual DbSet<Moves> Moves { get; set; }
-        public virtual DbSet<NatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
-        public virtual DbSet<NatureNames> NatureNames { get; set; }
-        public virtual DbSet<NaturePokeathlonStats> NaturePokeathlonStats { get; set; }
-        public virtual DbSet<Natures> Natures { get; set; }
-        public virtual DbSet<PalPark> PalPark { get; set; }
-        public virtual DbSet<PalParkAreaNames> PalParkAreaNames { get; set; }
-        public virtual DbSet<PalParkAreas> PalParkAreas { get; set; }
-        public virtual DbSet<PokeathlonStatNames> PokeathlonStatNames { get; set; }
-        public virtual DbSet<PokeathlonStats> PokeathlonStats { get; set; }
-        public virtual DbSet<PokedexProse> PokedexProse { get; set; }
-        public virtual DbSet<PokedexVersionGroups> PokedexVersionGroups { get; set; }
-        public virtual DbSet<Pokedexes> Pokedexes { get; set; }
-        public virtual DbSet<Pokemon> Pokemon { get; set; }
-        public virtual DbSet<PokemonAbilities> PokemonAbilities { get; set; }
-        public virtual DbSet<PokemonColorNames> PokemonColorNames { get; set; }
-        public virtual DbSet<PokemonColors> PokemonColors { get; set; }
-        public virtual DbSet<PokemonDexNumbers> PokemonDexNumbers { get; set; }
-        public virtual DbSet<PokemonEggGroups> PokemonEggGroups { get; set; }
-        public virtual DbSet<PokemonEvolution> PokemonEvolution { get; set; }
-        public virtual DbSet<PokemonFormGenerations> PokemonFormGenerations { get; set; }
-        public virtual DbSet<PokemonFormNames> PokemonFormNames { get; set; }
-        public virtual DbSet<PokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
-        public virtual DbSet<PokemonForms> PokemonForms { get; set; }
-        public virtual DbSet<PokemonGameIndices> PokemonGameIndices { get; set; }
-        public virtual DbSet<PokemonHabitatNames> PokemonHabitatNames { get; set; }
-        public virtual DbSet<PokemonHabitats> PokemonHabitats { get; set; }
-        public virtual DbSet<PokemonItems> PokemonItems { get; set; }
-        public virtual DbSet<PokemonMoveMethodProse> PokemonMoveMethodProse { get; set; }
-        public virtual DbSet<PokemonMoveMethods> PokemonMoveMethods { get; set; }
-        public virtual DbSet<PokemonMoves> PokemonMoves { get; set; }
-        public virtual DbSet<PokemonShapeProse> PokemonShapeProse { get; set; }
-        public virtual DbSet<PokemonShapes> PokemonShapes { get; set; }
-        public virtual DbSet<PokemonSpecies> PokemonSpecies { get; set; }
-        public virtual DbSet<PokemonSpeciesFlavorSummaries> PokemonSpeciesFlavorSummaries { get; set; }
-        public virtual DbSet<PokemonSpeciesFlavorText> PokemonSpeciesFlavorText { get; set; }
-        public virtual DbSet<PokemonSpeciesNames> PokemonSpeciesNames { get; set; }
-        public virtual DbSet<PokemonSpeciesProse> PokemonSpeciesProse { get; set; }
-        public virtual DbSet<PokemonStats> PokemonStats { get; set; }
-        public virtual DbSet<PokemonTypes> PokemonTypes { get; set; }
-        public virtual DbSet<RegionNames> RegionNames { get; set; }
-        public virtual DbSet<Regions> Regions { get; set; }
-        public virtual DbSet<StatNames> StatNames { get; set; }
-        public virtual DbSet<Stats> Stats { get; set; }
-        public virtual DbSet<SuperContestCombos> SuperContestCombos { get; set; }
-        public virtual DbSet<SuperContestEffectProse> SuperContestEffectProse { get; set; }
-        public virtual DbSet<SuperContestEffects> SuperContestEffects { get; set; }
-        public virtual DbSet<TypeEfficacy> TypeEfficacy { get; set; }
-        public virtual DbSet<TypeGameIndices> TypeGameIndices { get; set; }
-        public virtual DbSet<TypeNames> TypeNames { get; set; }
-        public virtual DbSet<Types> Types { get; set; }
-        public virtual DbSet<VersionGroupPokemonMoveMethods> VersionGroupPokemonMoveMethods { get; set; }
-        public virtual DbSet<VersionGroupRegions> VersionGroupRegions { get; set; }
-        public virtual DbSet<VersionGroups> VersionGroups { get; set; }
-        public virtual DbSet<VersionNames> VersionNames { get; set; }
-        public virtual DbSet<Versions> Versions { get; set; }
+        public virtual DbSet<EFAbilities> Abilities { get; set; }
+        public virtual DbSet<EFAbilityChangelog> AbilityChangelog { get; set; }
+        public virtual DbSet<EFAbilityChangelogProse> AbilityChangelogProse { get; set; }
+        public virtual DbSet<EFAbilityFlavorText> AbilityFlavorText { get; set; }
+        public virtual DbSet<EFAbilityNames> AbilityNames { get; set; }
+        public virtual DbSet<EFAbilityProse> AbilityProse { get; set; }
+        public virtual DbSet<EFBerries> Berries { get; set; }
+        public virtual DbSet<EFBerryFirmness> BerryFirmness { get; set; }
+        public virtual DbSet<EFBerryFirmnessNames> BerryFirmnessNames { get; set; }
+        public virtual DbSet<EFBerryFlavors> BerryFlavors { get; set; }
+        public virtual DbSet<EFCharacteristicText> CharacteristicText { get; set; }
+        public virtual DbSet<EFCharacteristics> Characteristics { get; set; }
+        public virtual DbSet<EFConquestEpisodeNames> ConquestEpisodeNames { get; set; }
+        public virtual DbSet<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
+        public virtual DbSet<EFConquestEpisodes> ConquestEpisodes { get; set; }
+        public virtual DbSet<EFConquestKingdomNames> ConquestKingdomNames { get; set; }
+        public virtual DbSet<EFConquestKingdoms> ConquestKingdoms { get; set; }
+        public virtual DbSet<EFConquestMaxLinks> ConquestMaxLinks { get; set; }
+        public virtual DbSet<EFConquestMoveData> ConquestMoveData { get; set; }
+        public virtual DbSet<EFConquestMoveDisplacementProse> ConquestMoveDisplacementProse { get; set; }
+        public virtual DbSet<EFConquestMoveDisplacements> ConquestMoveDisplacements { get; set; }
+        public virtual DbSet<EFConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
+        public virtual DbSet<EFConquestMoveEffects> ConquestMoveEffects { get; set; }
+        public virtual DbSet<EFConquestMoveRangeProse> ConquestMoveRangeProse { get; set; }
+        public virtual DbSet<EFConquestMoveRanges> ConquestMoveRanges { get; set; }
+        public virtual DbSet<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
+        public virtual DbSet<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
+        public virtual DbSet<EFConquestPokemonMoves> ConquestPokemonMoves { get; set; }
+        public virtual DbSet<EFConquestPokemonStats> ConquestPokemonStats { get; set; }
+        public virtual DbSet<EFConquestStatNames> ConquestStatNames { get; set; }
+        public virtual DbSet<EFConquestStats> ConquestStats { get; set; }
+        public virtual DbSet<EFConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
+        public virtual DbSet<EFConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
+        public virtual DbSet<EFConquestWarriorArchetypes> ConquestWarriorArchetypes { get; set; }
+        public virtual DbSet<EFConquestWarriorNames> ConquestWarriorNames { get; set; }
+        public virtual DbSet<EFConquestWarriorRankStatMap> ConquestWarriorRankStatMap { get; set; }
+        public virtual DbSet<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
+        public virtual DbSet<EFConquestWarriorSkillNames> ConquestWarriorSkillNames { get; set; }
+        public virtual DbSet<EFConquestWarriorSkills> ConquestWarriorSkills { get; set; }
+        public virtual DbSet<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
+        public virtual DbSet<EFConquestWarriorStatNames> ConquestWarriorStatNames { get; set; }
+        public virtual DbSet<EFConquestWarriorStats> ConquestWarriorStats { get; set; }
+        public virtual DbSet<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
+        public virtual DbSet<EFConquestWarriors> ConquestWarriors { get; set; }
+        public virtual DbSet<EFContestCombos> ContestCombos { get; set; }
+        public virtual DbSet<EFContestEffectProse> ContestEffectProse { get; set; }
+        public virtual DbSet<EFContestEffects> ContestEffects { get; set; }
+        public virtual DbSet<EFContestTypeNames> ContestTypeNames { get; set; }
+        public virtual DbSet<EFContestTypes> ContestTypes { get; set; }
+        public virtual DbSet<EFEggGroupProse> EggGroupProse { get; set; }
+        public virtual DbSet<EFEggGroups> EggGroups { get; set; }
+        public virtual DbSet<EFEncounterConditionProse> EncounterConditionProse { get; set; }
+        public virtual DbSet<EFEncounterConditionValueMap> EncounterConditionValueMap { get; set; }
+        public virtual DbSet<EFEncounterConditionValueProse> EncounterConditionValueProse { get; set; }
+        public virtual DbSet<EFEncounterConditionValues> EncounterConditionValues { get; set; }
+        public virtual DbSet<EFEncounterConditions> EncounterConditions { get; set; }
+        public virtual DbSet<EFEncounterMethodProse> EncounterMethodProse { get; set; }
+        public virtual DbSet<EFEncounterMethods> EncounterMethods { get; set; }
+        public virtual DbSet<EFEncounterSlots> EncounterSlots { get; set; }
+        public virtual DbSet<EFEncounters> Encounters { get; set; }
+        public virtual DbSet<EFEvolutionChains> EvolutionChains { get; set; }
+        public virtual DbSet<EFEvolutionTriggerProse> EvolutionTriggerProse { get; set; }
+        public virtual DbSet<EFEvolutionTriggers> EvolutionTriggers { get; set; }
+        public virtual DbSet<EFExperience> Experience { get; set; }
+        public virtual DbSet<EFGenders> Genders { get; set; }
+        public virtual DbSet<EFGenerationNames> GenerationNames { get; set; }
+        public virtual DbSet<EFGenerations> Generations { get; set; }
+        public virtual DbSet<EFGrowthRateProse> GrowthRateProse { get; set; }
+        public virtual DbSet<EFGrowthRates> GrowthRates { get; set; }
+        public virtual DbSet<EFItemCategories> ItemCategories { get; set; }
+        public virtual DbSet<EFItemCategoryProse> ItemCategoryProse { get; set; }
+        public virtual DbSet<EFItemFlagMap> ItemFlagMap { get; set; }
+        public virtual DbSet<EFItemFlagProse> ItemFlagProse { get; set; }
+        public virtual DbSet<EFItemFlags> ItemFlags { get; set; }
+        public virtual DbSet<EFItemFlavorSummaries> ItemFlavorSummaries { get; set; }
+        public virtual DbSet<EFItemFlavorText> ItemFlavorText { get; set; }
+        public virtual DbSet<EFItemFlingEffectProse> ItemFlingEffectProse { get; set; }
+        public virtual DbSet<EFItemFlingEffects> ItemFlingEffects { get; set; }
+        public virtual DbSet<EFItemGameIndices> ItemGameIndices { get; set; }
+        public virtual DbSet<EFItemNames> ItemNames { get; set; }
+        public virtual DbSet<EFItemPocketNames> ItemPocketNames { get; set; }
+        public virtual DbSet<EFItemPockets> ItemPockets { get; set; }
+        public virtual DbSet<EFItemProse> ItemProse { get; set; }
+        public virtual DbSet<EFItems> Items { get; set; }
+        public virtual DbSet<EFLanguageNames> LanguageNames { get; set; }
+        public virtual DbSet<EFLanguages> Languages { get; set; }
+        public virtual DbSet<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
+        public virtual DbSet<EFLocationAreaProse> LocationAreaProse { get; set; }
+        public virtual DbSet<EFLocationAreas> LocationAreas { get; set; }
+        public virtual DbSet<EFLocationGameIndices> LocationGameIndices { get; set; }
+        public virtual DbSet<EFLocationNames> LocationNames { get; set; }
+        public virtual DbSet<EFLocations> Locations { get; set; }
+        public virtual DbSet<EFMachines> Machines { get; set; }
+        public virtual DbSet<EFMoveBattleStyleProse> MoveBattleStyleProse { get; set; }
+        public virtual DbSet<EFMoveBattleStyles> MoveBattleStyles { get; set; }
+        public virtual DbSet<EFMoveChangelog> MoveChangelog { get; set; }
+        public virtual DbSet<EFMoveDamageClassProse> MoveDamageClassProse { get; set; }
+        public virtual DbSet<EFMoveDamageClasses> MoveDamageClasses { get; set; }
+        public virtual DbSet<EFMoveEffectChangelog> MoveEffectChangelog { get; set; }
+        public virtual DbSet<EFMoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
+        public virtual DbSet<EFMoveEffectProse> MoveEffectProse { get; set; }
+        public virtual DbSet<EFMoveEffects> MoveEffects { get; set; }
+        public virtual DbSet<EFMoveFlagMap> MoveFlagMap { get; set; }
+        public virtual DbSet<EFMoveFlagProse> MoveFlagProse { get; set; }
+        public virtual DbSet<EFMoveFlags> MoveFlags { get; set; }
+        public virtual DbSet<EFMoveFlavorSummaries> MoveFlavorSummaries { get; set; }
+        public virtual DbSet<EFMoveFlavorText> MoveFlavorText { get; set; }
+        public virtual DbSet<EFMoveMeta> MoveMeta { get; set; }
+        public virtual DbSet<EFMoveMetaAilmentNames> MoveMetaAilmentNames { get; set; }
+        public virtual DbSet<EFMoveMetaAilments> MoveMetaAilments { get; set; }
+        public virtual DbSet<EFMoveMetaCategories> MoveMetaCategories { get; set; }
+        public virtual DbSet<EFMoveMetaCategoryProse> MoveMetaCategoryProse { get; set; }
+        public virtual DbSet<EFMoveMetaStatChanges> MoveMetaStatChanges { get; set; }
+        public virtual DbSet<EFMoveNames> MoveNames { get; set; }
+        public virtual DbSet<EFMoveTargetProse> MoveTargetProse { get; set; }
+        public virtual DbSet<EFMoveTargets> MoveTargets { get; set; }
+        public virtual DbSet<EFMoves> Moves { get; set; }
+        public virtual DbSet<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
+        public virtual DbSet<EFNatureNames> NatureNames { get; set; }
+        public virtual DbSet<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
+        public virtual DbSet<EFNatures> Natures { get; set; }
+        public virtual DbSet<EFPalPark> PalPark { get; set; }
+        public virtual DbSet<EFPalParkAreaNames> PalParkAreaNames { get; set; }
+        public virtual DbSet<EFPalParkAreas> PalParkAreas { get; set; }
+        public virtual DbSet<EFPokeathlonStatNames> PokeathlonStatNames { get; set; }
+        public virtual DbSet<EFPokeathlonStats> PokeathlonStats { get; set; }
+        public virtual DbSet<EFPokedexProse> PokedexProse { get; set; }
+        public virtual DbSet<EFPokedexVersionGroups> PokedexVersionGroups { get; set; }
+        public virtual DbSet<EFPokedexes> Pokedexes { get; set; }
+        public virtual DbSet<EFPokemon> Pokemon { get; set; }
+        public virtual DbSet<EFPokemonAbilities> PokemonAbilities { get; set; }
+        public virtual DbSet<EFPokemonColorNames> PokemonColorNames { get; set; }
+        public virtual DbSet<EFPokemonColors> PokemonColors { get; set; }
+        public virtual DbSet<EFPokemonDexNumbers> PokemonDexNumbers { get; set; }
+        public virtual DbSet<EFPokemonEggGroups> PokemonEggGroups { get; set; }
+        public virtual DbSet<EFPokemonEvolution> PokemonEvolution { get; set; }
+        public virtual DbSet<EFPokemonFormGenerations> PokemonFormGenerations { get; set; }
+        public virtual DbSet<EFPokemonFormNames> PokemonFormNames { get; set; }
+        public virtual DbSet<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
+        public virtual DbSet<EFPokemonForms> PokemonForms { get; set; }
+        public virtual DbSet<EFPokemonGameIndices> PokemonGameIndices { get; set; }
+        public virtual DbSet<EFPokemonHabitatNames> PokemonHabitatNames { get; set; }
+        public virtual DbSet<EFPokemonHabitats> PokemonHabitats { get; set; }
+        public virtual DbSet<EFPokemonItems> PokemonItems { get; set; }
+        public virtual DbSet<EFPokemonMoveMethodProse> PokemonMoveMethodProse { get; set; }
+        public virtual DbSet<EFPokemonMoveMethods> PokemonMoveMethods { get; set; }
+        public virtual DbSet<EFPokemonMoves> PokemonMoves { get; set; }
+        public virtual DbSet<EFPokemonShapeProse> PokemonShapeProse { get; set; }
+        public virtual DbSet<EFPokemonShapes> PokemonShapes { get; set; }
+        public virtual DbSet<EFPokemonSpecies> PokemonSpecies { get; set; }
+        public virtual DbSet<EFPokemonSpeciesFlavorSummaries> PokemonSpeciesFlavorSummaries { get; set; }
+        public virtual DbSet<EFPokemonSpeciesFlavorText> PokemonSpeciesFlavorText { get; set; }
+        public virtual DbSet<EFPokemonSpeciesNames> PokemonSpeciesNames { get; set; }
+        public virtual DbSet<EFPokemonSpeciesProse> PokemonSpeciesProse { get; set; }
+        public virtual DbSet<EFPokemonStats> PokemonStats { get; set; }
+        public virtual DbSet<EFPokemonTypes> PokemonTypes { get; set; }
+        public virtual DbSet<EFRegionNames> RegionNames { get; set; }
+        public virtual DbSet<EFRegions> Regions { get; set; }
+        public virtual DbSet<EFStatNames> StatNames { get; set; }
+        public virtual DbSet<EFStats> Stats { get; set; }
+        public virtual DbSet<EFSuperContestCombos> SuperContestCombos { get; set; }
+        public virtual DbSet<EFSuperContestEffectProse> SuperContestEffectProse { get; set; }
+        public virtual DbSet<EFSuperContestEffects> SuperContestEffects { get; set; }
+        public virtual DbSet<EFTypeEfficacy> TypeEfficacy { get; set; }
+        public virtual DbSet<EFTypeGameIndices> TypeGameIndices { get; set; }
+        public virtual DbSet<EFTypeNames> TypeNames { get; set; }
+        public virtual DbSet<EFTypes> Types { get; set; }
+        public virtual DbSet<EFVersionGroupPokemonMoveMethods> VersionGroupPokemonMoveMethods { get; set; }
+        public virtual DbSet<EFVersionGroupRegions> VersionGroupRegions { get; set; }
+        public virtual DbSet<EFVersionGroups> VersionGroups { get; set; }
+        public virtual DbSet<EFVersionNames> VersionNames { get; set; }
+        public virtual DbSet<EFVersions> Versions { get; set; }
     }
 }

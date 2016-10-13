@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class CharacteristicText
+    public partial class EFCharacteristicText : IEFModel
     {
         public int CharacteristicId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Message { get; set; }
 
-        public virtual Characteristics Characteristic { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFCharacteristics Characteristic { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

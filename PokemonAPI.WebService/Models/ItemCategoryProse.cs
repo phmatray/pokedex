@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ItemCategoryProse
+    public partial class EFItemCategoryProse : IEFModel
     {
         public int ItemCategoryId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual ItemCategories ItemCategory { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFItemCategories ItemCategory { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

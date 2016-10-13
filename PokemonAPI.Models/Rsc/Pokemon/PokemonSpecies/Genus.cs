@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class Genus
     {
+        public Genus(string genusValue, NamedAPIResource language)
+        {
+            GenusValue = genusValue;
+            Language = language;
+        }
+
         /// <summary>
         /// The localized genus for the referenced Pokémon species
         /// </summary>

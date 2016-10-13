@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestMoveData
+    public partial class EFConquestMoveData : IEFModel
     {
         public int MoveId { get; set; }
         public int? Power { get; set; }
@@ -10,9 +12,9 @@
         public int RangeId { get; set; }
         public int? DisplacementId { get; set; }
 
-        public virtual ConquestMoveDisplacements Displacement { get; set; }
-        public virtual ConquestMoveEffects Effect { get; set; }
-        public virtual Moves Move { get; set; }
-        public virtual ConquestMoveRanges Range { get; set; }
+        public virtual EFConquestMoveDisplacements Displacement { get; set; }
+        public virtual EFConquestMoveEffects Effect { get; set; }
+        public virtual EFMoves Move { get; set; }
+        public virtual EFConquestMoveRanges Range { get; set; }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ItemPockets
+    public partial class EFItemPockets : IEFModel, IEFIdentifier
     {
-        public ItemPockets()
+        public EFItemPockets()
         {
-            ItemCategories = new HashSet<ItemCategories>();
-            ItemPocketNames = new HashSet<ItemPocketNames>();
+            ItemCategories = new HashSet<EFItemCategories>();
+            ItemPocketNames = new HashSet<EFItemPocketNames>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<ItemCategories> ItemCategories { get; set; }
-        public virtual ICollection<ItemPocketNames> ItemPocketNames { get; set; }
+        public virtual ICollection<EFItemCategories> ItemCategories { get; set; }
+        public virtual ICollection<EFItemPocketNames> ItemPocketNames { get; set; }
     }
 }

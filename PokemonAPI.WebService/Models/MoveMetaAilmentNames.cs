@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveMetaAilmentNames
+    public partial class EFMoveMetaAilmentNames : IEFModel
     {
         public int MoveMetaAilmentId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual MoveMetaAilments MoveMetaAilment { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFMoveMetaAilments MoveMetaAilment { get; set; }
     }
 }

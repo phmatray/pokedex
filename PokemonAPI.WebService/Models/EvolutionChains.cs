@@ -3,17 +3,17 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EvolutionChains : IIdModel
+    public partial class EFEvolutionChains : IEFModel, IEFId
     {
-        public EvolutionChains()
+        public EFEvolutionChains()
         {
-            PokemonSpecies = new HashSet<PokemonSpecies>();
+            PokemonSpecies = new HashSet<EFPokemonSpecies>();
         }
 
         public int Id { get; set; }
         public int? BabyTriggerItemId { get; set; }
 
-        public virtual ICollection<PokemonSpecies> PokemonSpecies { get; set; }
-        public virtual Items BabyTriggerItem { get; set; }
+        public virtual ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
+        public virtual EFItems BabyTriggerItem { get; set; }
     }
 }

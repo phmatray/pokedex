@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveEffectChangelog
+    public partial class EFMoveEffectChangelog : IEFModel
     {
-        public MoveEffectChangelog()
+        public EFMoveEffectChangelog()
         {
-            MoveEffectChangelogProse = new HashSet<MoveEffectChangelogProse>();
+            MoveEffectChangelogProse = new HashSet<EFMoveEffectChangelogProse>();
         }
 
         public int Id { get; set; }
         public int EffectId { get; set; }
         public int ChangedInVersionGroupId { get; set; }
 
-        public virtual ICollection<MoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
-        public virtual VersionGroups ChangedInVersionGroup { get; set; }
-        public virtual MoveEffects Effect { get; set; }
+        public virtual ICollection<EFMoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
+        public virtual EFVersionGroups ChangedInVersionGroup { get; set; }
+        public virtual EFMoveEffects Effect { get; set; }
     }
 }

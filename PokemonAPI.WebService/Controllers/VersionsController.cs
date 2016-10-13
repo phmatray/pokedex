@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Version = PokemonAPI.Models.Rsc.Version;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class VersionsController : ApiController<Versions>
+    public class VersionsController : ApiController<EFVersions>
     {
         public VersionsController(VeekunContext context)
-            : base(context)
+            : base(context, "Versions", "versions")
         {
         }
 
@@ -36,10 +37,10 @@ namespace PokemonAPI.WebService.Controllers
                 var version = await MainDbSet
                     .FirstOrDefaultAsync(x => x.Id == id);
 
-                var result = new VersionResource
+                var result = new Version
                 {
                     Id           = version.Id,
-                    Identifier   = version.Identifier,
+                    Name         = version.Identifier,
                     Names        = await GetNames(version),
                     VersionGroup = await GetVersionGroup(version)
                 };
@@ -52,18 +53,18 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NameResource>> GetNames(Versions version)
+        private async Task<List<Name>> GetNames(EFVersions version)
         {
             return (await Context
                     .VersionNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.VersionId == version.Id)
                     .ToListAsync())
-                .Select(x => x.ToNameResource())
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetVersionGroup(Versions version)
+        private async Task<NamedAPIResource> GetVersionGroup(EFVersions version)
         {
             return (await Context
                     .VersionGroups

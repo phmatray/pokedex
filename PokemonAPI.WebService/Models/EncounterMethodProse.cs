@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class EncounterMethodProse
+    public partial class EFEncounterMethodProse : IEFModel
     {
         public int EncounterMethodId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
 
-        public virtual EncounterMethods EncounterMethod { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFEncounterMethods EncounterMethod { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

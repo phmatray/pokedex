@@ -1,13 +1,15 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class ItemFlagProse
+    public partial class EFItemFlagProse : IEFModel
     {
         public int ItemFlagId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ItemFlags ItemFlag { get; set; }
-        public virtual Languages LocalLanguage { get; set; }
+        public virtual EFItemFlags ItemFlag { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
     }
 }

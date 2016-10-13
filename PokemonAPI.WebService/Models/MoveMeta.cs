@@ -1,6 +1,8 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveMeta
+    public partial class EFMoveMeta : IEFModel
     {
         public int MoveId { get; set; }
         public int MetaCategoryId { get; set; }
@@ -16,8 +18,8 @@
         public int FlinchChance { get; set; }
         public int StatChance { get; set; }
 
-        public virtual MoveMetaAilments MetaAilment { get; set; }
-        public virtual MoveMetaCategories MetaCategory { get; set; }
-        public virtual Moves Move { get; set; }
+        public virtual EFMoveMetaAilments MetaAilment { get; set; }
+        public virtual EFMoveMetaCategories MetaCategory { get; set; }
+        public virtual EFMoves Move { get; set; }
     }
 }

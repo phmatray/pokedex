@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class ConquestWarriorArchetypes
+    public partial class EFConquestWarriorArchetypes : IEFModel, IEFIdentifier
     {
-        public ConquestWarriorArchetypes()
+        public EFConquestWarriorArchetypes()
         {
-            ConquestWarriors = new HashSet<ConquestWarriors>();
+            ConquestWarriors = new HashSet<EFConquestWarriors>();
         }
 
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<ConquestWarriors> ConquestWarriors { get; set; }
+        public virtual ICollection<EFConquestWarriors> ConquestWarriors { get; set; }
     }
 }

@@ -1,12 +1,14 @@
-﻿namespace PokemonAPI.WebService.Models
+﻿using PokemonAPI.WebService.Models.Interfaces;
+
+namespace PokemonAPI.WebService.Models
 {
-    public partial class MoveMetaCategoryProse
+    public partial class EFMoveMetaCategoryProse : IEFModel
     {
         public int MoveMetaCategoryId { get; set; }
         public int LocalLanguageId { get; set; }
         public string Description { get; set; }
 
-        public virtual Languages LocalLanguage { get; set; }
-        public virtual MoveMetaCategories MoveMetaCategory { get; set; }
+        public virtual EFLanguages LocalLanguage { get; set; }
+        public virtual EFMoveMetaCategories MoveMetaCategory { get; set; }
     }
 }
