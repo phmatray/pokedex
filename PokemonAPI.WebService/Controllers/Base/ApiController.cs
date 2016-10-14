@@ -46,7 +46,7 @@ namespace PokemonAPI.WebService.Controllers.Base
             try
             {
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var count = await MainDbSet.CountAsync();
                 var previous = Previous(limit, offset);
@@ -56,7 +56,8 @@ namespace PokemonAPI.WebService.Controllers.Base
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => x.ToApiResource())
+                    .Select(x => x.ToNamedApiResource())
+                    .Cast<APIResource>()
                     .ToList();
 
                 var results = new APIResourceList
