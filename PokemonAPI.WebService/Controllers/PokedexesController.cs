@@ -76,7 +76,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x =>
                     new NamedAPIResource
                     (
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}versiongroups/{x.VersionGroupId}/",
+                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(VersionGroupsController).Segment()}/{x.VersionGroupId}/",
                         x.VersionGroup.Identifier
                     ))
                 .ToList();

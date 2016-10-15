@@ -68,7 +68,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.PokemonMoveMethod.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}move-learn-methods/{x.PokemonMoveMethodId}/"
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MoveLearnMethodsController).Segment()}/{x.PokemonMoveMethodId}/"
                 ))
                 .ToList();
         }
@@ -101,7 +101,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.Region.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}regions/{x.RegionId}/"
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(RegionsController).Segment()}/{x.RegionId}/"
                 ))
                 .ToList();
         }
@@ -116,7 +116,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.Pokedex.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}pokedexes/{x.PokedexId}/"
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(PokemonsController).Segment()}/{x.PokedexId}/"
                 ))
                 .ToList();
         }

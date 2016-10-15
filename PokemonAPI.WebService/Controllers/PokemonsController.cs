@@ -185,7 +185,7 @@ namespace PokemonAPI.WebService.Controllers
 
         private string GetLocationAreaEncounters(EFPokemon pokemon)
         {
-            return $"{Constants.SiteUrl}{Constants.BaseUrl}pokemons/{pokemon.Id}/encounters";
+            return $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(PokemonsController).Segment()}/{pokemon.Id}/encounters";
         }
 
         private async Task<List<PokemonMove>> GetMoves(EFPokemon pokemon)

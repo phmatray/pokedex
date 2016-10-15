@@ -6,26 +6,25 @@ namespace PokemonAPI.WebService.Core
 {
     internal static class APIResourceMapper
     {
-        internal static APIResource ToApiResource(this IEFId id, string segment)
+        internal static APIResource ToApiResource(this IEFId id, string urlSegment)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
 
             return new APIResource
             (
-                $"{Constants.SiteUrl}{Constants.BaseUrl}{segment}/{id.Id}/"
+                $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}/{id.Id}/"
             );
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier, string segment = null)
+        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier, string urlSegment)
         {
             if (identifier == null)
                 throw new ArgumentNullException(nameof(identifier));
-
-            var url = segment == null 
-                ? "NOT IMPLEMENTED"
-                : $"{Constants.SiteUrl}{Constants.BaseUrl}{segment}/{identifier.Id}/";
-
+            if (string.IsNullOrWhiteSpace(urlSegment))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(urlSegment));
+            
+            var url = $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}/{identifier.Id}/";
             return new NamedAPIResource (identifier.Identifier, url);
         }
     }

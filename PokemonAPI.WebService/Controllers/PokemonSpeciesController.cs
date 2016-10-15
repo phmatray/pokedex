@@ -105,7 +105,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x =>
                     new NamedAPIResource
                     (
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}egg-groups/{x.EggGroupId}/",
+                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(EggGroupsController).Segment()}/{x.EggGroupId}/",
                         x.EggGroup.Identifier
                     ))
                 .ToList();
