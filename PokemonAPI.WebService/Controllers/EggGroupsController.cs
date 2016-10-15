@@ -61,7 +61,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.EggGroupId == eggGroup.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Name(x.Name, 
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -72,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.PokemonEggGroups)
                     .Where(x => x.PokemonEggGroups.Any(y => y.EggGroupId == eggGroup.Id))
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(this.Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(PokemonSpeciesController).Segment()))
                 .ToList();
         }
     }

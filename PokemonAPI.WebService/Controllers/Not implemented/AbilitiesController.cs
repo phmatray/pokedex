@@ -32,6 +32,8 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            throw new NotImplementedException();
+
             try
             {
                 var ability = await _context.Abilities

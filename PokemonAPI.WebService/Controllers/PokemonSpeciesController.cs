@@ -80,7 +80,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .GrowthRates
                     .FirstOrDefaultAsync(x => x.Id == species.GrowthRateId))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(GrowthRatesController).Segment());
         }
 
         private async Task<List<PokemonSpeciesDexEntry>> GetPokedexNumbers(EFPokemonSpecies species)
@@ -90,7 +90,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Pokedex)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PokemonSpeciesDexEntry(x.PokedexNumber, x.Pokedex.ToNamedApiResource(this.Segment())))
+                .Select(x => new PokemonSpeciesDexEntry(x.PokedexNumber,
+                    x.Pokedex.ToNamedApiResource(typeof(PokedexesController).Segment())))
                 .ToList();
         }
 
@@ -104,7 +105,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x =>
                     new NamedAPIResource
                     (
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}egggroups/{x.EggGroupId}/",
+                        $"{Constants.SiteUrl}{Constants.BaseUrl}egg-groups/{x.EggGroupId}/",
                         x.EggGroup.Identifier
                     ))
                 .ToList();
@@ -115,7 +116,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .PokemonColors
                     .FirstOrDefaultAsync(x => x.Id == species.ColorId))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(PokemonColorsController).Segment());
         }
 
         private async Task<NamedAPIResource> GetShape(EFPokemonSpecies species)
@@ -123,7 +124,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .PokemonShapes
                     .FirstOrDefaultAsync(x => x.Id == species.ShapeId))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(PokemonShapesController).Segment());
         }
 
         private async Task<NamedAPIResource> GetEvolvesFromSpecies(EFPokemonSpecies species)
@@ -134,7 +135,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .PokemonSpecies
                     .FirstOrDefaultAsync(x => x.Id == species.EvolvesFromSpeciesId.Value))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(PokemonSpeciesController).Segment());
         }
 
         private async Task<APIResource> GetEvolutionChain(EFPokemonSpecies species)
@@ -145,7 +146,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .EvolutionChains
                     .FirstOrDefaultAsync(x => x.Id == species.EvolutionChainId.Value))?
-                .ToApiResource(this.Segment());
+                .ToApiResource(typeof(EvolutionChainsController).Segment());
         }
 
         private async Task<NamedAPIResource> GetHabitat(EFPokemonSpecies species)
@@ -156,7 +157,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .PokemonHabitats
                     .FirstOrDefaultAsync(x => x.Id == species.HabitatId.Value))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(PokemonHabitatsController).Segment());
         }
 
         private async Task<NamedAPIResource> GetGeneration(EFPokemonSpecies species)
@@ -167,7 +168,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Generations
                     .FirstOrDefaultAsync(x => x.Id == species.GenerationId.Value))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(GenerationsController).Segment());
         }
 
         private async Task<List<Name>> GetNames(EFPokemonSpecies species)
@@ -177,7 +178,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Name(x.Name,
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -188,7 +190,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Area)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PalParkEncounterArea(x.BaseScore, x.Rate, x.Area.ToNamedApiResource(this.Segment())))
+                .Select(x => new PalParkEncounterArea(x.BaseScore, x.Rate, 
+                    x.Area.ToNamedApiResource(typeof(PalParkAreasController).Segment())))
                 .ToList();
         }
 
@@ -200,7 +203,9 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Version)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new FlavorText(x.FlavorText, x.Version.ToNamedApiResource(this.Segment()), x.Language.ToNamedApiResource(this.Segment())))
+                .Select(x => new FlavorText(x.FlavorText,
+                    x.Language.ToNamedApiResource(typeof(LanguagesController).Segment()), 
+                    x.Version.ToNamedApiResource(typeof(VersionsController).Segment())))
                 .ToList();
         }
 
@@ -211,7 +216,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Description(x.FlavorSummary, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Description(x.FlavorSummary,
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -222,7 +228,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Genus(x.Genus, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Genus(x.Genus, 
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -232,7 +239,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Pokemon
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PokemonSpeciesVariety(x.IsDefault, x.Species.ToNamedApiResource(this.Segment())))
+                .Select(x => new PokemonSpeciesVariety(x.IsDefault,
+                    x.Species.ToNamedApiResource(typeof(PokemonsController).Segment())))
                 .ToList();
         }
     }

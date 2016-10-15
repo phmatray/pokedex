@@ -62,7 +62,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.VersionId == version.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Name(x.Name,
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -72,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
                     .VersionGroups
                     .Where(x => x.Id == version.VersionGroupId)
                     .FirstOrDefaultAsync())
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(VersionGroupsController).Segment());
         }
     }
 }

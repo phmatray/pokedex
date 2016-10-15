@@ -106,7 +106,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new GenerationGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource(this.Segment())
+                    Generation = x.Generation.ToNamedApiResource(typeof(GenerationsController).Segment())
                 })
                 .ToList();
         }
@@ -118,7 +118,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(GenerationsController).Segment());
         }
 
         private async Task<NamedAPIResource> GetMoveDamageClass(EFTypes type)
@@ -128,7 +128,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(MoveDamageClassesController).Segment());
         }
 
         private async Task<List<Name>> GetNames(EFTypes type)
@@ -138,7 +138,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Name(x.Name, 
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -152,7 +153,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new TypePokemon
                 {
                     Slot = x.Slot,
-                    Pokemon = x.Pokemon.ToNamedApiResource(this.Segment())
+                    Pokemon = x.Pokemon.ToNamedApiResource(typeof(PokemonsController).Segment())
                 })
                 .ToList();
         }
@@ -163,7 +164,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Moves
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(this.Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(MovesController).Segment()))
                 .ToList();
         }
     }

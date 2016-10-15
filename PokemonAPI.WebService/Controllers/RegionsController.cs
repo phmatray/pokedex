@@ -63,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Locations
                     .Where(x => x.RegionId == region.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(typeof(LocationsController).Segment()))
                 .ToList();
         }
 
@@ -76,8 +76,8 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new NamedAPIResource
                 (
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}version-groups/{x.VersionGroupId}/",
-                    x.VersionGroup.Identifier
+                    x.VersionGroup.Identifier,
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}version-groups/{x.VersionGroupId}/"
                 ))
                 .ToList();
         }

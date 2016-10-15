@@ -92,8 +92,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Moves
                     .Where(x => x.GenerationId == generation.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
-                //.Select(x => x.ToNamedApiResource(typeof(MoveController).Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(MovesController).Segment()))
                 .ToList();
         }
 

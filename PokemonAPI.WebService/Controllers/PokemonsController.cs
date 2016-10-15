@@ -126,7 +126,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     IsHidden = x.IsHidden,
                     Slot = x.Slot,
-                    Ability = x.Ability.ToNamedApiResource(this.Segment())
+                    Ability = x.Ability.ToNamedApiResource(typeof(AbilitiesController).Segment())
                 })
                 .ToList();
         }
@@ -137,7 +137,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonForms
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(this.Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(PokemonFormsController).Segment()))
                 .ToList();
         }
 
@@ -151,7 +151,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new VersionGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Version = x.Version.ToNamedApiResource(this.Segment())
+                    Version = x.Version.ToNamedApiResource(typeof(VersionsController).Segment())
                 })
                 .ToList();
         }
@@ -202,11 +202,12 @@ namespace PokemonAPI.WebService.Controllers
                 .GroupBy(x => x.Move, (g, elements) =>
                     new PokemonMove
                     {
-                        Move = g.ToNamedApiResource(this.Segment()),
+                        Move = g.ToNamedApiResource(typeof(MovesController).Segment()),
                         VersionGroupDetails = elements
                             .Select(z => new PokemonMoveVersion
                             {
-                                MoveLearnMethod = z.PokemonMoveMethod.ToNamedApiResource(this.Segment()),
+                                MoveLearnMethod = z.PokemonMoveMethod.ToNamedApiResource(
+                                    typeof(MoveLearnMethodsController).Segment()),
                                 VersionGroup = z.VersionGroup.ToNamedApiResource(this.Segment()),
                                 LevelLearnedAt = z.Level
                             })
@@ -217,17 +218,18 @@ namespace PokemonAPI.WebService.Controllers
 
         private PokemonSprites GetSprites(EFPokemon pokemon)
         {
-            return new PokemonSprites
-            {
-                FrontDefault = null,
-                FrontShiny = null,
-                FrontFemale = null,
-                FrontShinyFemale = null,
-                BackDefault = null,
-                BackShiny = null,
-                BackFemale = null,
-                BackShinyFemale = null
-            };
+            return null;
+            //return new PokemonSprites
+            //{
+            //    FrontDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            //    FrontShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
+            //    FrontFemale = null,
+            //    FrontShinyFemale = null,
+            //    BackDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
+            //    BackShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+            //    BackFemale = null,
+            //    BackShinyFemale = null
+            //};
         }
 
         private async Task<NamedAPIResource> GetSpecies(EFPokemon pokemon)
@@ -236,7 +238,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonSpecies
                     .Where(x => x.Id == pokemon.SpeciesId)
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(PokemonSpeciesController).Segment());
         }
 
         private async Task<List<PokemonStat>> GetStats(EFPokemon pokemon)
@@ -248,7 +250,7 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new PokemonStat
                 {
-                    Stat = x.Stat.ToNamedApiResource(this.Segment()),
+                    Stat = x.Stat.ToNamedApiResource(typeof(StatsController).Segment()),
                     Effort = x.Effort,
                     BaseStat = x.BaseStat
                 })
@@ -265,7 +267,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new PokemonType
                 {
                     Slot = x.Slot,
-                    Type = x.Type.ToNamedApiResource(this.Segment())
+                    Type = x.Type.ToNamedApiResource(typeof(TypesController).Segment())
                 })
                 .ToList();
         }

@@ -63,7 +63,8 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
-                .Select(x => new Description(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Description(x.Name, 
+                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
                 .ToList();
         }
 
@@ -83,7 +84,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonSpecies
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(this.Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(PokemonSpeciesController).Segment()))
                 .ToList();
         }
     }

@@ -67,8 +67,8 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new NamedAPIResource
                 (
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}move-methods/{x.PokemonMoveMethodId}/",
-                    x.PokemonMoveMethod.Identifier
+                    x.PokemonMoveMethod.Identifier,
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}move-learn-methods/{x.PokemonMoveMethodId}/"
                 ))
                 .ToList();
         }
@@ -79,7 +79,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Versions
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(this.Segment()))
+                .Select(x => x.ToNamedApiResource(typeof(VersionsController).Segment()))
                 .ToList();
         }
 
@@ -88,7 +88,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Generations
                     .FirstOrDefaultAsync(x => x.Id == versionGroup.GenerationId))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource(typeof(GenerationsController).Segment());
         }
 
         private async Task<List<NamedAPIResource>> GetRegions(EFVersionGroups versionGroup)
@@ -100,8 +100,8 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new NamedAPIResource
                 (
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}regions/{x.RegionId}/",
-                    x.Region.Identifier
+                    x.Region.Identifier,
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}regions/{x.RegionId}/"
                 ))
                 .ToList();
         }
@@ -115,8 +115,8 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new NamedAPIResource
                 (
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}pokedexes/{x.PokedexId}/",
-                    x.Pokedex.Identifier
+                    x.Pokedex.Identifier,
+                    $"{Constants.SiteUrl}{Constants.BaseUrl}pokedexes/{x.PokedexId}/"
                 ))
                 .ToList();
         }
