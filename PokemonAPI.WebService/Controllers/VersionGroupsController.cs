@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class VersionGroupsController : ApiController<EFVersionGroups>
+    [Route("api/v1/version-groups")]
+    public class VersionGroupsController : ApiController
     {
-        public VersionGroupsController(VeekunContext context) 
-            : base(context, "VersionGroups", "version-groups")
+        private readonly VeekunContext _context;
+
+        public VersionGroupsController(VeekunContext context)
         {
+            _context = context;
         }
 
         // GET api/v1/versiongroups
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.VersionGroups, this.Segment());
         }
 
         // GET api/v1/versiongroups/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var versionGroup = await MainDbSet
+                var versionGroup = await _context.VersionGroups
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new VersionGroup
@@ -58,7 +60,7 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<NamedAPIResource>> GetMoveLearnMethods(EFVersionGroups versionGroup)
         {
-            return (await Context
+            return (await _context
                     .VersionGroupPokemonMoveMethods
                     .Include(x => x.PokemonMoveMethod)
                     .Where(x => x.VersionGroupId == versionGroup.Id)
@@ -73,25 +75,25 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<NamedAPIResource>> GetVersions(EFVersionGroups versionGroup)
         {
-            return (await Context
+            return (await _context
                     .Versions
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
 
         private async Task<NamedAPIResource> GetGeneration(EFVersionGroups versionGroup)
         {
-            return (await Context
+            return (await _context
                     .Generations
                     .FirstOrDefaultAsync(x => x.Id == versionGroup.GenerationId))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<List<NamedAPIResource>> GetRegions(EFVersionGroups versionGroup)
         {
-            return (await Context
+            return (await _context
                     .VersionGroupRegions
                     .Include(x => x.Region)
                     .Where(x => x.VersionGroupId == versionGroup.Id)
@@ -106,7 +108,7 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<NamedAPIResource>> GetPokedexes(EFVersionGroups versionGroup)
         {
-            return (await Context
+            return (await _context
                     .PokedexVersionGroups
                     .Include(x => x.Pokedex)
                     .Where(x => x.VersionGroupId == versionGroup.Id)

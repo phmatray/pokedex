@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Version = PokemonAPI.Models.Rsc.Version;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class VersionsController : ApiController<EFVersions>
+    [Route("api/v1/versions")]
+    public class VersionsController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public VersionsController(VeekunContext context)
-            : base(context, "Versions", "versions")
         {
+            _context = context;
         }
 
         // GET api/v1/versions
@@ -25,7 +27,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.Versions, this.Segment());
         }
 
         // GET api/v1/versions/1
@@ -34,7 +36,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var version = await MainDbSet
+                var version = await _context.Versions
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Version
@@ -55,22 +57,22 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Name>> GetNames(EFVersions version)
         {
-            return (await Context
+            return (await _context
                     .VersionNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.VersionId == version.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<NamedAPIResource> GetVersionGroup(EFVersions version)
         {
-            return (await Context
+            return (await _context
                     .VersionGroups
                     .Where(x => x.Id == version.VersionGroupId)
                     .FirstOrDefaultAsync())
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
     }
 }

@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Type = PokemonAPI.Models.Rsc.Type;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class TypesController : ApiController<EFTypes>
+    [Route("api/v1/types")]
+    public class TypesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public TypesController(VeekunContext context)
-            : base(context, "Types", "types")
         {
+            _context = context;
         }
 
         // GET api/v1/types
@@ -26,7 +28,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.Types, this.Segment());
         }
 
         // GET api/v1/types/1
@@ -35,7 +37,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var type = await MainDbSet
+                var type = await _context.Types
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Type
@@ -74,29 +76,29 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<NamedAPIResource>> GetDamageTypesTo(Expression<Func<EFTypeEfficacy, bool>> expression)
         {
-            return (await Context
+            return (await _context
                     .TypeEfficacy
                     .Include(x => x.TargetType)
                     .Where(expression)
                     .ToListAsync())
-                .Select(x => x.TargetType.ToNamedApiResource())
+                .Select(x => x.TargetType.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
 
         private async Task<List<NamedAPIResource>> GetDamageTypesFrom(Expression<Func<EFTypeEfficacy, bool>> expression)
         {
-            return (await Context
+            return (await _context
                     .TypeEfficacy
                     .Include(x => x.DamageType)
                     .Where(expression)
                     .ToListAsync())
-                .Select(x => x.DamageType.ToNamedApiResource())
+                .Select(x => x.DamageType.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
 
         private async Task<List<GenerationGameIndex>> GetGameIndices(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .TypeGameIndices
                     .Include(x => x.Generation)
                     .Where(x => x.TypeId == type.Id)
@@ -104,45 +106,45 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new GenerationGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource()
+                    Generation = x.Generation.ToNamedApiResource(this.Segment())
                 })
                 .ToList();
         }
 
         private async Task<NamedAPIResource> GetGeneration(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .Generations
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<NamedAPIResource> GetMoveDamageClass(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .MoveDamageClasses
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<List<Name>> GetNames(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .TypeNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<TypePokemon>> GetPokemon(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .PokemonTypes
                     .Include(x => x.Pokemon)
                     .Where(x => x.TypeId == type.Id)
@@ -150,18 +152,18 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new TypePokemon
                 {
                     Slot = x.Slot,
-                    Pokemon = x.Pokemon.ToNamedApiResource()
+                    Pokemon = x.Pokemon.ToNamedApiResource(this.Segment())
                 })
                 .ToList();
         }
 
         private async Task<List<NamedAPIResource>> GetMoves(EFTypes type)
         {
-            return (await Context
+            return (await _context
                     .Moves
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
     }

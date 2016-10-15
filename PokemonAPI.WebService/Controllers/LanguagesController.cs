@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class LanguagesController : ApiController<EFLanguages>
+    [Route("api/v1/languages")]
+    public class LanguagesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public LanguagesController(VeekunContext context)
-            : base(context, "Languages", "languages")
         {
+            _context = context;
         }
 
         // GET api/v1/languages
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.Languages, this.Segment());
         }
 
         // GET api/v1/languages/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var language = await MainDbSet
+                var language = await _context.Languages
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Language
@@ -56,12 +58,12 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Name>> GetNames(EFLanguages language)
         {
-            return (await Context
+            return (await _context
                     .LanguageNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.LanguageId == language.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models

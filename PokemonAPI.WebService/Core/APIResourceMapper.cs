@@ -1,27 +1,32 @@
-﻿using PokemonAPI.Models.Rsc;
+﻿using System;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Core
 {
     internal static class APIResourceMapper
     {
-        internal static APIResource ToApiResource(this IEFId id)
+        internal static APIResource ToApiResource(this IEFId id, string segment)
         {
-            var name = id.GetType().Name.ToLower();
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
             return new APIResource
             (
-                $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{id.Id}/"
+                $"{Constants.SiteUrl}{Constants.BaseUrl}{segment}/{id.Id}/"
             );
         }
 
-        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier)
+        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier, string segment = null)
         {
-            var name = identifier.GetType().Name.ToLower();
-            return new NamedAPIResource
-            (
-                $"{Constants.SiteUrl}{Constants.BaseUrl}{name}/{identifier.Id}/",
-                identifier.Identifier
-            );
+            if (identifier == null)
+                throw new ArgumentNullException(nameof(identifier));
+
+            var url = segment == null 
+                ? "NOT IMPLEMENTED"
+                : $"{Constants.SiteUrl}{Constants.BaseUrl}{segment}/{identifier.Id}/";
+
+            return new NamedAPIResource (identifier.Identifier, url);
         }
     }
 }

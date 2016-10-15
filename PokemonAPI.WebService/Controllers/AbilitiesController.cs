@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class AbilitiesController : ApiController<EFAbilities>
+    [Route("api/v1/abilities")]
+    public class AbilitiesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public AbilitiesController(VeekunContext context)
-            : base(context, "Abilities", "abilities")
         {
+            _context = context;
         }
 
         // GET api/v1/abilities
@@ -21,7 +24,8 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, 
+                _context.Abilities, this.Segment());
         }
 
         // GET api/v1/abilities/1
@@ -30,7 +34,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var ability = await MainDbSet
+                var ability = await _context.Abilities
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Ability

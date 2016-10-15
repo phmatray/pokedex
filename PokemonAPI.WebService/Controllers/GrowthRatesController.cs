@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class GrowthRatesController : ApiController<EFGrowthRates>
+    [Route("api/v1/growth-rates")]
+    public class GrowthRatesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public GrowthRatesController(VeekunContext context)
-            : base(context, "GrowthRates", "growth-rates")
         {
+            _context = context;
         }
 
         // GET api/v1/growthrates
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.GrowthRates, this.Segment());
         }
 
         // GET api/v1/growthrates/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var growthRate = await MainDbSet
+                var growthRate = await _context.GrowthRates
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new GrowthRate
@@ -56,18 +58,18 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Description>> GetDescriptions(EFGrowthRates growthRate)
         {
-            return (await Context
+            return (await _context
                     .GrowthRateProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
-                .Select(x => new Description(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Description(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<GrowthRateExperienceLevel>> GetLevels(EFGrowthRates growthRate)
         {
-            return (await Context
+            return (await _context
                     .Experience
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
@@ -77,11 +79,11 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFGrowthRates growthRate)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpecies
                     .Where(x => x.GrowthRateId == growthRate.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
     }

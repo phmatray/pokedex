@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class PokemonColorsController : ApiController<EFPokemonColors>
+    [Route("api/v1/pokemon-colors")]
+    public class PokemonColorsController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public PokemonColorsController(VeekunContext context)
-            : base(context, "PokemonColors", "pokemon-colors")
         {
+            _context = context;
         }
 
         // GET api/v1/pokemoncolors
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.PokemonColors, this.Segment());
         }
 
         // GET api/v1/pokemoncolors/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemonColor = await MainDbSet
+                var pokemonColor = await _context.PokemonColors
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonColor
@@ -54,22 +56,22 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Name>> GetNames(EFPokemonColors pokemonColor)
         {
-            return (await Context
+            return (await _context
                     .PokemonColorNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonColorId == pokemonColor.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFPokemonColors pokemonColor)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpecies
                     .Where(x => x.ColorId == pokemonColor.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
     }

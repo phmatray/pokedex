@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class PokedexesController : ApiController<EFPokedexes>
+    [Route("api/v1/pokedexes")]
+    public class PokedexesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public PokedexesController(VeekunContext context)
-            : base(context, "Pokedexes", "podedexes")
         {
+            _context = context;
         }
 
         // GET api/v1/pokedexes
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.Pokedexes, this.Segment());
         }
 
         // GET api/v1/pokedexes/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokedex = await MainDbSet
+                var pokedex = await _context.Pokedexes
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Pokedex
@@ -58,15 +60,15 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<NamedAPIResource> GetRegion(EFPokedexes pokedex)
         {
-            return (await Context
+            return (await _context
                     .Regions
                     .FirstOrDefaultAsync(x => x.Id == pokedex.RegionId))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<List<NamedAPIResource>> GetVersionGroups(EFPokedexes pokedex)
         {
-            return (await Context
+            return (await _context
                     .PokedexVersionGroups
                     .Include(x => x.VersionGroup)
                     .Where(x => x.PokedexId == pokedex.Id)
@@ -82,35 +84,35 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Description>> GetDescriptions(EFPokedexes pokedex)
         {
-            return (await Context
+            return (await _context
                     .PokedexProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<PokemonEntry>> GetEntries(EFPokedexes pokedex)
         {
-            return (await Context
+            return (await _context
                     .PokemonDexNumbers
                     .Include(x => x.Species)
                     .Where(x => x.PokedexId == pokedex.Id)
                     .OrderBy(x => x.PokedexNumber)
                     .ToListAsync())
-                .Select(x => new PokemonEntry(x.PokedexNumber, x.Species.ToNamedApiResource()))
+                .Select(x => new PokemonEntry(x.PokedexNumber, x.Species.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<Name>> GetNames(EFPokedexes pokedex)
         {
-            return (await Context
+            return (await _context
                     .PokedexProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
     }

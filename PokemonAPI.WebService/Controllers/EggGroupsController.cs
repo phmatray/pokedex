@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class EggGroupsController : ApiController<EFEggGroups>
+    [Route("api/v1/egg-groups")]
+    public class EggGroupsController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public EggGroupsController(VeekunContext context)
-            : base(context, "EggGroups", "egg-groups")
         {
+            _context = context;
         }
 
         // GET api/v1/egggroups
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.EggGroups, this.Segment());
         }
 
         // GET api/v1/egggroups/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var eggGroup = await MainDbSet
+                var eggGroup = await _context.EggGroups
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new EggGroup
@@ -54,23 +56,23 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<List<Name>> GetNames(EFEggGroups eggGroup)
         {
-            return (await Context
+            return (await _context
                     .EggGroupProse
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.EggGroupId == eggGroup.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFEggGroups eggGroup)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpecies
                     .Include(x => x.PokemonEggGroups)
                     .Where(x => x.PokemonEggGroups.Any(y => y.EggGroupId == eggGroup.Id))
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+                .Select(x => x.ToNamedApiResource(this.Segment()))
                 .ToList();
         }
     }

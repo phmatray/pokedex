@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,53 +9,29 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Controllers.Base
 {
-    public abstract class ApiController<TModel> : Controller
-        where TModel: class, IEFIdentifier
+    public abstract class ApiController : Controller
     {
-        protected VeekunContext Context { get; }
-        protected DbSet<TModel> MainDbSet { get; }
-        protected string UriSection { get; }
-
-        protected string ControllerUrl
-            => $"{Constants.SiteUrl}{Constants.BaseUrl}{UriSection}";
-
-        protected string ControllerName
-            => GetType().Name;
-
-        protected string ModelName
-            => GetType().Name.Replace("Controller", "");
-
-
-        protected ApiController(VeekunContext context, string dbSetName, string uriSection)
-        {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (string.IsNullOrWhiteSpace(dbSetName))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(dbSetName));
-            if (string.IsNullOrWhiteSpace(uriSection))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(uriSection));
-
-            Context = context;
-            MainDbSet = (DbSet<TModel>) GetValueByReflection(context, dbSetName);
-            UriSection = uriSection;
-        }
-
-
-        protected async Task<IActionResult> GetAll(int limit, int offset)
+        protected async Task<IActionResult> GetAll<TModel>(int limit, int offset,
+            DbSet<TModel> dbset, string urlSegment)
+            where TModel : class, IEFIdentifier
         {
             try
             {
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+                if (dbset == null) throw new ArgumentNullException(nameof(dbset));
+                if (string.IsNullOrWhiteSpace(urlSegment))
+                    throw new ArgumentException("Value cannot be null or whitespace.", nameof(urlSegment));
 
-                var count = await MainDbSet.CountAsync();
-                var previous = Previous(limit, offset);
-                var next = Next(limit, offset, count);
+                var count = await dbset.CountAsync();
+                var previous = Previous(limit, offset, urlSegment);
+                var next = Next(limit, offset, count, urlSegment);
 
-                var apiResults = (await MainDbSet
+                var apiResults = (await dbset
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => x.ToNamedApiResource())
+                    .Select(x => x.ToNamedApiResource(urlSegment))
                     .Cast<APIResource>()
                     .ToList();
 
@@ -76,22 +51,17 @@ namespace PokemonAPI.WebService.Controllers.Base
             }
         }
 
-        private object GetValueByReflection(object obj, string propertyName)
-        {
-            return obj.GetType().GetProperty(propertyName).GetValue(obj);
-        }
-
-        private string Previous(int limit, int offset)
+        private string Previous(int limit, int offset, string urlSegment)
         {
             return offset - limit > 0
-                ? $"{ControllerUrl}?limit={limit}&offset={offset - limit}"
+                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
                 : null;
         }
 
-        private string Next(int limit, int offset, int count)
+        private string Next(int limit, int offset, int count, string urlSegment)
         {
             return offset + limit < count
-                ? $"{ControllerUrl}?limit={limit}&offset={offset + limit}"
+                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset + limit}"
                 : null;
         }
     }

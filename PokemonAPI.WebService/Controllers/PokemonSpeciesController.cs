@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/[controller]")]
-    public class PokemonSpeciesController : ApiController<EFPokemonSpecies>
+    [Route("api/v1/pokemon-species")]
+    public class PokemonSpeciesController : ApiController
     {
+        private readonly VeekunContext _context;
+
         public PokemonSpeciesController(VeekunContext context)
-            : base(context, "PokemonSpecies", "pokemon-species")
         {
+            _context = context;
         }
 
         // GET api/v1/pokemonspecies
@@ -24,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset);
+            return await base.GetAll(limit, offset, _context.PokemonSpecies, this.Segment());
         }
 
         // GET api/v1/pokemonspecies/1
@@ -33,7 +35,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var species = await MainDbSet
+                var species = await _context.PokemonSpecies
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonSpecies
@@ -75,26 +77,26 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<NamedAPIResource> GetGrowthRate(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .GrowthRates
                     .FirstOrDefaultAsync(x => x.Id == species.GrowthRateId))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<List<PokemonSpeciesDexEntry>> GetPokedexNumbers(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonDexNumbers
                     .Include(x => x.Pokedex)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PokemonSpeciesDexEntry(x.PokedexNumber, x.Pokedex.ToNamedApiResource()))
+                .Select(x => new PokemonSpeciesDexEntry(x.PokedexNumber, x.Pokedex.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<NamedAPIResource>> GetEggGroups(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonEggGroups
                     .Include(x => x.EggGroup)
                     .Where(x => x.SpeciesId == species.Id)
@@ -110,18 +112,18 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<NamedAPIResource> GetColor(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonColors
                     .FirstOrDefaultAsync(x => x.Id == species.ColorId))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<NamedAPIResource> GetShape(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonShapes
                     .FirstOrDefaultAsync(x => x.Id == species.ShapeId))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<NamedAPIResource> GetEvolvesFromSpecies(EFPokemonSpecies species)
@@ -129,10 +131,10 @@ namespace PokemonAPI.WebService.Controllers
             if (!species.EvolvesFromSpeciesId.HasValue)
                 return null;
 
-            return (await Context
+            return (await _context
                     .PokemonSpecies
                     .FirstOrDefaultAsync(x => x.Id == species.EvolvesFromSpeciesId.Value))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<APIResource> GetEvolutionChain(EFPokemonSpecies species)
@@ -140,10 +142,10 @@ namespace PokemonAPI.WebService.Controllers
             if (!species.EvolutionChainId.HasValue)
                 return null;
 
-            return (await Context
+            return (await _context
                     .EvolutionChains
                     .FirstOrDefaultAsync(x => x.Id == species.EvolutionChainId.Value))?
-                .ToApiResource();
+                .ToApiResource(this.Segment());
         }
 
         private async Task<NamedAPIResource> GetHabitat(EFPokemonSpecies species)
@@ -151,10 +153,10 @@ namespace PokemonAPI.WebService.Controllers
             if (!species.HabitatId.HasValue)
                 return null;
 
-            return (await Context
+            return (await _context
                     .PokemonHabitats
                     .FirstOrDefaultAsync(x => x.Id == species.HabitatId.Value))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<NamedAPIResource> GetGeneration(EFPokemonSpecies species)
@@ -162,75 +164,75 @@ namespace PokemonAPI.WebService.Controllers
             if (!species.GenerationId.HasValue)
                 return null;
 
-            return (await Context
+            return (await _context
                     .Generations
                     .FirstOrDefaultAsync(x => x.Id == species.GenerationId.Value))?
-                .ToNamedApiResource();
+                .ToNamedApiResource(this.Segment());
         }
 
         private async Task<List<Name>> GetNames(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpeciesNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<PalParkEncounterArea>> GetPalParkEncounters(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PalPark
                     .Include(x => x.Area)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PalParkEncounterArea(x.BaseScore, x.Rate, x.Area.ToNamedApiResource()))
+                .Select(x => new PalParkEncounterArea(x.BaseScore, x.Rate, x.Area.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<FlavorText>> GetFlavorTextEntries(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpeciesFlavorText
                     .Include(x => x.Language)
                     .Include(x => x.Version)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new FlavorText(x.FlavorText, x.Version.ToNamedApiResource(), x.Language.ToNamedApiResource()))
+                .Select(x => new FlavorText(x.FlavorText, x.Version.ToNamedApiResource(this.Segment()), x.Language.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<Description>> GetFormDescriptions(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpeciesFlavorSummaries
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Description(x.FlavorSummary, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Description(x.FlavorSummary, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<Genus>> GetGenera(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .PokemonSpeciesNames
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.PokemonSpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new Genus(x.Genus, x.LocalLanguage.ToNamedApiResource()))
+                .Select(x => new Genus(x.Genus, x.LocalLanguage.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
 
         private async Task<List<PokemonSpeciesVariety>> GetVarieties(EFPokemonSpecies species)
         {
-            return (await Context
+            return (await _context
                     .Pokemon
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new PokemonSpeciesVariety(x.IsDefault, x.Species.ToNamedApiResource()))
+                .Select(x => new PokemonSpeciesVariety(x.IsDefault, x.Species.ToNamedApiResource(this.Segment())))
                 .ToList();
         }
     }

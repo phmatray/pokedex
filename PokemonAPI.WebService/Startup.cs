@@ -49,7 +49,8 @@ namespace PokemonAPI.WebService
                 {
                     Version = "v1",
                     Title = "PokedexG API",
-                    Contact = new Contact { Name = "Philippe Matray", Email = "", Url = "http://phmatray.net" }
+                    Description = "All the Pokémon data you'll ever need, in one place, and easily accessible through a modern RESTful API.",
+                    Contact = new Contact { Name = "Philippe Matray", Email = "phmatray@outlook.com", Url = "http://phmatray.net" }
                 });
 
                 //Determine base path for the application.
