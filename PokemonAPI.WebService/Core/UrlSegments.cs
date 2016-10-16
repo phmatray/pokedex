@@ -37,7 +37,9 @@ namespace PokemonAPI.WebService.Core
                 {typeof(PokemonFormsController)     , "pokemon-forms"},
                 {typeof(MoveLearnMethodsController) , "move-learn-methods"},
                 {typeof(StatsController)            , "stats"},
-                {typeof(MoveDamageClassesController), "move-damage-classes"}
+                {typeof(MoveDamageClassesController), "move-damage-classes"},
+                {typeof(CharacteristicsController)  , "characteristics"},
+                {typeof(NaturesController)          , "natures"}
             };
 
         }
