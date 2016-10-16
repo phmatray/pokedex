@@ -275,25 +275,83 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/natures")]
-    public class NaturesController : ApiController
+    [Route("api/v1/berry-flavors")]
+    public class BerryFlavorsController : ApiController
     {
         private readonly VeekunContext _context;
 
-        public NaturesController(VeekunContext context)
+        public BerryFlavorsController(VeekunContext context)
         {
             _context = context;
         }
 
-        // GET api/v1/natures
-        // GET api/v1/natures?skip=0&take=20
+        // GET api/v1/berry-flavors
+        // GET api/v1/berry-flavors?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
             throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
         }
 
-        // GET api/v1/natures/1
+        // GET api/v1/berry-flavors/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/move-battle-styles")]
+    public class MoveBattleStylesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveBattleStylesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-battle-styles
+        // GET api/v1/move-battle-styles?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/move-battle-styles/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/pokeathlon-stats")]
+    public class PokeathlonStatsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public PokeathlonStatsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/pokeathlon-stats
+        // GET api/v1/pokeathlon-stats?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/pokeathlon-stats/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

@@ -39,7 +39,10 @@ namespace PokemonAPI.WebService.Core
                 {typeof(StatsController)            , "stats"},
                 {typeof(MoveDamageClassesController), "move-damage-classes"},
                 {typeof(CharacteristicsController)  , "characteristics"},
-                {typeof(NaturesController)          , "natures"}
+                {typeof(NaturesController)          , "natures"},
+                {typeof(BerryFlavorsController)     , "berry-flavors"},
+                {typeof(MoveBattleStylesController) , "move-battle-styles"},
+                {typeof(PokeathlonStatsController)  , "pokeathlon-stats"}
             };
 
         }
