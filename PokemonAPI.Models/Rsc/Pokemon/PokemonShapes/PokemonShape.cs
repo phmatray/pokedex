@@ -20,6 +20,11 @@ namespace PokemonAPI.Models.Rsc
         public List<AwesomeName> AwesomeNames { get; set; }
 
         /// <summary>
+        /// The "scientific" description of this Pokémon shape listed in different languages
+        /// </summary>
+        public List<Description> Descriptions { get; set; }
+
+        /// <summary>
         /// The name of this Pokémon shape listed in different languages
         /// </summary>
         public List<Name> Names { get; set; }

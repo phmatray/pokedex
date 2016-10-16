@@ -86,33 +86,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/pokemon-shapes")]
-    public class PokemonShapesController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public PokemonShapesController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/pokemon-shapes
-        // GET api/v1/pokemon-shapes?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, 
-                _context.PokemonShapes, this.Segment());
-        }
-
-        // GET api/v1/pokemon-shapes/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/pokemon-habitats")]
     public class PokemonHabitatsController : ApiController
     {
