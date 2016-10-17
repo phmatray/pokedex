@@ -113,33 +113,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/pokemon-forms")]
-    public class PokemonFormsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public PokemonFormsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/pokemon-forms
-        // GET api/v1/pokemon-forms?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, 
-                _context.PokemonForms, this.Segment());
-        }
-
-        // GET api/v1/pokemon-forms/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/move-learn-methods")]
     public class MoveLearnMethodsController : ApiController
     {
