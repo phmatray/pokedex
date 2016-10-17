@@ -86,33 +86,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/pokemon-habitats")]
-    public class PokemonHabitatsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public PokemonHabitatsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/pokemon-habitats
-        // GET api/v1/pokemon-habitats?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, 
-                _context.PokemonHabitats, this.Segment());
-        }
-
-        // GET api/v1/pokemon-habitats/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/pal-park-areas")]
     public class PalParkAreasController : ApiController
     {
