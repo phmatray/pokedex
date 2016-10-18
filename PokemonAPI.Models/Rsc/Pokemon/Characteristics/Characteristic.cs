@@ -10,6 +10,11 @@ namespace PokemonAPI.Models.Rsc
         public int Id { get; set; }
 
         /// <summary>
+        /// The highest stat
+        /// </summary>
+        public NamedAPIResource HighestStat { get; set; }
+
+        /// <summary>
         /// The remainder of the highest stat/IV divided by 5
         /// </summary>
         public int GeneModulo { get; set; }

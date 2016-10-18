@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +34,6 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            throw new NotImplementedException();
-
             try
             {
                 var ability = await _context.Abilities
@@ -41,10 +41,15 @@ namespace PokemonAPI.WebService.Controllers
 
                 var result = new Ability
                 {
-                    //Id             = ability.Id,
-                    //Identifier     = ability.Identifier,
-                    //Names          = await GetNames(ability),
-                    //PokemonSpecies = await GetPokemonSpecies(ability)
+                    Id                = ability.Id,
+                    Name              = ability.Identifier,
+                    IsMainSeries      = ability.IsMainSeries,
+                    Generation        = await GetGeneration(ability),
+                    Names             = await GetNames(ability),
+                    EffectEntries     = await GetEffectEntries(ability),
+                    EffectChanges     = await GetEffectChanges(ability),
+                    FlavorTextEntries = await GetFlavorTextEntries(ability),
+                    Pokemon           = await GetPokemon(ability)
                 };
 
                 return Ok(result);
@@ -53,6 +58,40 @@ namespace PokemonAPI.WebService.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        private async Task<NamedAPIResource> GetGeneration(EFAbilities ability)
+        {
+            return (await _context
+                    .Generations
+                    .FirstOrDefaultAsync(x => x.Id == ability.GenerationId))
+                .ToNamedApiResource(typeof(GenerationsController).Segment());
+        }
+
+        private async Task<List<Name>> GetNames(EFAbilities ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<List<VerboseEffect>> GetEffectEntries(EFAbilities ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<List<AbilityEffectChange>> GetEffectChanges(EFAbilities ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<List<AbilityFlavorText>> GetFlavorTextEntries(EFAbilities ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<List<AbilityPokemon>> GetPokemon(EFAbilities ability)
+        {
+            //_context.PokemonAbilities.Where()
+            throw new NotImplementedException();
         }
     }
 }

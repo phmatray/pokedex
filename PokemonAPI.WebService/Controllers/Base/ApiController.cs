@@ -51,14 +51,14 @@ namespace PokemonAPI.WebService.Controllers.Base
             }
         }
 
-        private string Previous(int limit, int offset, string urlSegment)
+        protected string Previous(int limit, int offset, string urlSegment)
         {
             return offset - limit > 0
                 ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
                 : null;
         }
 
-        private string Next(int limit, int offset, int count, string urlSegment)
+        protected string Next(int limit, int offset, int count, string urlSegment)
         {
             return offset + limit < count
                 ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset + limit}"

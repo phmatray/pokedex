@@ -166,34 +166,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/characteristics")]
-    public class CharacteristicsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public CharacteristicsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/characteristics
-        // GET api/v1/characteristics?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/characteristics/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/berry-flavors")]
     public class BerryFlavorsController : ApiController
     {
@@ -215,34 +187,6 @@ namespace PokemonAPI.WebService.Controllers
         }
 
         // GET api/v1/berry-flavors/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    [Route("api/v1/move-battle-styles")]
-    public class MoveBattleStylesController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveBattleStylesController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-battle-styles
-        // GET api/v1/move-battle-styles?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/move-battle-styles/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
