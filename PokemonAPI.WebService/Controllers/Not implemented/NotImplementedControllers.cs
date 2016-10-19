@@ -166,34 +166,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/berry-flavors")]
-    public class BerryFlavorsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public BerryFlavorsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/berry-flavors
-        // GET api/v1/berry-flavors?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/berry-flavors/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/pokeathlon-stats")]
     public class PokeathlonStatsController : ApiController
     {
@@ -215,6 +187,62 @@ namespace PokemonAPI.WebService.Controllers
         }
 
         // GET api/v1/pokeathlon-stats/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/contest-types")]
+    public class ContestTypesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public ContestTypesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/contest-types
+        // GET api/v1/contest-types?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/contest-types/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/berries")]
+    public class BerriesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public BerriesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/berries
+        // GET api/v1/berries?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/berries/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

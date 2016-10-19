@@ -42,9 +42,10 @@ namespace PokemonAPI.WebService.Core
                 {typeof(NaturesController)          , "natures"},
                 {typeof(BerryFlavorsController)     , "berry-flavors"},
                 {typeof(MoveBattleStylesController) , "move-battle-styles"},
-                {typeof(PokeathlonStatsController)  , "pokeathlon-stats"}
+                {typeof(PokeathlonStatsController)  , "pokeathlon-stats"},
+                {typeof(ContestTypesController)     , "contest-types"},
+                {typeof(BerriesController)          , "berries"}
             };
-
         }
 
         public static string Segment(this ApiController controller)
