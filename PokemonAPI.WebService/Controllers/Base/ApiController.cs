@@ -23,9 +23,9 @@ namespace PokemonAPI.WebService.Controllers.Base
                 if (string.IsNullOrWhiteSpace(urlSegment))
                     throw new ArgumentException("Value cannot be null or whitespace.", nameof(urlSegment));
 
-                var count = await dbset.CountAsync();
+                var count    = await dbset.CountAsync();
                 var previous = Previous(limit, offset, urlSegment);
-                var next = Next(limit, offset, count, urlSegment);
+                var next     = Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .Skip(offset)
@@ -35,13 +35,7 @@ namespace PokemonAPI.WebService.Controllers.Base
                     .Cast<APIResource>()
                     .ToList();
 
-                var results = new APIResourceList
-                {
-                    Count = count,
-                    Previous = previous,
-                    Next = next,
-                    Results = apiResults
-                };
+                var results = new APIResourceList(count, previous, next, apiResults);
 
                 return Ok(results);
             }

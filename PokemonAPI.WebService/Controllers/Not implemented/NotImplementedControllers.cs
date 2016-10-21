@@ -222,18 +222,18 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/berries")]
-    public class BerriesController : ApiController
+    [Route("api/v1/items")]
+    public class ItemsController : ApiController
     {
         private readonly VeekunContext _context;
 
-        public BerriesController(VeekunContext context)
+        public ItemsController(VeekunContext context)
         {
             _context = context;
         }
 
-        // GET api/v1/berries
-        // GET api/v1/berries?skip=0&take=20
+        // GET api/v1/items
+        // GET api/v1/items?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
@@ -242,7 +242,35 @@ namespace PokemonAPI.WebService.Controllers
             //    _context.Characteristics, this.Segment());
         }
 
-        // GET api/v1/berries/1
+        // GET api/v1/items/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/berry-firmnesses")]
+    public class BerryFirmnessesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public BerryFirmnessesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/berry-firmnesses
+        // GET api/v1/berry-firmnesses?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/berry-firmnesses/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

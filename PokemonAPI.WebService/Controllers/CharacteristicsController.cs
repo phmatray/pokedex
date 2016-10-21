@@ -32,9 +32,9 @@ namespace PokemonAPI.WebService.Controllers
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var urlSegment = typeof(CharacteristicsController).Segment();
-                var count = await _context.Characteristics.CountAsync();
-                var previous = Previous(limit, offset, urlSegment);
-                var next = Next(limit, offset, count, urlSegment);
+                var count      = await _context.Characteristics.CountAsync();
+                var previous   = Previous(limit, offset, urlSegment);
+                var next       = Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await _context.Characteristics
                         .Skip(offset)
@@ -43,13 +43,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Select(x => x.ToApiResource(urlSegment))
                     .ToList();
 
-                var results = new APIResourceList
-                {
-                    Count = count,
-                    Previous = previous,
-                    Next = next,
-                    Results = apiResults
-                };
+                var results = new APIResourceList(count, previous, next, apiResults);
 
                 return Ok(results);
             }

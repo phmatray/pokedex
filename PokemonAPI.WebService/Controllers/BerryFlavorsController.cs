@@ -31,12 +31,12 @@ namespace PokemonAPI.WebService.Controllers
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-                var dbset = _context.ContestTypeNames;
+                var dbset      = _context.ContestTypeNames;
                 var urlSegment = typeof(BerryFlavorsController).Segment();
 
-                var count = await dbset.Where(x => x.LocalLanguageId == 9).CountAsync();
-                var previous = Previous(limit, offset, urlSegment);
-                var next = Next(limit, offset, count, urlSegment);
+                var count      = await dbset.Where(x => x.LocalLanguageId == 9).CountAsync();
+                var previous   = Previous(limit, offset, urlSegment);
+                var next       = Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .Where(x => x.LocalLanguageId == 9)
@@ -48,13 +48,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Cast<APIResource>()
                     .ToList();
 
-                var results = new APIResourceList
-                {
-                    Count = count,
-                    Previous = previous,
-                    Next = next,
-                    Results = apiResults
-                };
+                var results = new APIResourceList(count, previous, next, apiResults);
 
                 return Ok(results);
             }

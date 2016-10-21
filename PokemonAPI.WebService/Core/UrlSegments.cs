@@ -44,7 +44,9 @@ namespace PokemonAPI.WebService.Core
                 {typeof(MoveBattleStylesController) , "move-battle-styles"},
                 {typeof(PokeathlonStatsController)  , "pokeathlon-stats"},
                 {typeof(ContestTypesController)     , "contest-types"},
-                {typeof(BerriesController)          , "berries"}
+                {typeof(BerriesController)          , "berries"},
+                {typeof(ItemsController)            , "items"},
+                {typeof(BerryFirmnessesController)  , "berry-firmnesses"}
             };
         }
 
