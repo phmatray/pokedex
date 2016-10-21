@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class ContestName
     {
+        public ContestName(string name, string color, NamedAPIResource language)
+        {
+            Name = name;
+            Color = color;
+            Language = language;
+        }
+
         /// <summary>
         /// The name for this contest
         /// </summary>
