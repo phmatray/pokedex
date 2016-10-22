@@ -7,22 +7,22 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The percent value of how likely this move is to be successful
         /// </summary>
-        public int Accuracy { get; set; }
+        public int? Accuracy { get; set; }
 
         /// <summary>
         /// The percent value of how likely it is this moves effect will take effect
         /// </summary>
-        public int EffectChance { get; set; }
+        public int? EffectChance { get; set; }
 
         /// <summary>
         /// The base power of this move with a value of 0 if it does not have a base power
         /// </summary>
-        public int Power { get; set; }
+        public int? Power { get; set; }
 
         /// <summary>
         /// Power points. The number of times this move can be used
         /// </summary>
-        public int Pp { get; set; }
+        public int? Pp { get; set; }
 
         /// <summary>
         /// The effect of this move listed in different languages

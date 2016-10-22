@@ -27,7 +27,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The power of the move "Natural Gift" when used with this Berry
         /// </summary>
-        public int NaturalGiftPower { get; set; }
+        public int? NaturalGiftPower { get; set; }
 
         /// <summary>
         /// The size of this Berry, in millimeters

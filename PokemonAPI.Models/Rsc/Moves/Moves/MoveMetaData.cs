@@ -15,22 +15,22 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The minimum number of times this move hits. Null if it always only hits once.
         /// </summary>
-        public int MinHits { get; set; }
+        public int? MinHits { get; set; }
 
         /// <summary>
         /// The maximum number of times this move hits. Null if it always only hits once.
         /// </summary>
-        public int MaxHits { get; set; }
+        public int? MaxHits { get; set; }
 
         /// <summary>
         /// The minimum number of turns this move continues to take effect. Null if it always only lasts one turn.
         /// </summary>
-        public int MinTurns { get; set; }
+        public int? MinTurns { get; set; }
 
         /// <summary>
         /// The maximum number of turns this move continues to take effect. Null if it always only lasts one turn.
         /// </summary>
-        public int MaxTurns { get; set; }
+        public int? MaxTurns { get; set; }
 
         /// <summary>
         /// HP drain (if positive) or Recoil damage (if negative), in percent of damage done

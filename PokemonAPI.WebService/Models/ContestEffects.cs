@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFContestEffects : IEFModel
+    public partial class EFContestEffects : IEFModel, IEFId
     {
         public EFContestEffects()
         {

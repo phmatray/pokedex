@@ -6,33 +6,6 @@ using PokemonAPI.WebService.Core;
 
 namespace PokemonAPI.WebService.Controllers
 {
-    [Route("api/v1/moves")]
-    public class MovesController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MovesController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/moves
-        // GET api/v1/moves?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, 
-                _context.Abilities, this.Segment());
-        }
-
-        // GET api/v1/moves/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/evolution-chains")]
     public class EvolutionChainsController : ApiController
     {
@@ -215,6 +188,174 @@ namespace PokemonAPI.WebService.Controllers
         }
 
         // GET api/v1/items/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/contest-effects")]
+    public class ContestEffectsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public ContestEffectsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/contest-effects
+        // GET api/v1/contest-effects?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/contest-effects/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/move-targets")]
+    public class MoveTargetsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveTargetsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-targets
+        // GET api/v1/move-targets?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/move-targets/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/super-contest-effects")]
+    public class SuperContestEffectsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public SuperContestEffectsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/super-contest-effects
+        // GET api/v1/super-contest-effects?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/super-contest-effects/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/move-ailments")]
+    public class MoveAilmentsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveAilmentsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-ailments
+        // GET api/v1/move-ailments?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/move-ailments/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/move-categories")]
+    public class MoveCategoriesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveCategoriesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-categories
+        // GET api/v1/move-categories?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/move-categories/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/machines")]
+    public class MachinesController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MachinesController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/machines
+        // GET api/v1/machines?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/machines/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

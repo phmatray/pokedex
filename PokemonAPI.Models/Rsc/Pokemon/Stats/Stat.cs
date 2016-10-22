@@ -17,7 +17,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// ID the games use for this stat
         /// </summary>
-        public int GameIndex { get; set; }
+        public int? GameIndex { get; set; }
 
         /// <summary>
         /// Whether this stat only exists within a battle

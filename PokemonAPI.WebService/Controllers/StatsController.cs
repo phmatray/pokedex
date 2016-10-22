@@ -43,7 +43,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Id               = stat.Id,
                     Name             = stat.Identifier,
-                    GameIndex        = stat.GameIndex ?? -1,
+                    GameIndex        = stat.GameIndex,
                     IsBattleOnly     = stat.IsBattleOnly,
                     AffectingMoves   = await GetAffectingMoves(stat),
                     AffectingNatures = await GetAffectingNatures(stat),

@@ -84,7 +84,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Stats
                     .FirstOrDefaultAsync(x => x.Id == characteristic.StatId))?
-                .ToNamedApiResource(typeof(StatsController).Segment());
+                .ToNamedApiResource<StatsController>();
         }
 
         private List<int> GetPossibleValues(EFCharacteristics characteristic)
@@ -109,7 +109,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.CharacteristicId == characteristic.Id)
                     .ToListAsync())
                 .Select(x => new Description(x.Message,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
                 .ToList();
         }
     }

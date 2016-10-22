@@ -80,7 +80,7 @@ namespace PokemonAPI.WebService.Controllers
                     Name             = berry.Item.Identifier.Replace("-berry", ""),
                     GrowthTime       = berry.GrowthTime,
                     MaxHarvest       = berry.MaxHarvest,
-                    NaturalGiftPower = berry.NaturalGiftPower ?? -1,
+                    NaturalGiftPower = berry.NaturalGiftPower,
                     Size             = berry.Size,
                     Smoothness       = berry.Smoothness,
                     SoilDryness      = berry.SoilDryness,
@@ -101,7 +101,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetFirmness(EFBerries berry)
         {
             return berry.Firmness
-                .ToNamedApiResource(typeof(BerryFirmnessesController).Segment());
+                .ToNamedApiResource<BerryFirmnessesController>();
         }
 
         private async Task<List<BerryFlavorMap>> GetFlavors(EFBerries berry)

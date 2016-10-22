@@ -17,17 +17,17 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The percent value of how likely this move is to be successful
         /// </summary>
-        public int Accuracy { get; set; }
+        public int? Accuracy { get; set; }
 
         /// <summary>
         /// The percent value of how likely it is this moves effect will happen
         /// </summary>
-        public int EffectChance { get; set; }
+        public int? EffectChance { get; set; }
 
         /// <summary>
         /// Power points. The number of times this move can be used
         /// </summary>
-        public int Pp { get; set; }
+        public int? Pp { get; set; }
 
         /// <summary>
         /// A value between -8 and 8. Sets the order in which moves are executed during battle. See Bulbapedia for greater detail.
@@ -37,7 +37,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The base power of this move with a value of 0 if it does not have a base power
         /// </summary>
-        public int Power { get; set; }
+        public int? Power { get; set; }
 
         /// <summary>
         /// A detail of normal and super contest combos that require this move
@@ -72,7 +72,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The flavor text of this move listed in different languages
         /// </summary>
-        public Move FlavorTextEntries { get; set; }
+        public List<MoveFlavorText> FlavorTextEntries { get; set; }
 
         /// <summary>
         /// The generation in which this move was introduced

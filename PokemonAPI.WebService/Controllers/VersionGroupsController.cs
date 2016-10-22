@@ -42,7 +42,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Id               = versionGroup.Id,
                     Name             = versionGroup.Identifier,
-                    Order            = versionGroup.Order ?? -1,
+                    Order            = versionGroup.Order,
                     MoveLearnMethods = await GetMoveLearnMethods(versionGroup),
                     Versions         = await GetVersions(versionGroup),
                     Generation       = await GetGeneration(versionGroup),

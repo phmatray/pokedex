@@ -17,7 +17,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// Order for sorting. Almost by date of release, except similar versions are grouped together.
         /// </summary>
-        public int Order { get; set; }
+        public int? Order { get; set; }
 
         /// <summary>
         /// The generation this version was introduced in
