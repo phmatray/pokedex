@@ -47,7 +47,7 @@ namespace PokemonAPI.WebService.Controllers.Base
 
         protected string Previous(int limit, int offset, string urlSegment)
         {
-            return offset - limit > 0
+            return offset - limit >= 0
                 ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
                 : null;
         }

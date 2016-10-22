@@ -334,32 +334,4 @@ namespace PokemonAPI.WebService.Controllers
             throw new NotImplementedException();
         }
     }
-
-    [Route("api/v1/machines")]
-    public class MachinesController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MachinesController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/machines
-        // GET api/v1/machines?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/machines/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
