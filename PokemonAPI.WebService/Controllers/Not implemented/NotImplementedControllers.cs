@@ -201,32 +201,4 @@ namespace PokemonAPI.WebService.Controllers
             throw new NotImplementedException();
         }
     }
-
-    [Route("api/v1/move-targets")]
-    public class MoveTargetsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveTargetsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-targets
-        // GET api/v1/move-targets?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/move-targets/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
