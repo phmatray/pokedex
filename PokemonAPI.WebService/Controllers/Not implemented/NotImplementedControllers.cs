@@ -86,59 +86,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/move-learn-methods")]
-    public class MoveLearnMethodsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveLearnMethodsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-learn-methods
-        // GET api/v1/move-learn-methods?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        // GET api/v1/move-learn-methods/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    [Route("api/v1/move-damage-classes")]
-    public class MoveDamageClassesController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveDamageClassesController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-damage-classes
-        // GET api/v1/move-damage-classes?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.Stats, this.Segment());
-        }
-
-        // GET api/v1/move-damage-classes/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/items")]
     public class ItemsController : ApiController
     {
@@ -195,34 +142,6 @@ namespace PokemonAPI.WebService.Controllers
         }
     }
 
-    [Route("api/v1/move-targets")]
-    public class MoveTargetsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveTargetsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-targets
-        // GET api/v1/move-targets?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-            //return await base.GetAll(limit, offset,
-            //    _context.Characteristics, this.Segment());
-        }
-
-        // GET api/v1/move-targets/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     [Route("api/v1/super-contest-effects")]
     public class SuperContestEffectsController : ApiController
     {
@@ -244,6 +163,66 @@ namespace PokemonAPI.WebService.Controllers
         }
 
         // GET api/v1/super-contest-effects/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
+
+
+
+
+    [Route("api/v1/move-learn-methods")]
+    public class MoveLearnMethodsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveLearnMethodsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-learn-methods
+        // GET api/v1/move-learn-methods?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        // GET api/v1/move-learn-methods/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [Route("api/v1/move-targets")]
+    public class MoveTargetsController : ApiController
+    {
+        private readonly VeekunContext _context;
+
+        public MoveTargetsController(VeekunContext context)
+        {
+            _context = context;
+        }
+
+        // GET api/v1/move-targets
+        // GET api/v1/move-targets?skip=0&take=20
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            throw new NotImplementedException();
+            //return await base.GetAll(limit, offset,
+            //    _context.Characteristics, this.Segment());
+        }
+
+        // GET api/v1/move-targets/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
