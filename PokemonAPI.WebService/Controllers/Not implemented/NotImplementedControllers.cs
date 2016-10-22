@@ -169,36 +169,4 @@ namespace PokemonAPI.WebService.Controllers
             throw new NotImplementedException();
         }
     }
-
-
-
-
-
-
-
-    [Route("api/v1/move-learn-methods")]
-    public class MoveLearnMethodsController : ApiController
-    {
-        private readonly VeekunContext _context;
-
-        public MoveLearnMethodsController(VeekunContext context)
-        {
-            _context = context;
-        }
-
-        // GET api/v1/move-learn-methods
-        // GET api/v1/move-learn-methods?skip=0&take=20
-        [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        // GET api/v1/move-learn-methods/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
