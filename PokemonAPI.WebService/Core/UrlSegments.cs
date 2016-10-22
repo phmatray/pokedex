@@ -51,7 +51,8 @@ namespace PokemonAPI.WebService.Core
                 {typeof(SuperContestEffectsController), "super-contest-effects"},
                 {typeof(MoveAilmentsController)       , "move-ailments"},
                 {typeof(MoveCategoriesController)     , "move-categories"},
-                {typeof(MachinesController)           , "machines"}
+                {typeof(MachinesController)           , "machines"},
+                {typeof(GendersController)            , "genders"},
             };
         }
 
