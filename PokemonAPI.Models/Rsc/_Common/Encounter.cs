@@ -22,7 +22,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// percent chance that this encounter will occur
         /// </summary>
-        public int Chance { get; set; }
+        public int? Chance { get; set; }
 
         /// <summary>
         /// The method by which this encounter happens

@@ -32,7 +32,7 @@ namespace PokemonAPI.WebService.Controllers
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var dbset = _context.SuperContestEffects;
-                var urlSegment = typeof(ContestEffectsController).Segment();
+                var urlSegment = typeof(SuperContestEffectsController).Segment();
 
                 var count = await dbset.CountAsync();
                 var previous = Previous(limit, offset, urlSegment);

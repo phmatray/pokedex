@@ -15,7 +15,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The id of the gender of the evolving Pokémon species must be in order to evolve into this Pokémon species
         /// </summary>
-        public int Gender { get; set; }
+        public int? Gender { get; set; }
 
         /// <summary>
         /// The item the evolving Pokémon species must be holding during the evolution trigger event to evolve into this Pokémon species
@@ -40,22 +40,22 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The minimum required level of the evolving Pokémon species to evolve into this Pokémon species
         /// </summary>
-        public int MinLevel { get; set; }
+        public int? MinLevel { get; set; }
 
         /// <summary>
         /// The minimum required level of happiness the evolving Pokémon species to evolve into this Pokémon species
         /// </summary>
-        public int MinHappiness { get; set; }
+        public int? MinHappiness { get; set; }
 
         /// <summary>
         /// The minimum required level of beauty the evolving Pokémon species to evolve into this Pokémon species
         /// </summary>
-        public int MinBeauty { get; set; }
+        public int? MinBeauty { get; set; }
 
         /// <summary>
         /// The minimum required level of affection the evolving Pokémon species to evolve into this Pokémon species
         /// </summary>
-        public int MinAffection { get; set; }
+        public int? MinAffection { get; set; }
 
         /// <summary>
         /// Whether or not it must be raining in the overworld to cause evolution this Pokémon species
@@ -75,7 +75,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The required relation between the Pokémon's Attack and Defense stats. 1 means Attack greater than Defense. 0 means Attack = Defense. -1 means Attack lower than Defense.
         /// </summary>
-        public int RelativePhysicalStats { get; set; }
+        public int? RelativePhysicalStats { get; set; }
 
         /// <summary>
         /// The required time of day. Day or night.

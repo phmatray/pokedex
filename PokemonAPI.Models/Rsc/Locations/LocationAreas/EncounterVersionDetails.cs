@@ -5,7 +5,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The chance of an encounter to occur.
         /// </summary>
-        public int Rate { get; set; }
+        public int? Rate { get; set; }
 
         /// <summary>
         /// The version of the game in which the encounter can occur with the given chance.
