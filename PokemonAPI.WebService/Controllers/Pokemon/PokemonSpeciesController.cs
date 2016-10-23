@@ -195,7 +195,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<FlavorText>> GetFlavorTextEntries(EFPokemonSpecies species)
+        private async Task<List<FlavorTextVersion>> GetFlavorTextEntries(EFPokemonSpecies species)
         {
             return (await _context
                     .PokemonSpeciesFlavorText
@@ -203,7 +203,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Version)
                     .Where(x => x.SpeciesId == species.Id)
                     .ToListAsync())
-                .Select(x => new FlavorText(x.FlavorText,
+                .Select(x => new FlavorTextVersion(x.FlavorText,
                     x.Language.ToNamedApiResource(typeof(LanguagesController).Segment()), 
                     x.Version.ToNamedApiResource(typeof(VersionsController).Segment())))
                 .ToList();

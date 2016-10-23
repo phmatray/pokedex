@@ -112,7 +112,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// A list of flavor text entries for this Pokémon species
         /// </summary>
-        public List<FlavorText> FlavorTextEntries { get; set; }
+        public List<FlavorTextVersion> FlavorTextEntries { get; set; }
 
         /// <summary>
         /// Descriptions of different forms Pokémon take on within the Pokémon species

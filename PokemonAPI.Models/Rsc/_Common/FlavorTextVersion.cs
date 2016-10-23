@@ -1,11 +1,12 @@
 namespace PokemonAPI.Models.Rsc
 {
-    public class FlavorText
+    public class FlavorTextVersion
     {
-        public FlavorText(string flavorTextValue, NamedAPIResource language)
+        public FlavorTextVersion(string flavorTextValue, NamedAPIResource language, NamedAPIResource version)
         {
             FlavorTextValue = flavorTextValue;
             Language = language;
+            Version = version;
         }
 
         /// <summary>
@@ -17,5 +18,7 @@ namespace PokemonAPI.Models.Rsc
         /// The language this name is in
         /// </summary>
         public NamedAPIResource Language { get; set; }
+
+        public NamedAPIResource Version { get; set; }
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="Rsc\Berries\Berries\BerryFlavorMap.cs" />
     <Compile Include="Rsc\Evolutions\EvolutionChains\ChainLink.cs" />
     <Compile Include="Rsc\Pokemon\Characteristics\Characteristic.cs" />
+    <Compile Include="Rsc\_Common\FlavorText.cs" />
     <Compile Include="Rsc\_ResourceLists\APIResourceList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rsc\Moves\Moves\ContestComboDetail.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Rsc\Evolutions\EvolutionChains\EvolutionDetail.cs" />
     <Compile Include="Rsc\Evolutions\EvolutionTriggers\EvolutionTrigger.cs" />
     <Compile Include="Rsc\Berries\BerryFlavors\FlavorBerryMap.cs" />
-    <Compile Include="Rsc\_Common\FlavorText.cs" />
+    <Compile Include="Rsc\_Common\FlavorTextVersion.cs" />
     <Compile Include="Rsc\Pokemon\Genders\Gender.cs" />
     <Compile Include="Rsc\Games\Generations\Generation.cs" />
     <Compile Include="Rsc\_Common\GenerationGameIndex.cs" />
