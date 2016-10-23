@@ -40,7 +40,8 @@ namespace PokemonAPI.WebService.Controllers
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select((x, i) => (i + offset + 1).ToApiResource<MachinesController>())
+                    .Select(x => new APIResource(
+                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MachinesController).Segment()}/{x.MachineNumber}/{x.VersionGroupId}/"))
                     .ToList();
 
                 var results = new APIResourceList(count, previous, next, apiResults);
@@ -53,27 +54,22 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        // GET api/v1/machines/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        // GET api/v1/machines?machineNumber=1&versionGroupId=1
+        [HttpGet("{machineNumber}/{versionGroupId}")]
+        public async Task<IActionResult> Get(int machineNumber, int versionGroupId)
         {
             try
             {
-                var skip = id - 1;
-                var machines = await _context.Machines
-                    .OrderBy(x => x.MachineNumber)
-                    .Skip(skip)
-                    .Take(1)
+                var machine = await _context.Machines
                     .Include(x => x.Item)
                     .Include(x => x.Move)
                     .Include(x => x.VersionGroup)
-                    .ToListAsync();
-
-                var machine = machines.FirstOrDefault();
+                    .FirstOrDefaultAsync(x => x.MachineNumber == machineNumber &&
+                    x.VersionGroupId == versionGroupId);
 
                 var result = new Machine
                 {
-                    Id           = id,
+                    Id           = $"{machineNumber}/{versionGroupId}",
                     Item         = machine.Item.ToNamedApiResource<ItemsController>(),
                     Move         = machine.Move.ToNamedApiResource<MovesController>(),
                     VersionGroup = machine.VersionGroup.ToNamedApiResource<VersionGroupsController>()

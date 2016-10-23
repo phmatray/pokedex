@@ -22,7 +22,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The power of the move Fling when used with this item.
         /// </summary>
-        public int FlingPower { get; set; }
+        public int? FlingPower { get; set; }
 
         /// <summary>
         /// The effect of the move Fling when used with this item
@@ -37,7 +37,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The category of items this item falls into
         /// </summary>
-        public ItemCategory Category { get; set; }
+        public NamedAPIResource Category { get; set; }
 
         /// <summary>
         /// The effect of this ability listed in different languages

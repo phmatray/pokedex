@@ -5,7 +5,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The identifier for this machine resource
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The TM or HM item that corresponds to this machine
