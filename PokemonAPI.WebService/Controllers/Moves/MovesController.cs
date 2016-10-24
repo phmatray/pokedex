@@ -140,7 +140,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetContestType(EFMoves move)
         {
             return move.ContestType
-                .ToNamedApiResource<ContestTypesController>();
+                .ToNamedApiResource();
         }
 
         private APIResource GetContestEffect(EFMoves move)
@@ -152,7 +152,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetDamageClass(EFMoves move)
         {
             return move.DamageClass
-                .ToNamedApiResource<MoveDamageClassesController>();
+                .ToNamedApiResource();
         }
 
         private async Task<List<VerboseEffect>> GetEffectEntries(EFMoves move)
@@ -167,7 +167,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Effect      = x.Effect,
                     ShortEffect = x.ShortEffect,
-                    Language    = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    Language    = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -188,11 +188,11 @@ namespace PokemonAPI.WebService.Controllers
                         .Select(y => new Effect
                         {
                             EffectValue = y.Effect,
-                            Language = y.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                            Language = y.LocalLanguage.ToNamedApiResource()
                         })
                         .ToList(),
                     VersionGroup = x.ChangedInVersionGroup
-                        .ToNamedApiResource<VersionGroupsController>()
+                        .ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -208,8 +208,8 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new MoveFlavorText
                 {
                     FlavorText   = x.FlavorText,
-                    Language     = x.Language.ToNamedApiResource<LanguagesController>(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    Language     = x.Language.ToNamedApiResource(),
+                    VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -217,7 +217,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetGeneration(EFMoves move)
         {
             return move.Generation
-                .ToNamedApiResource<GenerationsController>();
+                .ToNamedApiResource();
         }
 
         private async Task<List<MachineVersionDetail>> GetMachines(EFMoves move)
@@ -231,8 +231,8 @@ namespace PokemonAPI.WebService.Controllers
             return machines
                 .Select(x => new MachineVersionDetail
                 {
-                    Machine = x.MachineNumber.ToApiResource<MachinesController>(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    Machine = x.ToApiResource(),
+                    VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -247,8 +247,8 @@ namespace PokemonAPI.WebService.Controllers
 
             return new MoveMetaData
             {
-                Ailment       = meta.MetaAilment.ToNamedApiResource<MoveAilmentsController>(),
-                Category      = meta.MetaCategory.ToNamedApiResource<MoveCategoriesController>(),
+                Ailment       = meta.MetaAilment.ToNamedApiResource(),
+                Category      = meta.MetaCategory.ToNamedApiResource(),
                 MinHits       = meta.MinHits,
                 MaxHits       = meta.MaxHits,
                 MinTurns      = meta.MinTurns,
@@ -272,7 +272,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -292,8 +292,8 @@ namespace PokemonAPI.WebService.Controllers
                     Power         = x.Power,
                     Pp            = x.Pp,
                     EffectEntries = GetPastValuesEffectEntries(x),
-                    Type          = x.Type?.ToNamedApiResource<TypesController>(),
-                    VersionGroup  = x.ChangedInVersionGroup?.ToNamedApiResource<VersionGroupsController>()
+                    Type          = x.Type?.ToNamedApiResource(),
+                    VersionGroup  = x.ChangedInVersionGroup?.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -311,7 +311,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Effect = x.Effect, //TODO: Parse this result
                     ShortEffect = x.ShortEffect,
-                    Language = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    Language = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -326,7 +326,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new MoveStatChange
                 {
                     Change = x.Change,
-                    Stat = x.Stat.ToNamedApiResource<StatsController>()
+                    Stat = x.Stat.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -340,13 +340,13 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetTarget(EFMoves move)
         {
             return move.Target
-                .ToNamedApiResource<MoveTargetsController>();
+                .ToNamedApiResource();
         }
 
         private NamedAPIResource GetType(EFMoves move)
         {
             return move.Type
-                .ToNamedApiResource<TypesController>();
+                .ToNamedApiResource();
         }
     }
 }

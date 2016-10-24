@@ -35,8 +35,8 @@ namespace PokemonAPI.WebService.Controllers
                 var urlSegment = typeof(BerriesController).Segment();
 
                 var count      = await dbset.CountAsync();
-                var previous   = Previous(limit, offset, urlSegment);
-                var next       = Next(limit, offset, count, urlSegment);
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .Include(x => x.Item)
@@ -101,7 +101,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetFirmness(EFBerries berry)
         {
             return berry.Firmness
-                .ToNamedApiResource<BerryFirmnessesController>();
+                .ToNamedApiResource();
         }
 
         private async Task<List<BerryFlavorMap>> GetFlavors(EFBerries berry)
@@ -127,13 +127,13 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetItem(EFBerries berry)
         {
             return berry.Item
-                .ToNamedApiResource(typeof(ItemsController).Segment());
+                .ToNamedApiResource();
         }
 
         private NamedAPIResource GetNaturalGiftType(EFBerries berry)
         {
             return berry.NaturalGiftType
-                .ToNamedApiResource(typeof(TypesController).Segment());
+                .ToNamedApiResource();
         }
     }
 }

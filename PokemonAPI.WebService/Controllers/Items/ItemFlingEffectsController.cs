@@ -31,11 +31,12 @@ namespace PokemonAPI.WebService.Controllers
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-                var dbset = _context.ItemFlingEffects;
+                var dbset      = _context.ItemFlingEffects;
                 var urlSegment = typeof(ItemFlingEffectsController).Segment();
-                var count = await dbset.CountAsync();
-                var previous = Previous(limit, offset, urlSegment);
-                var next = Next(limit, offset, count, urlSegment);
+
+                var count      = await dbset.CountAsync();
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .OrderBy(x => x.Id)
@@ -90,7 +91,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Effect
                 {
                     EffectValue = x.Effect,
-                    Language = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    Language = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -99,7 +100,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return itemFlingEffect
                 .Items
-                .Select(x => x.ToNamedApiResource<ItemsController>())
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

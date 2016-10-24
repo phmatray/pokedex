@@ -61,14 +61,14 @@ namespace PokemonAPI.WebService.Controllers
         {
             return encounterConditionValue
                 .EncounterCondition
-                .ToNamedApiResource<EncounterConditionsController>();
+                .ToNamedApiResource();
         }
 
         private List<Name> GetNames(EFEncounterConditionValues encounterConditionValue)
         {
             return encounterConditionValue
                 .EncounterConditionValueProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

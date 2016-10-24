@@ -1,2 +1,4 @@
-#:C:\Repo\pokedexg\PokemonAPI.WebService\PokemonAPI.WebService.xproj
-C:\Repo\pokedexg\PokemonAPI.WebService\PokemonAPI.WebService.xproj|C:\Repo\pokedexg\PokemonAPI.Models\PokemonAPI.Models.csproj
+#:C:\Repo\pokedexg\PokemonAPI.CliCore\PokemonAPI.CliCore.xproj
+C:\Repo\pokedexg\PokemonAPI.CliCore\PokemonAPI.CliCore.xproj|C:\Repo\pokedexg\PokemonAPI\PokemonAPI.csproj
+C:\Repo\pokedexg\PokemonAPI.CliCore\PokemonAPI.CliCore.xproj|C:\Repo\pokedexg\PokemonAPI.Models\PokemonAPI.Models.csproj
+C:\Repo\pokedexg\PokemonAPI\PokemonAPI.csproj|C:\Repo\pokedexg\PokemonAPI.Models\PokemonAPI.Models.csproj

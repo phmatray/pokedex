@@ -71,7 +71,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetGeneration(EFAbilities ability)
         {
             return ability.Generation
-                .ToNamedApiResource<GenerationsController>();
+                .ToNamedApiResource();
         }
 
         private List<Name> GetNames(EFAbilities ability)
@@ -81,7 +81,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -94,7 +94,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Effect      = x.Effect,
                     ShortEffect = x.ShortEffect,
-                    Language    = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    Language    = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -109,10 +109,10 @@ namespace PokemonAPI.WebService.Controllers
                         .Select(y => new Effect
                         {
                             EffectValue = y.Effect,
-                            Language = y.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                            Language = y.LocalLanguage.ToNamedApiResource()
                         })
                         .ToList(),
-                    VersionGroup = x.ChangedInVersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    VersionGroup = x.ChangedInVersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -124,8 +124,8 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new AbilityFlavorText
                 {
                     FlavorText   = x.FlavorText,
-                    Language     = x.Language.ToNamedApiResource<LanguagesController>(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    Language     = x.Language.ToNamedApiResource(),
+                    VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -138,7 +138,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     IsHidden = x.IsHidden,
                     Slot     = x.Slot,
-                    Pokemon  = x.Pokemon.ToNamedApiResource<PokemonsController>()
+                    Pokemon  = x.Pokemon.ToNamedApiResource()
                 })
                 .ToList();
         }

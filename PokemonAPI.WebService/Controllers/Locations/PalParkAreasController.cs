@@ -61,7 +61,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return palParkArea
                 .PalParkAreaNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -73,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     BaseScore      = x.BaseScore,
                     Rate           = x.Rate,
-                    PokemonSpecies = x.Species.ToNamedApiResource<PokemonSpeciesController>()
+                    PokemonSpecies = x.Species.ToNamedApiResource()
                 })
                 .ToList();
         }

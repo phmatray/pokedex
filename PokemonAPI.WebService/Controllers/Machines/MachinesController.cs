@@ -33,15 +33,14 @@ namespace PokemonAPI.WebService.Controllers
                 var urlSegment = typeof(MachinesController).Segment();
 
                 var count      = await dbset.CountAsync();
-                var previous   = Previous(limit, offset, urlSegment);
-                var next       = Next(limit, offset, count, urlSegment);
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => new APIResource(
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MachinesController).Segment()}/{x.MachineNumber}/{x.VersionGroupId}/"))
+                    .Select(x => x.ToApiResource())
                     .ToList();
 
                 var results = new APIResourceList(count, previous, next, apiResults);
@@ -70,9 +69,9 @@ namespace PokemonAPI.WebService.Controllers
                 var result = new Machine
                 {
                     Id           = $"{machineNumber}/{versionGroupId}",
-                    Item         = machine.Item.ToNamedApiResource<ItemsController>(),
-                    Move         = machine.Move.ToNamedApiResource<MovesController>(),
-                    VersionGroup = machine.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    Item         = machine.Item.ToNamedApiResource(),
+                    Move         = machine.Move.ToNamedApiResource(),
+                    VersionGroup = machine.VersionGroup.ToNamedApiResource()
                 };
 
                 return Ok(result);

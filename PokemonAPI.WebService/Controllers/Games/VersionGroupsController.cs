@@ -79,7 +79,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Versions
                     .Where(x => x.VersionGroupId == versionGroup.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(VersionsController).Segment()))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
@@ -88,7 +88,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Generations
                     .FirstOrDefaultAsync(x => x.Id == versionGroup.GenerationId))?
-                .ToNamedApiResource(typeof(GenerationsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<NamedAPIResource>> GetRegions(EFVersionGroups versionGroup)

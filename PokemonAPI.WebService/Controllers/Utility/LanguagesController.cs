@@ -63,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.LanguageId == language.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource(this.Segment())))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

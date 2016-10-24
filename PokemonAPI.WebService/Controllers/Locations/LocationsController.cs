@@ -64,7 +64,7 @@ namespace PokemonAPI.WebService.Controllers
         private NamedAPIResource GetRegion(EFLocations location)
         {
             return location.Region
-                .ToNamedApiResource<RegionsController>();
+                .ToNamedApiResource();
         }
 
         private List<Name> GetNames(EFLocations location)
@@ -74,7 +74,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -86,7 +86,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new GenerationGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource<GenerationsController>()
+                    Generation = x.Generation.ToNamedApiResource()
                 })
                 .ToList();
         }

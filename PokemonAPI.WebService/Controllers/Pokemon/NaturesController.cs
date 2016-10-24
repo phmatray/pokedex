@@ -66,7 +66,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Stats
                     .Where(x => x.Id == nature.DecreasedStatId)
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(StatsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<NamedAPIResource> GetIncreasedStat(EFNatures nature)
@@ -75,7 +75,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Stats
                     .Where(x => x.Id == nature.IncreasedStatId)
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(StatsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<NamedAPIResource> GetHatesFlavor(EFNatures nature)
@@ -96,8 +96,8 @@ namespace PokemonAPI.WebService.Controllers
         {
             var flavor = await _context
                 .ContestTypeNames
-                .Where(x => x.ContestTypeId == nature.LikesFlavorId 
-                            && x.LocalLanguageId == 9)
+                .Where(x => x.ContestTypeId == nature.LikesFlavorId &&
+                            x.LocalLanguageId == 9)
                 .FirstOrDefaultAsync();
 
             return new NamedAPIResource(
@@ -116,8 +116,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NatureStatChange
                 {
                     MaxChange = x.MaxChange,
-                    PokeathlonStat = x.PokeathlonStat
-                        .ToNamedApiResource(typeof(PokeathlonStatsController).Segment())
+                    PokeathlonStat = x.PokeathlonStat.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -133,8 +132,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     HighHpPreference = x.HighHpPreference,
                     LowHpPreference = x.LowHpPreference,
-                    MoveBattleStyle = x.MoveBattleStyle
-                        .ToNamedApiResource(typeof(MoveBattleStylesController).Segment())
+                    MoveBattleStyle = x.MoveBattleStyle.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -146,8 +144,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.LocalLanguage)
                     .Where(x => x.NatureId == nature.Id)
                     .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

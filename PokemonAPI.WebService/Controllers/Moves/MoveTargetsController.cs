@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Description
                 (
                     x.Description,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -74,7 +74,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return moveTarget
                 .Moves
-                .Select(x => x.ToNamedApiResource<MovesController>())
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
@@ -85,7 +85,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }

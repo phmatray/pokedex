@@ -63,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Regions
                     .FirstOrDefaultAsync(x => x.Id == pokedex.RegionId))?
-                .ToNamedApiResource(this.Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<NamedAPIResource>> GetVersionGroups(EFPokedexes pokedex)
@@ -90,7 +90,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
                 .Select(x => new Description(x.Description,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -103,7 +103,7 @@ namespace PokemonAPI.WebService.Controllers
                     .OrderBy(x => x.PokedexNumber)
                     .ToListAsync())
                 .Select(x => new PokemonEntry(x.PokedexNumber,
-                    x.Species.ToNamedApiResource(typeof(PokemonSpeciesController).Segment())))
+                    x.Species.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -115,7 +115,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokedexId == pokedex.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

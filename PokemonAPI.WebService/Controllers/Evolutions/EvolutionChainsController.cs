@@ -31,12 +31,12 @@ namespace PokemonAPI.WebService.Controllers
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-                var dbset = _context.EvolutionChains;
+                var dbset      = _context.EvolutionChains;
                 var urlSegment = typeof(EvolutionChainsController).Segment();
 
-                var count = await dbset.CountAsync();
-                var previous = Previous(limit, offset, urlSegment);
-                var next = Next(limit, offset, count, urlSegment);
+                var count      = await dbset.CountAsync();
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .OrderBy(x => x.Id)
@@ -90,7 +90,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return evolutionChain
                 .BabyTriggerItem?
-                .ToNamedApiResource<ItemsController>();
+                .ToNamedApiResource();
         }
 
         private ChainLink GetChain(EFPokemonSpecies firstStadeSpecies)
@@ -98,7 +98,7 @@ namespace PokemonAPI.WebService.Controllers
             return new ChainLink
             {
                 IsBaby = firstStadeSpecies.IsBaby,
-                Species = firstStadeSpecies.ToNamedApiResource<PokemonSpeciesController>(),
+                Species = firstStadeSpecies.ToNamedApiResource(),
                 EvolutionDetails = new List<EvolutionDetail>(),
                 EvolvesTo = GetEvolvesToChainLinks(firstStadeSpecies)
             };
@@ -125,28 +125,28 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(evolution => new ChainLink
                 {
                     IsBaby = evolution.IsBaby,
-                    Species = evolution.ToNamedApiResource<PokemonSpeciesController>(),
+                    Species = evolution.ToNamedApiResource(),
                     EvolutionDetails = evolution
                         .PokemonEvolutionEvolvedSpecies
                         .Select(x => new EvolutionDetail
                         {
-                            Item                  = x.TriggerItem?.ToNamedApiResource<ItemsController>(),
-                            Trigger               = x.EvolutionTrigger?.ToNamedApiResource<EvolutionTriggersController>(),
+                            Item                  = x.TriggerItem?.ToNamedApiResource(),
+                            Trigger               = x.EvolutionTrigger?.ToNamedApiResource(),
                             Gender                = x.GenderId,
-                            HeldItem              = x.HeldItem?.ToNamedApiResource<ItemsController>(),
-                            KnownMove             = x.KnownMove?.ToNamedApiResource<MovesController>(),
-                            KnownMoveType         = x.KnownMoveType?.ToNamedApiResource<TypesController>(),
-                            Location              = x.Location?.ToNamedApiResource<LocationsController>(),
+                            HeldItem              = x.HeldItem?.ToNamedApiResource(),
+                            KnownMove             = x.KnownMove?.ToNamedApiResource(),
+                            KnownMoveType         = x.KnownMoveType?.ToNamedApiResource(),
+                            Location              = x.Location?.ToNamedApiResource(),
                             MinLevel              = x.MinimumLevel,
                             MinHappiness          = x.MinimumHappiness,
                             MinBeauty             = x.MinimumBeauty,
                             MinAffection          = x.MinimumAffection,
                             NeedsOverworldRain    = x.NeedsOverworldRain,
-                            PartySpecies          = x.PartySpecies?.ToNamedApiResource<PokemonSpeciesController>(),
-                            PartyType             = x.PartyType?.ToNamedApiResource<TypesController>(),
+                            PartySpecies          = x.PartySpecies?.ToNamedApiResource(),
+                            PartyType             = x.PartyType?.ToNamedApiResource(),
                             RelativePhysicalStats = x.RelativePhysicalStats,
                             TimeOfDay             = x.TimeOfDay,
-                            TradeSpecies          = x.TradeSpecies?.ToNamedApiResource<PokemonSpeciesController>(),
+                            TradeSpecies          = x.TradeSpecies?.ToNamedApiResource(),
                             TurnUpsideDown        = x.TurnUpsideDown
                         }).ToList(),
                     EvolvesTo = GetEvolvesToChainLinks(evolution)

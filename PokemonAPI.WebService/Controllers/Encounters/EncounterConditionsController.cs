@@ -61,7 +61,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return encounterCondition
                 .EncounterConditionProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -69,7 +69,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return encounterCondition
                 .EncounterConditionValues
-                .Select(x => x.ToNamedApiResource<EncounterConditionValuesController>())
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

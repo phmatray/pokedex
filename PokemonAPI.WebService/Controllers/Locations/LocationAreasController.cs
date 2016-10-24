@@ -81,12 +81,12 @@ namespace PokemonAPI.WebService.Controllers
                         EncounterMethod = group
                             .FirstOrDefault()?
                             .EncounterMethod
-                            .ToNamedApiResource<EncounterMethodsController>(),
+                            .ToNamedApiResource(),
                         VersionDetails = group
                             .Select(g => new EncounterVersionDetails
                             {
                                 Rate = g.Rate,
-                                Version = g.Version.ToNamedApiResource<VersionsController>()
+                                Version = g.Version.ToNamedApiResource()
                             })
                             .ToList()
                     })
@@ -97,14 +97,14 @@ namespace PokemonAPI.WebService.Controllers
         {
             return locationArea
                 .Location
-                .ToNamedApiResource<LocationsController>();
+                .ToNamedApiResource();
         }
 
         private List<Name> GetNames(EFLocationAreas locationArea)
         {
             return locationArea
                 .LocationAreaProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -118,7 +118,7 @@ namespace PokemonAPI.WebService.Controllers
                         Pokemon = group
                             .FirstOrDefault()?
                             .Pokemon
-                            .ToNamedApiResource<PokemonsController>(),
+                            .ToNamedApiResource(),
                         VersionDetails = group
                             .GroupBy(x2 => x2.Version.Id,
                                 (key2, group2) => new VersionEncounterDetail
@@ -126,7 +126,7 @@ namespace PokemonAPI.WebService.Controllers
                                     Version = group2
                                         .FirstOrDefault()?
                                         .Version
-                                        .ToNamedApiResource<VersionsController>(),
+                                        .ToNamedApiResource(),
                                     MaxChance = group2.Sum(g2 => g2.EncounterSlot.Rarity ?? 0),
                                     EncounterDetails = group2
                                         .Select(g2 => new Encounter
@@ -136,13 +136,13 @@ namespace PokemonAPI.WebService.Controllers
                                             ConditionValues = g2
                                                 .EncounterConditionValueMap
                                                 .Select(cv => cv.EncounterConditionValue
-                                                    .ToNamedApiResource<EncounterConditionValuesController>())
+                                                    .ToNamedApiResource())
                                                 .ToList(),
                                             Chance = g2.EncounterSlot.Rarity,
                                             Method = g2
                                                 .EncounterSlot
                                                 .EncounterMethod
-                                                .ToNamedApiResource<EncounterMethodsController>()
+                                                .ToNamedApiResource()
                                         })
                                         .ToList()
                                 })

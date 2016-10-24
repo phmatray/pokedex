@@ -82,7 +82,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new PokemonSpeciesGender
                 {
                     Rate = x.GenderRate,
-                    PokemonSpecies = x.ToNamedApiResource<PokemonSpeciesController>()
+                    PokemonSpecies = x.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -91,7 +91,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return gender
                 .PokemonEvolution
-                .Select(x => x.EvolvedSpecies.ToNamedApiResource<PokemonSpeciesController>())
+                .Select(x => x.EvolvedSpecies.ToNamedApiResource())
                 .ToList();
         }
     }

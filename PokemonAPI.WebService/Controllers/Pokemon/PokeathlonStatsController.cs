@@ -64,7 +64,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -79,7 +79,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Select(x => new NaturePokeathlonStatAffect
                     {
                         MaxChange = x.MaxChange,
-                        Nature = x.Nature.ToNamedApiResource<NaturesController>()
+                        Nature = x.Nature.ToNamedApiResource()
                     })
                     .ToList(),
                 Decrease = pokeathlonStat
@@ -88,7 +88,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Select(x => new NaturePokeathlonStatAffect
                     {
                         MaxChange = x.MaxChange,
-                        Nature = x.Nature.ToNamedApiResource<NaturesController>()
+                        Nature = x.Nature.ToNamedApiResource()
                     })
                     .ToList()
             };

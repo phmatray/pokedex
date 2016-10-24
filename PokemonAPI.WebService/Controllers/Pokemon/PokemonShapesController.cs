@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonShapeId == pokemonShape.Id)
                     .ToListAsync())
                 .Select(x => new AwesomeName(x.AwesomeName,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -77,7 +77,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonShapeId == pokemonShape.Id)
                     .ToListAsync())
                 .Select(x => new Description(x.Description,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -89,7 +89,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonShapeId == pokemonShape.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -99,7 +99,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonSpecies
                     .Where(x => x.ShapeId == pokemonShape.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(PokemonSpeciesController).Segment()))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

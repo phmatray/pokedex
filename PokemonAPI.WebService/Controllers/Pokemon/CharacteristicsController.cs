@@ -33,8 +33,8 @@ namespace PokemonAPI.WebService.Controllers
 
                 var urlSegment = typeof(CharacteristicsController).Segment();
                 var count      = await _context.Characteristics.CountAsync();
-                var previous   = Previous(limit, offset, urlSegment);
-                var next       = Next(limit, offset, count, urlSegment);
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await _context.Characteristics
                         .Skip(offset)
@@ -84,7 +84,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Stats
                     .FirstOrDefaultAsync(x => x.Id == characteristic.StatId))?
-                .ToNamedApiResource<StatsController>();
+                .ToNamedApiResource();
         }
 
         private List<int> GetPossibleValues(EFCharacteristics characteristic)
@@ -109,7 +109,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.CharacteristicId == characteristic.Id)
                     .ToListAsync())
                 .Select(x => new Description(x.Message,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

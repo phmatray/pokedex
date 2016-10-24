@@ -84,11 +84,11 @@ namespace PokemonAPI.WebService.Controllers
                     .GroupBy(x => x.LocationArea, (g, elements) =>
                         new LocationAreaEncounter
                         {
-                            LocationArea = g.ToNamedApiResource(this.Segment()),
+                            LocationArea = g.ToNamedApiResource(),
                             VersionDetails = elements
                                 .Select(z => new VersionEncounterDetail
                                 {
-                                    Version = z.Version.ToNamedApiResource(this.Segment()),
+                                    Version = z.Version.ToNamedApiResource(),
                                 //MaxChance = 0,
                                 //EncounterDetails = elements
                                 //    .Select(e => new EncounterResource
@@ -126,7 +126,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     IsHidden = x.IsHidden,
                     Slot = x.Slot,
-                    Ability = x.Ability.ToNamedApiResource(typeof(AbilitiesController).Segment())
+                    Ability = x.Ability.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -137,7 +137,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonForms
                     .Where(x => x.PokemonId == pokemon.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(PokemonFormsController).Segment()))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
@@ -151,7 +151,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new VersionGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Version = x.Version.ToNamedApiResource(typeof(VersionsController).Segment())
+                    Version = x.Version.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -169,12 +169,12 @@ namespace PokemonAPI.WebService.Controllers
                 .GroupBy(x => x.Item, (g, elements) =>
                     new PokemonHeldItem
                     {
-                        Item = g.ToNamedApiResource(this.Segment()),
+                        Item = g.ToNamedApiResource(),
                         VersionDetails = elements
                             .Select(z => new PokemonHeldItemVersion
                             {
                                 Rarity = z.Rarity,
-                                Version = z.Version?.ToNamedApiResource(this.Segment())
+                                Version = z.Version?.ToNamedApiResource()
                             })
                             .ToList()
                     })
@@ -202,13 +202,12 @@ namespace PokemonAPI.WebService.Controllers
                 .GroupBy(x => x.Move, (g, elements) =>
                     new PokemonMove
                     {
-                        Move = g.ToNamedApiResource(typeof(MovesController).Segment()),
+                        Move = g.ToNamedApiResource(),
                         VersionGroupDetails = elements
                             .Select(z => new PokemonMoveVersion
                             {
-                                MoveLearnMethod = z.PokemonMoveMethod.ToNamedApiResource(
-                                    typeof(MoveLearnMethodsController).Segment()),
-                                VersionGroup = z.VersionGroup.ToNamedApiResource(this.Segment()),
+                                MoveLearnMethod = z.PokemonMoveMethod.ToNamedApiResource(),
+                                VersionGroup = z.VersionGroup.ToNamedApiResource(),
                                 LevelLearnedAt = z.Level
                             })
                             .ToList()
@@ -238,7 +237,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonSpecies
                     .Where(x => x.Id == pokemon.SpeciesId)
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(PokemonSpeciesController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<PokemonStat>> GetStats(EFPokemon pokemon)
@@ -250,7 +249,7 @@ namespace PokemonAPI.WebService.Controllers
                     .ToListAsync())
                 .Select(x => new PokemonStat
                 {
-                    Stat = x.Stat.ToNamedApiResource(typeof(StatsController).Segment()),
+                    Stat = x.Stat.ToNamedApiResource(),
                     Effort = x.Effort,
                     BaseStat = x.BaseStat
                 })
@@ -267,7 +266,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new PokemonType
                 {
                     Slot = x.Slot,
-                    Type = x.Type.ToNamedApiResource(typeof(TypesController).Segment())
+                    Type = x.Type.ToNamedApiResource()
                 })
                 .ToList();
         }

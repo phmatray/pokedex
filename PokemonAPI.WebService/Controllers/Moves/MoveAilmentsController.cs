@@ -62,7 +62,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ailment
                 .MoveMeta
-                .Select(x => x.Move.ToNamedApiResource<MovesController>())
+                .Select(x => x.Move.ToNamedApiResource())
                 .ToList();
         }
 
@@ -73,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }

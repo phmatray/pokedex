@@ -5,12 +5,11 @@ using PokemonAPI.WebService.Controllers.Base;
 
 namespace PokemonAPI.WebService.Core
 {
-    // appel: typeof(GenerationsController).RegisterSegment("generations");
-    public static class UrlSegments
+    public static class UrlHelpers
     {
         private static readonly Dictionary<Type, string> Segments;
 
-        static UrlSegments()
+        static UrlHelpers()
         {
             Segments = new Dictionary<Type, string>
             {
@@ -61,7 +60,7 @@ namespace PokemonAPI.WebService.Core
                 {typeof(SuperContestEffectsController)     , "super-contest-effects"},
                 {typeof(TypesController)                   , "types"},
                 {typeof(VersionGroupsController)           , "version-groups"},
-                {typeof(VersionsController)                , "versions"},
+                {typeof(VersionsController)                , "versions"}
             };
         }
 
@@ -71,10 +70,27 @@ namespace PokemonAPI.WebService.Core
         public static string RscUrl(this Type controllerType, int id)
             => $"{controllerType.RscUrl()}{id}/";
 
+        public static string RscUrl(this Type controllerType, string id)
+            => $"{controllerType.RscUrl()}{id}/";
+
         public static string Segment(this ApiController controller)
             => Segments[controller.GetType()];
 
         public static string Segment(this Type controllerType)
             => Segments[controllerType];
+
+        public static string Previous(int limit, int offset, string urlSegment)
+        {
+            return offset - limit >= 0
+                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
+                : null;
+        }
+
+        public static string Next(int limit, int offset, int count, string urlSegment)
+        {
+            return offset + limit < count
+                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset + limit}"
+                : null;
+        }
     }
 }

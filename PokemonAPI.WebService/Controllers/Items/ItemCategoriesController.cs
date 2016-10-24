@@ -63,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return itemCategory
                 .Items
-                .Select(x => x.ToNamedApiResource<ItemsController>())
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
@@ -71,14 +71,14 @@ namespace PokemonAPI.WebService.Controllers
         {
             return itemCategory
                 .ItemCategoryProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
         private NamedAPIResource GetPocket(EFItemCategories itemCategory)
         {
             return itemCategory.Pocket
-                .ToNamedApiResource<ItemPocketsController>();
+                .ToNamedApiResource();
         }
     }
 }

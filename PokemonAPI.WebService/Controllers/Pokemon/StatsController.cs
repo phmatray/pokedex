@@ -69,7 +69,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new MoveStatAffect
                 {
                     Change = x.Change,
-                    Move = x.Move.ToNamedApiResource(typeof(MovesController).Segment())
+                    Move = x.Move.ToNamedApiResource()
                 })
                 .ToList();
 
@@ -86,19 +86,17 @@ namespace PokemonAPI.WebService.Controllers
 
         private async Task<NatureStatAffectSets> GetAffectingNatures(EFStats stat)
         {
-            var urlSegment = typeof(NaturesController).Segment();
-
             return new NatureStatAffectSets
             {
                 Increase = (await _context.Natures
                         .Where(x => x.IncreasedStatId == stat.Id && x.DecreasedStatId != stat.Id)
                         .ToListAsync())
-                    .Select(x => x.ToNamedApiResource(urlSegment))
+                    .Select(x => x.ToNamedApiResource())
                     .ToList(),
                 Decrease = (await _context.Natures
                         .Where(x => x.DecreasedStatId == stat.Id && x.IncreasedStatId != stat.Id)
                         .ToListAsync())
-                    .Select(x => x.ToNamedApiResource(urlSegment))
+                    .Select(x => x.ToNamedApiResource())
                     .ToList()
             };
         }
@@ -119,7 +117,7 @@ namespace PokemonAPI.WebService.Controllers
                     .MoveDamageClasses
                     .Where(x => x.Id == stat.DamageClassId)
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(MoveDamageClassesController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<Name>> GetNames(EFStats stat)
@@ -130,7 +128,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.StatId == stat.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

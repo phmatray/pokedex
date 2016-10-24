@@ -62,7 +62,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return itemAttribute
                 .ItemFlagMap
-                .Select(x => x.Item.ToNamedApiResource<ItemsController>())
+                .Select(x => x.Item.ToNamedApiResource())
                 .ToList();
         }
 
@@ -71,7 +71,7 @@ namespace PokemonAPI.WebService.Controllers
             return itemAttribute
                 .ItemFlagProse
                 .Where(x => x.Name != null)
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -80,7 +80,7 @@ namespace PokemonAPI.WebService.Controllers
             return itemAttribute
                 .ItemFlagProse
                 .Where(x => x.Description != null)
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

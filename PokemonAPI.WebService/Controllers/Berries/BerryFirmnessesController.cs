@@ -80,7 +80,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }

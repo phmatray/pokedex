@@ -45,19 +45,26 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var generation = await _context.Generations
+                    .Include(x => x.MainRegion)
+                    .Include(x => x.GenerationNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.VersionGroups)
+                    .Include(x => x.PokemonSpecies)
+                    .Include(x => x.Moves)
+                    .Include(x => x.Types)
+                    .Include(x => x.Abilities)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var results = new Generation
                 {
                     Id             = generation.Id,
                     Name           = generation.Identifier,
-                    Abilities      = await GetAbilities(generation),
-                    VersionGroups  = await GetVersionGroups(generation),
-                    Names          = await GetNames(generation),
-                    PokemonSpecies = await GetPokemonSpecies(generation),
-                    Moves          = await GetMoves(generation),
-                    MainRegion     = await GetMainRegion(generation),
-                    Types          = await GetTypes(generation)
+                    Abilities      = GetAbilities(generation),
+                    VersionGroups  = GetVersionGroups(generation),
+                    Names          = GetNames(generation),
+                    PokemonSpecies = GetPokemonSpecies(generation),
+                    Moves          = GetMoves(generation),
+                    MainRegion     = GetMainRegion(generation),
+                    Types          = GetTypes(generation)
                 };
 
                 return Ok(results);
@@ -68,74 +75,59 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetTypes(EFGenerations generation)
+        private List<NamedAPIResource> GetTypes(EFGenerations generation)
         {
-            return (await _context
-                    .Types
-                    .Where(x => x.GenerationId == generation.Id && x.Id < 10000)
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(TypesController).Segment()))
+            return generation
+                .Types
+                .Where(x => x.GenerationId == generation.Id && x.Id < 10000)
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetMainRegion(EFGenerations generation)
+        private NamedAPIResource GetMainRegion(EFGenerations generation)
         {
-            return (await _context
-                    .Regions
-                    .FirstOrDefaultAsync(x => x.Id == generation.MainRegionId))?
-                .ToNamedApiResource(typeof(RegionsController).Segment());
+            return generation.MainRegion
+                .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetMoves(EFGenerations generation)
+        private List<NamedAPIResource> GetMoves(EFGenerations generation)
         {
-            return (await _context
-                    .Moves
-                    .Where(x => x.GenerationId == generation.Id)
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(MovesController).Segment()))
+            return generation
+                .Moves
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFGenerations generation)
+        private List<NamedAPIResource> GetPokemonSpecies(EFGenerations generation)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Where(x => x.GenerationId == generation.Id)
-                    .OrderBy(x => x.Id)
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(PokemonSpeciesController).Segment()))
+            return generation
+                .PokemonSpecies
+                .OrderBy(x => x.Id)
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFGenerations generation)
+        private List<Name> GetNames(EFGenerations generation)
         {
-            return (await _context
-                    .GenerationNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.GenerationId == generation.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+            return generation
+                .GenerationNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersionGroups(EFGenerations generation)
+        private List<NamedAPIResource> GetVersionGroups(EFGenerations generation)
         {
-            return (await _context
-                    .VersionGroups
-                    .Where(x => x.GenerationId == generation.Id)
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(VersionGroupsController).Segment()))
+            return generation
+                .VersionGroups
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetAbilities(EFGenerations generation)
+        private List<NamedAPIResource> GetAbilities(EFGenerations generation)
         {
-            return (await _context
-                    .Abilities
-                    .Where(x => x.GenerationId == generation.Id)
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(AbilitiesController).Segment()))
+            return generation
+                .Abilities
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

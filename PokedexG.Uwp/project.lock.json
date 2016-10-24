@@ -389,7 +389,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -2274,9 +2274,9 @@
           }
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -2751,7 +2751,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -4773,9 +4773,9 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -5152,7 +5152,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -7212,9 +7212,9 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -7594,7 +7594,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -9621,9 +9621,9 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -10004,7 +10004,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -12069,9 +12069,9 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -12451,7 +12451,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -14478,9 +14478,9 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -14861,7 +14861,7 @@
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
+      "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Xaml.Interactions.dll": {},
           "lib/uap10.0/Microsoft.Xaml.Interactivity.dll": {}
@@ -16926,9 +16926,9 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Template10/1.1.11": {
+      "Template10/1.1.12": {
         "dependencies": {
-          "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
           "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
           "Newtonsoft.Json": "8.0.3"
         },
@@ -17439,11 +17439,12 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Microsoft.Xaml.Behaviors.Uwp.Managed/1.1.0": {
-      "sha512": "Qxe4fblviCn2oFf7C4ahCsZHC0GzRa7Tz5z+L1QUHUljY3Oj/TMoT1O0jJ+ru6RcJ9qS8yFw/jIvstg2dxxpGA==",
+    "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0": {
+      "sha512": "LfzU68PVP33nqsuSlO5xAYuoI/itVKz4VVJSIunrS7iqqxE3sy0Q+VvtoYnFcBAoGnY83ZVn8Mnc9HYqOBiPmg==",
       "type": "package",
+      "path": "Microsoft.Xaml.Behaviors.Uwp.Managed/2.0.0",
       "files": [
-        "Microsoft.Xaml.Behaviors.Uwp.Managed.1.1.0.nupkg.sha512",
+        "Microsoft.Xaml.Behaviors.Uwp.Managed.2.0.0.nupkg.sha512",
         "Microsoft.Xaml.Behaviors.Uwp.Managed.nuspec",
         "lib/uap10.0/Design/Microsoft.Xaml.Interactions.Design.dll",
         "lib/uap10.0/Design/Microsoft.Xaml.Interactivity.Design.dll",
@@ -23312,12 +23313,12 @@
         "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll"
       ]
     },
-    "Template10/1.1.11": {
-      "sha512": "q8X87z/8puLV4Cazj7aQs2Cv2LqvLYvERVmiQ0iLUd4wgKc0RnD/DFmQxvyw5NKmNvOEZecuM+XbB7KdO/h+DQ==",
+    "Template10/1.1.12": {
+      "sha512": "FTvwISozoKs5syQkwaHl/s8iPts23Q+VFjTbnNnA+ad6MHqP5bOiq3ibjEXHGJkN5nSKY7FoMH4W1/aCS1n/ew==",
       "type": "package",
-      "path": "Template10/1.1.11",
+      "path": "Template10/1.1.12",
       "files": [
-        "Template10.1.1.11.nupkg.sha512",
+        "Template10.1.1.12.nupkg.sha512",
         "Template10.nuspec",
         "build/uap10.0/Template10.targets",
         "lib/uap10.0/Template10Library.dll",
@@ -23406,10 +23407,10 @@
       "Microsoft.Toolkit.Uwp.UI >= 1.1.0",
       "Microsoft.Toolkit.Uwp.UI.Animations >= 1.1.0",
       "Microsoft.Toolkit.Uwp.UI.Controls >= 1.1.0",
-      "Microsoft.Xaml.Behaviors.Uwp.Managed >= 1.1.0",
+      "Microsoft.Xaml.Behaviors.Uwp.Managed >= 2.0.0",
       "Newtonsoft.Json >= 9.0.1",
       "SQLite.Net-PCL >= 3.1.1",
-      "Template10 >= 1.1.11"
+      "Template10 >= 1.1.12"
     ],
     "UAP,Version=v10.0": []
   }

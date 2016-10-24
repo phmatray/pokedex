@@ -35,8 +35,8 @@ namespace PokemonAPI.WebService.Controllers
                 var urlSegment = typeof(BerryFlavorsController).Segment();
 
                 var count      = await dbset.Where(x => x.LocalLanguageId == 9).CountAsync();
-                var previous   = Previous(limit, offset, urlSegment);
-                var next       = Next(limit, offset, count, urlSegment);
+                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .Where(x => x.LocalLanguageId == 9)
@@ -119,8 +119,7 @@ namespace PokemonAPI.WebService.Controllers
 
         private NamedAPIResource GetContestType(EFContestTypes contestType)
         {
-            return contestType.ToNamedApiResource(
-                typeof(ContestTypesController).Segment());
+            return contestType.ToNamedApiResource();
         }
 
         private async Task<List<Name>> GetNames(EFContestTypes contestType)
@@ -133,7 +132,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Flavor,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }

@@ -24,8 +24,8 @@ namespace PokemonAPI.WebService.Controllers.Base
                     throw new ArgumentException("Value cannot be null or whitespace.", nameof(urlSegment));
 
                 var count    = await dbset.CountAsync();
-                var previous = Previous(limit, offset, urlSegment);
-                var next     = Next(limit, offset, count, urlSegment);
+                var previous = UrlHelpers.Previous(limit, offset, urlSegment);
+                var next     = UrlHelpers.Next(limit, offset, count, urlSegment);
 
                 var apiResults = (await dbset
                         .OrderBy(x => x.Id)
@@ -44,20 +44,6 @@ namespace PokemonAPI.WebService.Controllers.Base
             {
                 return BadRequest(ex);
             }
-        }
-
-        protected string Previous(int limit, int offset, string urlSegment)
-        {
-            return offset - limit >= 0
-                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
-                : null;
-        }
-
-        protected string Next(int limit, int offset, int count, string urlSegment)
-        {
-            return offset + limit < count
-                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset + limit}"
-                : null;
         }
     }
 }

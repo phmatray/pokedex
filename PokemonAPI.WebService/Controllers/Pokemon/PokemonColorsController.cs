@@ -62,7 +62,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonColorId == pokemonColor.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -72,7 +72,7 @@ namespace PokemonAPI.WebService.Controllers
                     .PokemonSpecies
                     .Where(x => x.ColorId == pokemonColor.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(PokemonSpeciesController).Segment()))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

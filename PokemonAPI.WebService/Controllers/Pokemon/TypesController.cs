@@ -81,7 +81,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.TargetType)
                     .Where(expression)
                     .ToListAsync())
-                .Select(x => x.TargetType.ToNamedApiResource(this.Segment()))
+                .Select(x => x.TargetType.ToNamedApiResource())
                 .ToList();
         }
 
@@ -92,7 +92,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.DamageType)
                     .Where(expression)
                     .ToListAsync())
-                .Select(x => x.DamageType.ToNamedApiResource(this.Segment()))
+                .Select(x => x.DamageType.ToNamedApiResource())
                 .ToList();
         }
 
@@ -106,7 +106,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new GenerationGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource(typeof(GenerationsController).Segment())
+                    Generation = x.Generation.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -118,7 +118,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(GenerationsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<NamedAPIResource> GetMoveDamageClass(EFTypes type)
@@ -128,7 +128,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Types)
                     .Where(x => x.Types.Any(y => y.Id == type.Id))
                     .FirstOrDefaultAsync())?
-                .ToNamedApiResource(typeof(MoveDamageClassesController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<Name>> GetNames(EFTypes type)
@@ -139,7 +139,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -153,7 +153,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new TypePokemon
                 {
                     Slot = x.Slot,
-                    Pokemon = x.Pokemon.ToNamedApiResource(typeof(PokemonsController).Segment())
+                    Pokemon = x.Pokemon.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -164,7 +164,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Moves
                     .Where(x => x.TypeId == type.Id)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(typeof(MovesController).Segment()))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

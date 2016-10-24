@@ -31,7 +31,7 @@ namespace PokedexG.Uwp.Views.UserControls
                 SetValue(TypeEfficacyResourceProperty, value);
                 if (value != null)
                 {
-                    value.DamageType.;
+                    //value.DamageType.;
                     SetDamageFactor(value.DamageFactor);
                     Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.DamageType.Id));
 

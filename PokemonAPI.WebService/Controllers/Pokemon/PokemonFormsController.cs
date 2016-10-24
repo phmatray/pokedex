@@ -69,7 +69,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .Pokemon
                     .FirstOrDefaultAsync(x => x.Id == pokemonForm.PokemonId))
-                .ToNamedApiResource(typeof(VersionGroupsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<PokemonFormSprites> GetSprites(EFPokemonForms pokemonForm)
@@ -90,7 +90,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .VersionGroups
                     .FirstOrDefaultAsync(x => x.Id == pokemonForm.IntroducedInVersionGroupId))
-                .ToNamedApiResource(typeof(VersionGroupsController).Segment());
+                .ToNamedApiResource();
         }
 
         private async Task<List<Name>> GetNames(EFPokemonForms pokemonForm)
@@ -101,7 +101,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonFormId == pokemonForm.Id && x.PokemonName != null)
                     .ToListAsync())
                 .Select(x => new Name(x.PokemonName,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -113,7 +113,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.PokemonFormId == pokemonForm.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.FormName,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

@@ -63,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.VersionId == version.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -73,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
                     .VersionGroups
                     .Where(x => x.Id == version.VersionGroupId)
                     .FirstOrDefaultAsync())
-                .ToNamedApiResource(typeof(VersionGroupsController).Segment());
+                .ToNamedApiResource();
         }
     }
 }

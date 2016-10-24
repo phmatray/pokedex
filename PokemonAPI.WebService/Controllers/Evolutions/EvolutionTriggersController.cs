@@ -64,7 +64,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -73,7 +73,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return evolutionTrigger
                 .PokemonEvolution
-                .Select(x => x.EvolvedSpecies.ToNamedApiResource<PokemonSpeciesController>())
+                .Select(x => x.EvolvedSpecies.ToNamedApiResource())
                 .ToList();
         }
     }

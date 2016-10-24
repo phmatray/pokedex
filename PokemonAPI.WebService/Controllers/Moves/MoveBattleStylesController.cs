@@ -62,7 +62,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.MoveBattleStyleId == moveBattleStyle.Id)
                     .ToListAsync())
                 .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource(typeof(LanguagesController).Segment())))
+                    x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

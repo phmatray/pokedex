@@ -60,7 +60,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return encounterMethod
                 .EncounterMethodProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource<LanguagesController>()))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

@@ -97,14 +97,14 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .ItemFlagMap
-                .Select(x => x.ItemFlag.ToNamedApiResource<ItemAttributesController>())
+                .Select(x => x.ItemFlag.ToNamedApiResource())
                 .ToList();
         }
 
         private NamedAPIResource GetCategory(EFItems item)
         {
             return item.Category
-                .ToNamedApiResource<ItemCategoriesController>();
+                .ToNamedApiResource();
 
             //var cat = item.Category;
 
@@ -112,16 +112,16 @@ namespace PokemonAPI.WebService.Controllers
             //{
             //    Id = cat.Id,
             //    Name = cat.Identifier,
-            //    Items = cat.Items.Select(x => x.ToNamedApiResource<ItemsController>()).ToList(),
+            //    Items = cat.Items.Select(x => x.ToNamedApiResource()).ToList(),
             //    Names = cat
             //        .ItemCategoryProse
             //        .Select(x => new Name
             //        (
             //            x.Name,
-            //            x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+            //            x.LocalLanguage.ToNamedApiResource()
             //        ))
             //        .ToList(),
-            //    Pocket = cat.Pocket.ToNamedApiResource<ItemPocketsController>()
+            //    Pocket = cat.Pocket.ToNamedApiResource()
             //};
         }
 
@@ -133,7 +133,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Effect = x.Effect,
                     ShortEffect = x.ShortEffect,
-                    Language = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    Language = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -145,8 +145,8 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new VersionGroupFlavorText
                 {
                     Text = x.FlavorText,
-                    Language = x.Language.ToNamedApiResource<LanguagesController>(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    Language = x.Language.ToNamedApiResource(),
+                    VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -158,7 +158,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new GenerationGameIndex
                 {
                     GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource<GenerationsController>()
+                    Generation = x.Generation.ToNamedApiResource()
                 })
                 .ToList();
         }
@@ -170,7 +170,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new Name
                 (
                     x.Name,
-                    x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                    x.LocalLanguage.ToNamedApiResource()
                 ))
                 .ToList();
         }
@@ -192,12 +192,12 @@ namespace PokemonAPI.WebService.Controllers
                     Pokemon = group
                         .FirstOrDefault()?
                         .Pokemon
-                        .ToNamedApiResource<PokemonsController>(),
+                        .ToNamedApiResource(),
                     VersionDetails = group
                         .Select(g => new ItemHolderPokemonVersionDetail
                         {
                             Rarity = g.Rarity,
-                            Version = g.Version.ToNamedApiResource<VersionsController>()
+                            Version = g.Version.ToNamedApiResource()
                         })
                         .ToList()
                 })
@@ -220,7 +220,7 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Machine = new APIResource(
                         $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MachinesController).Segment()}/{x.MachineNumber}/{x.VersionGroupId}/"),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                    VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
