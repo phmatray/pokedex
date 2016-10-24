@@ -17,7 +17,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The condition this encounter condition value pertains to
         /// </summary>
-        public List<NamedAPIResource> Condition { get; set; }
+        public NamedAPIResource Condition { get; set; }
 
         /// <summary>
         /// The name of this encounter condition value listed in different languages

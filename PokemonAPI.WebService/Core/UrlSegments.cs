@@ -22,6 +22,7 @@ namespace PokemonAPI.WebService.Core
                 {typeof(ContestEffectsController)          , "contest-effects"},
                 {typeof(ContestTypesController)            , "contest-types"},
                 {typeof(EggGroupsController)               , "egg-groups"},
+                {typeof(EncounterConditionsController)     , "encounter-conditions"},
                 {typeof(EncounterConditionValuesController), "encounter-condition-values"},
                 {typeof(EncounterMethodsController)        , "encounter-methods"},
                 {typeof(EvolutionChainsController)         , "evolution-chains"},
