@@ -42,7 +42,13 @@ namespace PokemonAPI.WebService.Controllers
                     .Include(x => x.Category).ThenInclude(x => x.Items)
                     .Include(x => x.Category).ThenInclude(x => x.ItemCategoryProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Category).ThenInclude(x => x.Pocket)
+                    .Include(x => x.ItemProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.ItemFlavorText).ThenInclude(x => x.Language)
+                    .Include(x => x.ItemFlavorText).ThenInclude(x => x.VersionGroup)
+                    .Include(x => x.ItemGameIndices).ThenInclude(x => x.Generation)
                     .Include(x => x.ItemNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonItems).ThenInclude(x => x.Pokemon)
+                    .Include(x => x.PokemonItems).ThenInclude(x => x.Version)
                     .Include(x => x.Machines).ThenInclude(x => x.VersionGroup)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -121,17 +127,40 @@ namespace PokemonAPI.WebService.Controllers
 
         private List<VerboseEffect> GetEffectEntries(EFItems item)
         {
-            return null;
+            return item
+                .ItemProse
+                .Select(x => new VerboseEffect
+                {
+                    Effect = x.Effect,
+                    ShortEffect = x.ShortEffect,
+                    Language = x.LocalLanguage.ToNamedApiResource<LanguagesController>()
+                })
+                .ToList();
         }
 
         private List<VersionGroupFlavorText> GetFlavorTextEntries(EFItems item)
         {
-            return null;
+            return item
+                .ItemFlavorText
+                .Select(x => new VersionGroupFlavorText
+                {
+                    Text = x.FlavorText,
+                    Language = x.Language.ToNamedApiResource<LanguagesController>(),
+                    VersionGroup = x.VersionGroup.ToNamedApiResource<VersionGroupsController>()
+                })
+                .ToList();
         }
 
         private List<GenerationGameIndex> GetGameIndices(EFItems item)
         {
-            return null;
+            return item
+                .ItemGameIndices
+                .Select(x => new GenerationGameIndex
+                {
+                    GameIndex = x.GameIndex,
+                    Generation = x.Generation.ToNamedApiResource<GenerationsController>()
+                })
+                .ToList();
         }
 
         private List<Name> GetNames(EFItems item)
@@ -156,22 +185,31 @@ namespace PokemonAPI.WebService.Controllers
 
         private List<ItemHolderPokemon> GetHeldByPokemon(EFItems item)
         {
-            //return item
-            //    .PokemonEvolutionHeldItem
-            //    .Select(x => new ItemHolderPokemon
-            //    {
-            //        Pokemon =  x,
-            //        VersionDetails = 
-            //    })
-            //    .ToList();
-
-            return null;
+            return item
+                .PokemonItems
+                .GroupBy(x => x.PokemonId, (key, group) => new ItemHolderPokemon
+                {
+                    Pokemon = group
+                        .FirstOrDefault()?
+                        .Pokemon
+                        .ToNamedApiResource<PokemonsController>(),
+                    VersionDetails = group
+                        .Select(g => new ItemHolderPokemonVersionDetail
+                        {
+                            Rarity = g.Rarity,
+                            Version = g.Version.ToNamedApiResource<VersionsController>()
+                        })
+                        .ToList()
+                })
+                .ToList();
         }
 
         private APIResource GetBabyTriggerFor(EFItems item)
         {
-            //item.PokemonEvolutionTriggerItem.
-            return null;
+            return _context
+                .EvolutionChains
+                .SingleOrDefault(x => x.BabyTriggerItemId == item.Id)?
+                .ToApiResource<EvolutionChainsController>();
         }
 
         private List<MachineVersionDetail> GetMachines(EFItems item)

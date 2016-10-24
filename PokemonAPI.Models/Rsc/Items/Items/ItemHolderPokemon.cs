@@ -7,7 +7,7 @@ namespace PokemonAPI.Models.Rsc
         /// <summary>
         /// The Pokémon that holds this item
         /// </summary>
-        public string Pokemon { get; set; }
+        public NamedAPIResource Pokemon { get; set; }
 
         /// <summary>
         /// The details for the version that this item is held in by the Pokémon
