@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEncounterMethodProse : IEFModel
+    public class EFEncounterMethodProse : IEFModel
     {
         public int EncounterMethodId { get; set; }
         public int LocalLanguageId { get; set; }

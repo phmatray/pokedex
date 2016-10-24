@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestMoveEffects : IEFModel
+    public sealed class EFConquestMoveEffects : IEFModel
     {
         public EFConquestMoveEffects()
         {
@@ -13,7 +13,7 @@ namespace PokemonAPI.WebService.Models
 
         public int Id { get; set; }
 
-        public virtual ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
-        public virtual ICollection<EFConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
+        public ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
+        public ICollection<EFConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
     }
 }

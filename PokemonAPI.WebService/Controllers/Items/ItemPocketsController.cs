@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<NamedAPIResource> GetCategories(EFItemPockets itemPocket)
+        private static List<NamedAPIResource> GetCategories(EFItemPockets itemPocket)
         {
             return itemPocket
                 .ItemCategories
@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFItemPockets itemPocket)
+        private static List<Name> GetNames(EFItemPockets itemPocket)
         {
             return itemPocket
                 .ItemPocketNames

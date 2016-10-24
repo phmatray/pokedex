@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFItemFlags : IEFModel, IEFIdentifier
+    public sealed class EFItemFlags : IEFIdentifier
     {
         public EFItemFlags()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFItemFlagMap> ItemFlagMap { get; set; }
-        public virtual ICollection<EFItemFlagProse> ItemFlagProse { get; set; }
+        public ICollection<EFItemFlagMap> ItemFlagMap { get; set; }
+        public ICollection<EFItemFlagProse> ItemFlagProse { get; set; }
     }
 }

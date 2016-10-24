@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFLocationAreaEncounterRates : IEFModel
+    public class EFLocationAreaEncounterRates : IEFModel
     {
         public int LocationAreaId { get; set; }
         public int EncounterMethodId { get; set; }

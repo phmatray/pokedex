@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFNatures : IEFModel, IEFIdentifier
+    public sealed class EFNatures : IEFIdentifier
     {
         public EFNatures()
         {
@@ -20,12 +20,12 @@ namespace PokemonAPI.WebService.Models
         public int LikesFlavorId { get; set; }
         public int GameIndex { get; set; }
 
-        public virtual ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
-        public virtual ICollection<EFNatureNames> NatureNames { get; set; }
-        public virtual ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
-        public virtual EFStats DecreasedStat { get; set; }
-        public virtual EFContestTypes HatesFlavor { get; set; }
-        public virtual EFStats IncreasedStat { get; set; }
-        public virtual EFContestTypes LikesFlavor { get; set; }
+        public ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
+        public ICollection<EFNatureNames> NatureNames { get; set; }
+        public ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
+        public EFStats DecreasedStat { get; set; }
+        public EFContestTypes HatesFlavor { get; set; }
+        public EFStats IncreasedStat { get; set; }
+        public EFContestTypes LikesFlavor { get; set; }
     }
 }

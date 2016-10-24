@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestKingdoms : IEFModel, IEFIdentifier
+    public sealed class EFConquestKingdoms : IEFIdentifier
     {
         public EFConquestKingdoms()
         {
@@ -15,8 +15,8 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public int TypeId { get; set; }
 
-        public virtual ICollection<EFConquestKingdomNames> ConquestKingdomNames { get; set; }
-        public virtual ICollection<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
-        public virtual EFTypes Type { get; set; }
+        public ICollection<EFConquestKingdomNames> ConquestKingdomNames { get; set; }
+        public ICollection<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
+        public EFTypes Type { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFLocationAreas : IEFModel, IEFIdentifier
+    public sealed class EFLocationAreas : IEFIdentifier
     {
         public EFLocationAreas()
         {
@@ -17,9 +17,9 @@ namespace PokemonAPI.WebService.Models
         public int GameIndex { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFEncounters> Encounters { get; set; }
-        public virtual ICollection<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
-        public virtual ICollection<EFLocationAreaProse> LocationAreaProse { get; set; }
-        public virtual EFLocations Location { get; set; }
+        public ICollection<EFEncounters> Encounters { get; set; }
+        public ICollection<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
+        public ICollection<EFLocationAreaProse> LocationAreaProse { get; set; }
+        public EFLocations Location { get; set; }
     }
 }

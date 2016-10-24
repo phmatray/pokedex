@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestEpisodes : IEFModel, IEFIdentifier
+    public sealed class EFConquestEpisodes : IEFIdentifier
     {
         public EFConquestEpisodes()
         {
@@ -16,9 +16,9 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFConquestEpisodeNames> ConquestEpisodeNames { get; set; }
-        public virtual ICollection<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
-        public virtual ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformationCompletedEpisode { get; set; }
-        public virtual ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformationCurrentEpisode { get; set; }
+        public ICollection<EFConquestEpisodeNames> ConquestEpisodeNames { get; set; }
+        public ICollection<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
+        public ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformationCompletedEpisode { get; set; }
+        public ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformationCurrentEpisode { get; set; }
     }
 }

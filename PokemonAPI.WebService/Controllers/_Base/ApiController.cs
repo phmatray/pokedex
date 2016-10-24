@@ -7,7 +7,7 @@ using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models.Interfaces;
 
-namespace PokemonAPI.WebService.Controllers.Base
+namespace PokemonAPI.WebService.Controllers._Base
 {
     public abstract class ApiController : Controller
     {

@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokedexProse : IEFModel
+    public class EFPokedexProse : IEFModel
     {
         public int PokedexId { get; set; }
         public int LocalLanguageId { get; set; }

@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFBerryFirmness : IEFModel, IEFIdentifier
+    public sealed class EFBerryFirmness : IEFIdentifier
     {
         public EFBerryFirmness()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFBerries> Berries { get; set; }
-        public virtual ICollection<EFBerryFirmnessNames> BerryFirmnessNames { get; set; }
+        public ICollection<EFBerries> Berries { get; set; }
+        public ICollection<EFBerryFirmnessNames> BerryFirmnessNames { get; set; }
     }
 }

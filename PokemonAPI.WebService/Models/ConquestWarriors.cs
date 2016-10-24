@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestWarriors : IEFModel, IEFIdentifier
+    public sealed class EFConquestWarriors : IEFIdentifier
     {
         public EFConquestWarriors()
         {
@@ -20,13 +20,13 @@ namespace PokemonAPI.WebService.Models
         public int GenderId { get; set; }
         public int? ArchetypeId { get; set; }
 
-        public virtual ICollection<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
-        public virtual ICollection<EFConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
-        public virtual ICollection<EFConquestWarriorNames> ConquestWarriorNames { get; set; }
-        public virtual ICollection<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
-        public virtual ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
-        public virtual ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
-        public virtual EFConquestWarriorArchetypes Archetype { get; set; }
-        public virtual EFGenders Gender { get; set; }
+        public ICollection<EFConquestEpisodeWarriors> ConquestEpisodeWarriors { get; set; }
+        public ICollection<EFConquestTransformationWarriors> ConquestTransformationWarriors { get; set; }
+        public ICollection<EFConquestWarriorNames> ConquestWarriorNames { get; set; }
+        public ICollection<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
+        public ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
+        public ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
+        public EFConquestWarriorArchetypes Archetype { get; set; }
+        public EFGenders Gender { get; set; }
     }
 }

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -87,7 +87,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private string GetName(EFContestTypes contestType)
+        private static string GetName(EFContestTypes contestType)
         {
             return contestType
                 .ContestTypeNames
@@ -117,7 +117,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private NamedAPIResource GetContestType(EFContestTypes contestType)
+        private static NamedAPIResource GetContestType(EFContestTypes contestType)
         {
             return contestType.ToNamedApiResource();
         }

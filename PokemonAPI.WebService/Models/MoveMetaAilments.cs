@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveMetaAilments : IEFModel, IEFIdentifier
+    public sealed class EFMoveMetaAilments : IEFIdentifier
     {
         public EFMoveMetaAilments()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFMoveMeta> MoveMeta { get; set; }
-        public virtual ICollection<EFMoveMetaAilmentNames> MoveMetaAilmentNames { get; set; }
+        public ICollection<EFMoveMeta> MoveMeta { get; set; }
+        public ICollection<EFMoveMetaAilmentNames> MoveMetaAilmentNames { get; set; }
     }
 }

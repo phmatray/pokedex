@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveDamageClasses : IEFModel, IEFIdentifier
+    public sealed class EFMoveDamageClasses : IEFIdentifier
     {
         public EFMoveDamageClasses()
         {
@@ -16,9 +16,9 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFMoveDamageClassProse> MoveDamageClassProse { get; set; }
-        public virtual ICollection<EFMoves> Moves { get; set; }
-        public virtual ICollection<EFStats> Stats { get; set; }
-        public virtual ICollection<EFTypes> Types { get; set; }
+        public ICollection<EFMoveDamageClassProse> MoveDamageClassProse { get; set; }
+        public ICollection<EFMoves> Moves { get; set; }
+        public ICollection<EFStats> Stats { get; set; }
+        public ICollection<EFTypes> Types { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFCharacteristics : IEFModel, IEFId
+    public sealed class EFCharacteristics : IEFId
     {
         public EFCharacteristics()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int StatId { get; set; }
         public int GeneMod5 { get; set; }
 
-        public virtual ICollection<EFCharacteristicText> CharacteristicText { get; set; }
-        public virtual EFStats Stat { get; set; }
+        public ICollection<EFCharacteristicText> CharacteristicText { get; set; }
+        public EFStats Stat { get; set; }
     }
 }

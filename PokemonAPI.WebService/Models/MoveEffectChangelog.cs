@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveEffectChangelog : IEFModel
+    public sealed class EFMoveEffectChangelog : IEFModel
     {
         public EFMoveEffectChangelog()
         {
@@ -14,8 +14,8 @@ namespace PokemonAPI.WebService.Models
         public int EffectId { get; set; }
         public int ChangedInVersionGroupId { get; set; }
 
-        public virtual ICollection<EFMoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
-        public virtual EFVersionGroups ChangedInVersionGroup { get; set; }
-        public virtual EFMoveEffects Effect { get; set; }
+        public ICollection<EFMoveEffectChangelogProse> MoveEffectChangelogProse { get; set; }
+        public EFVersionGroups ChangedInVersionGroup { get; set; }
+        public EFMoveEffects Effect { get; set; }
     }
 }

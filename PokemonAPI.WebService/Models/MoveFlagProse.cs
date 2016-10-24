@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveFlagProse : IEFModel
+    public class EFMoveFlagProse : IEFModel
     {
         public int MoveFlagId { get; set; }
         public int LocalLanguageId { get; set; }

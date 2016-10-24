@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveEffectProse : IEFModel
+    public class EFMoveEffectProse : IEFModel
     {
         public int MoveEffectId { get; set; }
         public int LocalLanguageId { get; set; }

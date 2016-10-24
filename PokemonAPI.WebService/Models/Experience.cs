@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFExperience : IEFModel
+    public class EFExperience : IEFModel
     {
         public int GrowthRateId { get; set; }
         public int Level { get; set; }

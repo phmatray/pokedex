@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
@@ -58,7 +58,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<NamedAPIResource> GetMoves(EFMoveMetaCategories category)
+        private static List<NamedAPIResource> GetMoves(EFMoveMetaCategories category)
         {
             return category
                 .MoveMeta
@@ -66,7 +66,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Description> GetDescriptions(EFMoveMetaCategories category)
+        private static List<Description> GetDescriptions(EFMoveMetaCategories category)
         {
             return category
                 .MoveMetaCategoryProse

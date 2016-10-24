@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEncounterMethods : IEFModel, IEFIdentifier
+    public sealed class EFEncounterMethods : IEFIdentifier
     {
         public EFEncounterMethods()
         {
@@ -16,8 +16,8 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public int Order { get; set; }
 
-        public virtual ICollection<EFEncounterMethodProse> EncounterMethodProse { get; set; }
-        public virtual ICollection<EFEncounterSlots> EncounterSlots { get; set; }
-        public virtual ICollection<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
+        public ICollection<EFEncounterMethodProse> EncounterMethodProse { get; set; }
+        public ICollection<EFEncounterSlots> EncounterSlots { get; set; }
+        public ICollection<EFLocationAreaEncounterRates> LocationAreaEncounterRates { get; set; }
     }
 }

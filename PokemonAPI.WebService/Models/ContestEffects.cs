@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFContestEffects : IEFModel, IEFId
+    public sealed class EFContestEffects : IEFId
     {
         public EFContestEffects()
         {
@@ -15,7 +15,7 @@ namespace PokemonAPI.WebService.Models
         public short Appeal { get; set; }
         public short Jam { get; set; }
 
-        public virtual ICollection<EFContestEffectProse> ContestEffectProse { get; set; }
-        public virtual ICollection<EFMoves> Moves { get; set; }
+        public ICollection<EFContestEffectProse> ContestEffectProse { get; set; }
+        public ICollection<EFMoves> Moves { get; set; }
     }
 }

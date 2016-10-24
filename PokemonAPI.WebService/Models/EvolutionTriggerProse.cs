@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEvolutionTriggerProse : IEFModel
+    public class EFEvolutionTriggerProse : IEFModel
     {
         public int EvolutionTriggerId { get; set; }
         public int LocalLanguageId { get; set; }

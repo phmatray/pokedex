@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -58,7 +58,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<NamedAPIResource> GetItems(EFItemFlags itemAttribute)
+        private static List<NamedAPIResource> GetItems(EFItemFlags itemAttribute)
         {
             return itemAttribute
                 .ItemFlagMap
@@ -66,7 +66,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFItemFlags itemAttribute)
+        private static List<Name> GetNames(EFItemFlags itemAttribute)
         {
             return itemAttribute
                 .ItemFlagProse
@@ -75,7 +75,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Description> GetDescriptions(EFItemFlags itemAttribute)
+        private static List<Description> GetDescriptions(EFItemFlags itemAttribute)
         {
             return itemAttribute
                 .ItemFlagProse

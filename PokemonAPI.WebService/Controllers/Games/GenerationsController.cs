@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -75,7 +75,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<NamedAPIResource> GetTypes(EFGenerations generation)
+        private static List<NamedAPIResource> GetTypes(EFGenerations generation)
         {
             return generation
                 .Types
@@ -84,13 +84,13 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private NamedAPIResource GetMainRegion(EFGenerations generation)
+        private static NamedAPIResource GetMainRegion(EFGenerations generation)
         {
             return generation.MainRegion
                 .ToNamedApiResource();
         }
 
-        private List<NamedAPIResource> GetMoves(EFGenerations generation)
+        private static List<NamedAPIResource> GetMoves(EFGenerations generation)
         {
             return generation
                 .Moves
@@ -98,7 +98,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetPokemonSpecies(EFGenerations generation)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFGenerations generation)
         {
             return generation
                 .PokemonSpecies
@@ -107,7 +107,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFGenerations generation)
+        private static List<Name> GetNames(EFGenerations generation)
         {
             return generation
                 .GenerationNames
@@ -115,7 +115,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetVersionGroups(EFGenerations generation)
+        private static List<NamedAPIResource> GetVersionGroups(EFGenerations generation)
         {
             return generation
                 .VersionGroups
@@ -123,7 +123,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetAbilities(EFGenerations generation)
+        private static List<NamedAPIResource> GetAbilities(EFGenerations generation)
         {
             return generation
                 .Abilities

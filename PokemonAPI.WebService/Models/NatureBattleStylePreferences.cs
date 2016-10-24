@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFNatureBattleStylePreferences : IEFModel
+    public class EFNatureBattleStylePreferences : IEFModel
     {
         public int NatureId { get; set; }
         public int MoveBattleStyleId { get; set; }

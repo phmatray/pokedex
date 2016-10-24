@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<Name> GetNames(EFPalParkAreas palParkArea)
+        private static List<Name> GetNames(EFPalParkAreas palParkArea)
         {
             return palParkArea
                 .PalParkAreaNames
@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<PalParkEncounterSpecies> GetPokemonEncounters(EFPalParkAreas palParkArea)
+        private static List<PalParkEncounterSpecies> GetPokemonEncounters(EFPalParkAreas palParkArea)
         {
             return palParkArea
                 .PalPark

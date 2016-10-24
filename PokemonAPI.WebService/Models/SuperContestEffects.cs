@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFSuperContestEffects : IEFModel, IEFId
+    public sealed class EFSuperContestEffects : IEFId
     {
         public EFSuperContestEffects()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public short Appeal { get; set; }
 
-        public virtual ICollection<EFMoves> Moves { get; set; }
-        public virtual ICollection<EFSuperContestEffectProse> SuperContestEffectProse { get; set; }
+        public ICollection<EFMoves> Moves { get; set; }
+        public ICollection<EFSuperContestEffectProse> SuperContestEffectProse { get; set; }
     }
 }

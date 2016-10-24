@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokemonColorNames : IEFModel
+    public class EFPokemonColorNames : IEFModel
     {
         public int PokemonColorId { get; set; }
         public int LocalLanguageId { get; set; }

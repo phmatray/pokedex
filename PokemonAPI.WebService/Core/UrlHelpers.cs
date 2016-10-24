@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PokemonAPI.WebService.Controllers;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Core
 {

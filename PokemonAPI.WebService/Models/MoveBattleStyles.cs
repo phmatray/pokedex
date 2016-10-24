@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveBattleStyles : IEFModel, IEFIdentifier
+    public sealed class EFMoveBattleStyles : IEFIdentifier
     {
         public EFMoveBattleStyles()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFMoveBattleStyleProse> MoveBattleStyleProse { get; set; }
-        public virtual ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
+        public ICollection<EFMoveBattleStyleProse> MoveBattleStyleProse { get; set; }
+        public ICollection<EFNatureBattleStylePreferences> NatureBattleStylePreferences { get; set; }
     }
 }

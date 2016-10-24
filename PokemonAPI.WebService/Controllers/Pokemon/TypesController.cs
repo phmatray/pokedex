@@ -4,12 +4,12 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Type = PokemonAPI.Models.Rsc.Type;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {

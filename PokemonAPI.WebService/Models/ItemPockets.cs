@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFItemPockets : IEFModel, IEFIdentifier
+    public sealed class EFItemPockets : IEFIdentifier
     {
         public EFItemPockets()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFItemCategories> ItemCategories { get; set; }
-        public virtual ICollection<EFItemPocketNames> ItemPocketNames { get; set; }
+        public ICollection<EFItemCategories> ItemCategories { get; set; }
+        public ICollection<EFItemPocketNames> ItemPocketNames { get; set; }
     }
 }

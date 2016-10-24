@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -61,13 +61,13 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private NamedAPIResource GetRegion(EFLocations location)
+        private static NamedAPIResource GetRegion(EFLocations location)
         {
             return location.Region
                 .ToNamedApiResource();
         }
 
-        private List<Name> GetNames(EFLocations location)
+        private static List<Name> GetNames(EFLocations location)
         {
             return location
                 .LocationNames
@@ -79,7 +79,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<GenerationGameIndex> GetGameIndices(EFLocations location)
+        private static List<GenerationGameIndex> GetGameIndices(EFLocations location)
         {
             return location
                 .LocationGameIndices
@@ -91,7 +91,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetAreas(EFLocations location)
+        private static List<NamedAPIResource> GetAreas(EFLocations location)
         {
             return location
                 .LocationAreas

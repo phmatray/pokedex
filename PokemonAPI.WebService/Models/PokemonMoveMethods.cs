@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokemonMoveMethods : IEFModel, IEFIdentifier
+    public sealed class EFPokemonMoveMethods : IEFIdentifier
     {
         public EFPokemonMoveMethods()
         {
@@ -15,8 +15,8 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFPokemonMoveMethodProse> PokemonMoveMethodProse { get; set; }
-        public virtual ICollection<EFPokemonMoves> PokemonMoves { get; set; }
-        public virtual ICollection<EFVersionGroupPokemonMoveMethods> VersionGroupPokemonMoveMethods { get; set; }
+        public ICollection<EFPokemonMoveMethodProse> PokemonMoveMethodProse { get; set; }
+        public ICollection<EFPokemonMoves> PokemonMoves { get; set; }
+        public ICollection<EFVersionGroupPokemonMoveMethods> VersionGroupPokemonMoveMethods { get; set; }
     }
 }

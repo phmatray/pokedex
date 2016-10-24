@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
@@ -54,9 +54,9 @@ namespace PokemonAPI.WebService.Controllers
                     IsMainSeries      = ability.IsMainSeries,
                     Generation        = GetGeneration(ability),
                     Names             = GetNames(ability),
-                    EffectEntries     = await GetEffectEntries(ability),
-                    EffectChanges     = await GetEffectChanges(ability),
-                    FlavorTextEntries = await GetFlavorTextEntries(ability),
+                    EffectEntries     = GetEffectEntries(ability),
+                    EffectChanges     = GetEffectChanges(ability),
+                    FlavorTextEntries = GetFlavorTextEntries(ability),
                     Pokemon           = GetPokemon(ability)
                 };
 
@@ -68,13 +68,13 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private NamedAPIResource GetGeneration(EFAbilities ability)
+        private static NamedAPIResource GetGeneration(EFAbilities ability)
         {
             return ability.Generation
                 .ToNamedApiResource();
         }
 
-        private List<Name> GetNames(EFAbilities ability)
+        private static List<Name> GetNames(EFAbilities ability)
         {
             return ability
                 .AbilityNames
@@ -86,20 +86,20 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<VerboseEffect>> GetEffectEntries(EFAbilities ability)
+        private static List<VerboseEffect> GetEffectEntries(EFAbilities ability)
         {
             return ability
                 .AbilityProse
                 .Select(x => new VerboseEffect
                 {
-                    Effect      = x.Effect,
+                    Effect = x.Effect,
                     ShortEffect = x.ShortEffect,
-                    Language    = x.LocalLanguage.ToNamedApiResource()
+                    Language = x.LocalLanguage.ToNamedApiResource()
                 })
                 .ToList();
         }
 
-        private async Task<List<AbilityEffectChange>> GetEffectChanges(EFAbilities ability)
+        private static List<AbilityEffectChange> GetEffectChanges(EFAbilities ability)
         {
             return ability
                 .AbilityChangelog
@@ -117,20 +117,20 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<AbilityFlavorText>> GetFlavorTextEntries(EFAbilities ability)
+        private static List<AbilityFlavorText> GetFlavorTextEntries(EFAbilities ability)
         {
             return ability
                 .AbilityFlavorText
                 .Select(x => new AbilityFlavorText
                 {
-                    FlavorText   = x.FlavorText,
-                    Language     = x.Language.ToNamedApiResource(),
+                    FlavorText = x.FlavorText,
+                    Language = x.Language.ToNamedApiResource(),
                     VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();
         }
 
-        private List<AbilityPokemon> GetPokemon(EFAbilities ability)
+        private static List<AbilityPokemon> GetPokemon(EFAbilities ability)
         {
             return ability
                 .PokemonAbilities

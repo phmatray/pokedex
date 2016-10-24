@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using PokemonAPI.WebService.Models;
 
+// ReSharper disable once CheckNamespace
 namespace PokemonAPI.WebService
 {
-    public partial class VeekunContext : DbContext
+    public class VeekunContext : DbContext
     {
         public VeekunContext(DbContextOptions<VeekunContext> options)
             : base(options)

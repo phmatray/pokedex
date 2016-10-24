@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFBerries : IEFModel
+    public sealed class EFBerries : IEFModel
     {
         public EFBerries()
         {
@@ -21,9 +21,9 @@ namespace PokemonAPI.WebService.Models
         public int SoilDryness { get; set; }
         public int Smoothness { get; set; }
 
-        public virtual ICollection<EFBerryFlavors> BerryFlavors { get; set; }
-        public virtual EFBerryFirmness Firmness { get; set; }
-        public virtual EFItems Item { get; set; }
-        public virtual EFTypes NaturalGiftType { get; set; }
+        public ICollection<EFBerryFlavors> BerryFlavors { get; set; }
+        public EFBerryFirmness Firmness { get; set; }
+        public EFItems Item { get; set; }
+        public EFTypes NaturalGiftType { get; set; }
     }
 }

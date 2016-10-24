@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFItemFlingEffects : IEFModel, IEFId
+    public sealed class EFItemFlingEffects : IEFId
     {
         public EFItemFlingEffects()
         {
@@ -32,7 +32,7 @@ namespace PokemonAPI.WebService.Models
             }
         }
 
-        public virtual ICollection<EFItemFlingEffectProse> ItemFlingEffectProse { get; set; }
-        public virtual ICollection<EFItems> Items { get; set; }
+        public ICollection<EFItemFlingEffectProse> ItemFlingEffectProse { get; set; }
+        public ICollection<EFItems> Items { get; set; }
     }
 }

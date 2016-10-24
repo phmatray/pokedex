@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveMetaStatChanges : IEFModel
+    public class EFMoveMetaStatChanges : IEFModel
     {
         public int MoveId { get; set; }
         public int StatId { get; set; }

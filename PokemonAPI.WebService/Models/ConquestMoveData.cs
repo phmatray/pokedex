@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestMoveData : IEFModel
+    public class EFConquestMoveData : IEFModel
     {
         public int MoveId { get; set; }
         public int? Power { get; set; }

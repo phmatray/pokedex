@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -58,7 +58,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<Description> GetDescriptions(EFMoveTargets moveTarget)
+        private static List<Description> GetDescriptions(EFMoveTargets moveTarget)
         {
             return moveTarget
                 .MoveTargetProse
@@ -70,7 +70,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetMoves(EFMoveTargets moveTarget)
+        private static List<NamedAPIResource> GetMoves(EFMoveTargets moveTarget)
         {
             return moveTarget
                 .Moves
@@ -78,7 +78,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFMoveTargets moveTarget)
+        private static List<Name> GetNames(EFMoveTargets moveTarget)
         {
             return moveTarget
                 .MoveTargetProse

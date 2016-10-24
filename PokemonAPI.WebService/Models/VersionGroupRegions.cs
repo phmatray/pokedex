@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFVersionGroupRegions : IEFModel
+    public class EFVersionGroupRegions : IEFModel
     {
         public int VersionGroupId { get; set; }
         public int RegionId { get; set; }

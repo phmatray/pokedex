@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
@@ -65,7 +65,7 @@ namespace PokemonAPI.WebService.Controllers
                     FlavorTextEntries = GetFlavorTextEntries(item),
                     GameIndices       = GetGameIndices(item),
                     Names             = GetNames(item),
-                    Sprites           = GetSprites(item),
+                    Sprites           = null, //GetSprites(item),
                     HeldByPokemon     = GetHeldByPokemon(item),
                     BabyTriggerFor    = GetBabyTriggerFor(item),
                     Machines          = GetMachines(item)
@@ -79,7 +79,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private NamedAPIResource GetFlingEffect(EFItems item)
+        private static NamedAPIResource GetFlingEffect(EFItems item)
         {
             if (item.FlingEffectId != null)
             {
@@ -93,7 +93,7 @@ namespace PokemonAPI.WebService.Controllers
             return null;
         }
 
-        private List<NamedAPIResource> GetAttributes(EFItems item)
+        private static List<NamedAPIResource> GetAttributes(EFItems item)
         {
             return item
                 .ItemFlagMap
@@ -101,7 +101,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private NamedAPIResource GetCategory(EFItems item)
+        private static NamedAPIResource GetCategory(EFItems item)
         {
             return item.Category
                 .ToNamedApiResource();
@@ -125,7 +125,7 @@ namespace PokemonAPI.WebService.Controllers
             //};
         }
 
-        private List<VerboseEffect> GetEffectEntries(EFItems item)
+        private static List<VerboseEffect> GetEffectEntries(EFItems item)
         {
             return item
                 .ItemProse
@@ -138,7 +138,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<VersionGroupFlavorText> GetFlavorTextEntries(EFItems item)
+        private static List<VersionGroupFlavorText> GetFlavorTextEntries(EFItems item)
         {
             return item
                 .ItemFlavorText
@@ -151,7 +151,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<GenerationGameIndex> GetGameIndices(EFItems item)
+        private static List<GenerationGameIndex> GetGameIndices(EFItems item)
         {
             return item
                 .ItemGameIndices
@@ -163,7 +163,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFItems item)
+        private static List<Name> GetNames(EFItems item)
         {
             return item
                 .ItemNames
@@ -175,31 +175,36 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private ItemSprites GetSprites(EFItems item)
-        {
-            return new ItemSprites
-            {
-                Default = null //TODO: Get Sprites
-            };
-        }
+        //private static ItemSprites GetSprites(EFItems item)
+        //{
+        //    return new ItemSprites
+        //    {
+        //        Default = null //TODO: Get Sprites
+        //    };
+        //}
 
-        private List<ItemHolderPokemon> GetHeldByPokemon(EFItems item)
+        private static List<ItemHolderPokemon> GetHeldByPokemon(EFItems item)
         {
             return item
                 .PokemonItems
-                .GroupBy(x => x.PokemonId, (key, group) => new ItemHolderPokemon
+                .GroupBy(x => x.PokemonId, (key, group) =>
                 {
-                    Pokemon = group
-                        .FirstOrDefault()?
-                        .Pokemon
-                        .ToNamedApiResource(),
-                    VersionDetails = group
-                        .Select(g => new ItemHolderPokemonVersionDetail
-                        {
-                            Rarity = g.Rarity,
-                            Version = g.Version.ToNamedApiResource()
-                        })
-                        .ToList()
+                    var efPokemonItemses = group as IList<EFPokemonItems> ?? group.ToList();
+
+                    return new ItemHolderPokemon
+                    {
+                        Pokemon = efPokemonItemses
+                            .FirstOrDefault()?
+                            .Pokemon
+                            .ToNamedApiResource(),
+                        VersionDetails = efPokemonItemses
+                            .Select(g => new ItemHolderPokemonVersionDetail
+                            {
+                                Rarity = g.Rarity,
+                                Version = g.Version.ToNamedApiResource()
+                            })
+                            .ToList()
+                    };
                 })
                 .ToList();
         }
@@ -212,7 +217,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToApiResource<EvolutionChainsController>();
         }
 
-        private List<MachineVersionDetail> GetMachines(EFItems item)
+        private static List<MachineVersionDetail> GetMachines(EFItems item)
         {
             return item
                 .Machines

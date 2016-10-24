@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEncounterSlots : IEFModel
+    public sealed class EFEncounterSlots : IEFModel
     {
         public EFEncounterSlots()
         {
@@ -16,8 +16,8 @@ namespace PokemonAPI.WebService.Models
         public int? Slot { get; set; }
         public int? Rarity { get; set; }
 
-        public virtual ICollection<EFEncounters> Encounters { get; set; }
-        public virtual EFEncounterMethods EncounterMethod { get; set; }
-        public virtual EFVersionGroups VersionGroup { get; set; }
+        public ICollection<EFEncounters> Encounters { get; set; }
+        public EFEncounterMethods EncounterMethod { get; set; }
+        public EFVersionGroups VersionGroup { get; set; }
     }
 }

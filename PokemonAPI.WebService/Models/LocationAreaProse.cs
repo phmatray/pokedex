@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFLocationAreaProse : IEFModel
+    public class EFLocationAreaProse : IEFModel
     {
         public int LocationAreaId { get; set; }
         public int LocalLanguageId { get; set; }

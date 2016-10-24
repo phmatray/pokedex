@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -50,7 +50,7 @@ namespace PokemonAPI.WebService.Controllers
                     IsMega       = pokemonForm.IsMega,
                     FormName     = pokemonForm.FormIdentifier,
                     Pokemon      = await GetPokemon(pokemonForm),
-                    Sprites      = await GetSprites(pokemonForm),
+                    Sprites      = null,//GetSprites(pokemonForm),
                     VersionGroup = await GetVersionGroup(pokemonForm),
                     Names        = await GetNames(pokemonForm),
                     FormNames    = await GetFormNames(pokemonForm)
@@ -72,18 +72,18 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<PokemonFormSprites> GetSprites(EFPokemonForms pokemonForm)
-        {
-            var spriteUrlBase = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+        //private static PokemonFormSprites GetSprites(EFPokemonForms pokemonForm)
+        //{
+        //    var spriteUrlBase = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
-            return new PokemonFormSprites
-            {
-                BackDefault  = null, // $"{spriteUrlBase}back/{pokemonForm.Id}.png",
-                BackShiny    = null, // $"{spriteUrlBase}back/shiny/{pokemonForm.Id}.png",
-                FrontDefault = null, // $"{spriteUrlBase}{pokemonForm.Id}.png",
-                FrontShiny   = null  // $"{spriteUrlBase}shiny/{pokemonForm.Id}.png"
-            };
-        }
+        //    return new PokemonFormSprites
+        //    {
+        //        BackDefault = null, // $"{spriteUrlBase}back/{pokemonForm.Id}.png",
+        //        BackShiny = null, // $"{spriteUrlBase}back/shiny/{pokemonForm.Id}.png",
+        //        FrontDefault = null, // $"{spriteUrlBase}{pokemonForm.Id}.png",
+        //        FrontShiny = null  // $"{spriteUrlBase}shiny/{pokemonForm.Id}.png"
+        //    };
+        //}
 
         private async Task<NamedAPIResource> GetVersionGroup(EFPokemonForms pokemonForm)
         {

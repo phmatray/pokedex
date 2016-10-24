@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Models;
 
 namespace PokemonAPI.WebService.Controllers
@@ -83,7 +83,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<Effect> GetEffectEntries(EFContestEffects contestEffect)
+        private static List<Effect> GetEffectEntries(EFContestEffects contestEffect)
         {
             return contestEffect
                 .ContestEffectProse
@@ -95,7 +95,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<FlavorText> GetFlavorTextEntries(EFContestEffects contestEffect)
+        private static List<FlavorText> GetFlavorTextEntries(EFContestEffects contestEffect)
         {
             return contestEffect
                 .ContestEffectProse

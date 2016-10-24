@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokemonColors : IEFModel, IEFIdentifier
+    public sealed class EFPokemonColors : IEFIdentifier
     {
         public EFPokemonColors()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFPokemonColorNames> PokemonColorNames { get; set; }
-        public virtual ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
+        public ICollection<EFPokemonColorNames> PokemonColorNames { get; set; }
+        public ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestEpisodeWarriors : IEFModel
+    public class EFConquestEpisodeWarriors : IEFModel
     {
         public int EpisodeId { get; set; }
         public int WarriorId { get; set; }

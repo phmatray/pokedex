@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokeathlonStats : IEFModel, IEFIdentifier
+    public sealed class EFPokeathlonStats : IEFIdentifier
     {
         public EFPokeathlonStats()
         {
@@ -15,8 +15,8 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
-        public virtual ICollection<EFPokeathlonStatNames> PokeathlonStatNames { get; set; }
-        public virtual ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
+        public ICollection<EFNaturePokeathlonStats> NaturePokeathlonStats { get; set; }
+        public ICollection<EFPokeathlonStatNames> PokeathlonStatNames { get; set; }
+        public ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
     }
 }

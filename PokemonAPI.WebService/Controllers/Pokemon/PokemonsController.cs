@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -53,7 +53,7 @@ namespace PokemonAPI.WebService.Controllers
                     HeldItems              = await GetHeldItems(pokemon),
                     LocationAreaEncounters = GetLocationAreaEncounters(pokemon),
                     Moves                  = await GetMoves(pokemon),
-                    Sprites                = GetSprites(pokemon),
+                    Sprites                = null, //GetSprites(pokemon),
                     Species                = await GetSpecies(pokemon),
                     Stats                  = await GetStats(pokemon),
                     Types                  = await GetTypes(pokemon)
@@ -183,7 +183,7 @@ namespace PokemonAPI.WebService.Controllers
             return heldItems;
         }
 
-        private string GetLocationAreaEncounters(EFPokemon pokemon)
+        private static string GetLocationAreaEncounters(EFPokemon pokemon)
         {
             return $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(PokemonsController).Segment()}/{pokemon.Id}/encounters";
         }
@@ -215,21 +215,21 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private PokemonSprites GetSprites(EFPokemon pokemon)
-        {
-            return null;
-            //return new PokemonSprites
-            //{
-            //    FrontDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-            //    FrontShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
-            //    FrontFemale = null,
-            //    FrontShinyFemale = null,
-            //    BackDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
-            //    BackShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
-            //    BackFemale = null,
-            //    BackShinyFemale = null
-            //};
-        }
+        //private PokemonSprites GetSprites(EFPokemon pokemon)
+        //{
+        //    return null;
+        //    //return new PokemonSprites
+        //    //{
+        //    //    FrontDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+        //    //    FrontShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
+        //    //    FrontFemale = null,
+        //    //    FrontShinyFemale = null,
+        //    //    BackDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
+        //    //    BackShiny = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+        //    //    BackFemale = null,
+        //    //    BackShinyFemale = null
+        //    //};
+        //}
 
         private async Task<NamedAPIResource> GetSpecies(EFPokemon pokemon)
         {

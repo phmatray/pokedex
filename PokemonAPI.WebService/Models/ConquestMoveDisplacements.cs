@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestMoveDisplacements : IEFModel, IEFIdentifier
+    public sealed class EFConquestMoveDisplacements : IEFIdentifier
     {
         public EFConquestMoveDisplacements()
         {
@@ -15,7 +15,7 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public bool AffectsTarget { get; set; }
 
-        public virtual ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
-        public virtual ICollection<EFConquestMoveDisplacementProse> ConquestMoveDisplacementProse { get; set; }
+        public ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
+        public ICollection<EFConquestMoveDisplacementProse> ConquestMoveDisplacementProse { get; set; }
     }
 }

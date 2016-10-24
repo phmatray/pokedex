@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFAbilityChangelog : IEFModel
+    public sealed class EFAbilityChangelog : IEFModel
     {
         public EFAbilityChangelog()
         {
@@ -14,8 +14,8 @@ namespace PokemonAPI.WebService.Models
         public int AbilityId { get; set; }
         public int ChangedInVersionGroupId { get; set; }
 
-        public virtual ICollection<EFAbilityChangelogProse> AbilityChangelogProse { get; set; }
-        public virtual EFAbilities Ability { get; set; }
-        public virtual EFVersionGroups ChangedInVersionGroup { get; set; }
+        public ICollection<EFAbilityChangelogProse> AbilityChangelogProse { get; set; }
+        public EFAbilities Ability { get; set; }
+        public EFVersionGroups ChangedInVersionGroup { get; set; }
     }
 }

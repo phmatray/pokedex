@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEncounters : IEFModel
+    public sealed class EFEncounters : IEFModel
     {
         public EFEncounters()
         {
@@ -18,10 +18,10 @@ namespace PokemonAPI.WebService.Models
         public int MinLevel { get; set; }
         public int MaxLevel { get; set; }
 
-        public virtual ICollection<EFEncounterConditionValueMap> EncounterConditionValueMap { get; set; }
-        public virtual EFEncounterSlots EncounterSlot { get; set; }
-        public virtual EFLocationAreas LocationArea { get; set; }
-        public virtual EFPokemon Pokemon { get; set; }
-        public virtual EFVersions Version { get; set; }
+        public ICollection<EFEncounterConditionValueMap> EncounterConditionValueMap { get; set; }
+        public EFEncounterSlots EncounterSlot { get; set; }
+        public EFLocationAreas LocationArea { get; set; }
+        public EFPokemon Pokemon { get; set; }
+        public EFVersions Version { get; set; }
     }
 }

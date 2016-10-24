@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFGrowthRates : IEFModel, IEFIdentifier
+    public sealed class EFGrowthRates : IEFIdentifier
     {
         public EFGrowthRates()
         {
@@ -16,8 +16,8 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public string Formula { get; set; }
 
-        public virtual ICollection<EFExperience> Experience { get; set; }
-        public virtual ICollection<EFGrowthRateProse> GrowthRateProse { get; set; }
-        public virtual ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
+        public ICollection<EFExperience> Experience { get; set; }
+        public ICollection<EFGrowthRateProse> GrowthRateProse { get; set; }
+        public ICollection<EFPokemonSpecies> PokemonSpecies { get; set; }
     }
 }

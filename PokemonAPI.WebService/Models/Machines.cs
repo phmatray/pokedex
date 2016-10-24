@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMachines : IEFModel
+    public class EFMachines : IEFModel
     {
         public int MachineNumber { get; set; }
         public int VersionGroupId { get; set; }

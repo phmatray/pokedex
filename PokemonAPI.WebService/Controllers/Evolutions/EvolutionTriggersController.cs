@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 
@@ -57,7 +57,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<Name> GetNames(EFEvolutionTriggers evolutionTrigger)
+        private static List<Name> GetNames(EFEvolutionTriggers evolutionTrigger)
         {
             return evolutionTrigger
                 .EvolutionTriggerProse
@@ -69,7 +69,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<NamedAPIResource> GetPokemonSpecies(EFEvolutionTriggers evolutionTrigger)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFEvolutionTriggers evolutionTrigger)
         {
             return evolutionTrigger
                 .PokemonEvolution

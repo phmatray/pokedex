@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFMoveMetaCategoryProse : IEFModel
+    public class EFMoveMetaCategoryProse : IEFModel
     {
         public int MoveMetaCategoryId { get; set; }
         public int LocalLanguageId { get; set; }

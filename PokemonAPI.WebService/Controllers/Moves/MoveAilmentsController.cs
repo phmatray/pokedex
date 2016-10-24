@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -58,7 +58,7 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private List<NamedAPIResource> GetMoves(EFMoveMetaAilments ailment)
+        private static List<NamedAPIResource> GetMoves(EFMoveMetaAilments ailment)
         {
             return ailment
                 .MoveMeta
@@ -66,7 +66,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<Name> GetNames(EFMoveMetaAilments ailment)
+        private static List<Name> GetNames(EFMoveMetaAilments ailment)
         {
             return ailment
                 .MoveMetaAilmentNames

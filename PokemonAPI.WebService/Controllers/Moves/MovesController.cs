@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -137,19 +137,19 @@ namespace PokemonAPI.WebService.Controllers
                 : null;
         }
 
-        private NamedAPIResource GetContestType(EFMoves move)
+        private static NamedAPIResource GetContestType(EFMoves move)
         {
             return move.ContestType
                 .ToNamedApiResource();
         }
 
-        private APIResource GetContestEffect(EFMoves move)
+        private static APIResource GetContestEffect(EFMoves move)
         {
             return move.ContestEffect
                 .ToApiResource<ContestEffectsController>();
         }
 
-        private NamedAPIResource GetDamageClass(EFMoves move)
+        private static NamedAPIResource GetDamageClass(EFMoves move)
         {
             return move.DamageClass
                 .ToNamedApiResource();
@@ -214,7 +214,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private NamedAPIResource GetGeneration(EFMoves move)
+        private static NamedAPIResource GetGeneration(EFMoves move)
         {
             return move.Generation
                 .ToNamedApiResource();
@@ -331,19 +331,19 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private APIResource GetSuperContestEffect(EFMoves move)
+        private static APIResource GetSuperContestEffect(EFMoves move)
         {
             return move.SuperContestEffect
                 .ToApiResource<SuperContestEffectsController>();
         }
 
-        private NamedAPIResource GetTarget(EFMoves move)
+        private static NamedAPIResource GetTarget(EFMoves move)
         {
             return move.Target
                 .ToNamedApiResource();
         }
 
-        private NamedAPIResource GetType(EFMoves move)
+        private static NamedAPIResource GetType(EFMoves move)
         {
             return move.Type
                 .ToNamedApiResource();

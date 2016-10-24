@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -66,41 +66,46 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private string GetName(EFLocationAreas locationArea)
+        private static string GetName(EFLocationAreas locationArea)
         {
             return $"{locationArea.Location.Identifier}-{locationArea.Identifier ?? "area"}";
         }
 
-        private List<EncounterMethodRate> GetEncounterMethodRates(EFLocationAreas locationArea)
+        private static List<EncounterMethodRate> GetEncounterMethodRates(EFLocationAreas locationArea)
         {
             return locationArea
                 .LocationAreaEncounterRates
                 .GroupBy(x => x.EncounterMethodId,
-                    (key, group) => new EncounterMethodRate
+                    (key, group) =>
                     {
-                        EncounterMethod = group
-                            .FirstOrDefault()?
-                            .EncounterMethod
-                            .ToNamedApiResource(),
-                        VersionDetails = group
-                            .Select(g => new EncounterVersionDetails
-                            {
-                                Rate = g.Rate,
-                                Version = g.Version.ToNamedApiResource()
-                            })
-                            .ToList()
+                        var efLocationAreaEncounterRateses = group as IList<EFLocationAreaEncounterRates> ?? group.ToList();
+
+                        return new EncounterMethodRate
+                        {
+                            EncounterMethod = efLocationAreaEncounterRateses
+                                .FirstOrDefault()?
+                                .EncounterMethod
+                                .ToNamedApiResource(),
+                            VersionDetails = efLocationAreaEncounterRateses
+                                .Select(g => new EncounterVersionDetails
+                                {
+                                    Rate = g.Rate,
+                                    Version = g.Version.ToNamedApiResource()
+                                })
+                                .ToList()
+                        };
                     })
                 .ToList();
         }
 
-        private NamedAPIResource GetLocation(EFLocationAreas locationArea)
+        private static NamedAPIResource GetLocation(EFLocationAreas locationArea)
         {
             return locationArea
                 .Location
                 .ToNamedApiResource();
         }
 
-        private List<Name> GetNames(EFLocationAreas locationArea)
+        private static List<Name> GetNames(EFLocationAreas locationArea)
         {
             return locationArea
                 .LocationAreaProse
@@ -108,45 +113,55 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private List<PokemonEncounter> GetPokemonEncounters(EFLocationAreas locationArea)
+        private static List<PokemonEncounter> GetPokemonEncounters(EFLocationAreas locationArea)
         {
             return locationArea
                 .Encounters
                 .GroupBy(x => x.PokemonId,
-                    (key, group) => new PokemonEncounter
+                    (key, group) =>
                     {
-                        Pokemon = group
-                            .FirstOrDefault()?
-                            .Pokemon
-                            .ToNamedApiResource(),
-                        VersionDetails = group
-                            .GroupBy(x2 => x2.Version.Id,
-                                (key2, group2) => new VersionEncounterDetail
-                                {
-                                    Version = group2
-                                        .FirstOrDefault()?
-                                        .Version
-                                        .ToNamedApiResource(),
-                                    MaxChance = group2.Sum(g2 => g2.EncounterSlot.Rarity ?? 0),
-                                    EncounterDetails = group2
-                                        .Select(g2 => new Encounter
+                        var efEncounterses = group as IList<EFEncounters> ?? group.ToList();
+
+                        return new PokemonEncounter
+                        {
+                            Pokemon = efEncounterses
+                                .FirstOrDefault()?
+                                .Pokemon
+                                .ToNamedApiResource(),
+                            VersionDetails = efEncounterses
+                                .GroupBy(x2 => x2.Version.Id,
+                                    (key2, group2) =>
+                                    {
+                                        var encounterses = group2 as IList<EFEncounters> ?? group2.ToList();
+
+                                        return new VersionEncounterDetail
                                         {
-                                            MinLevel = g2.MinLevel,
-                                            MaxLevel = g2.MaxLevel,
-                                            ConditionValues = g2
-                                                .EncounterConditionValueMap
-                                                .Select(cv => cv.EncounterConditionValue
-                                                    .ToNamedApiResource())
-                                                .ToList(),
-                                            Chance = g2.EncounterSlot.Rarity,
-                                            Method = g2
-                                                .EncounterSlot
-                                                .EncounterMethod
-                                                .ToNamedApiResource()
-                                        })
-                                        .ToList()
-                                })
-                            .ToList()
+                                            Version = encounterses
+                                                .FirstOrDefault()?
+                                                .Version
+                                                .ToNamedApiResource(),
+                                            MaxChance = encounterses.Sum(g2 => g2.EncounterSlot.Rarity ?? 0),
+                                            EncounterDetails = encounterses
+                                                .Select(g2 => new Encounter
+                                                {
+                                                    MinLevel = g2.MinLevel,
+                                                    MaxLevel = g2.MaxLevel,
+                                                    ConditionValues = g2
+                                                        .EncounterConditionValueMap
+                                                        .Select(cv => cv.EncounterConditionValue
+                                                            .ToNamedApiResource())
+                                                        .ToList(),
+                                                    Chance = g2.EncounterSlot.Rarity,
+                                                    Method = g2
+                                                        .EncounterSlot
+                                                        .EncounterMethod
+                                                        .ToNamedApiResource()
+                                                })
+                                                .ToList()
+                                        };
+                                    })
+                                .ToList()
+                        };
                     })
                 .ToList();
         }

@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFAbilityFlavorText : IEFModel
+    public class EFAbilityFlavorText : IEFModel
     {
         public int AbilityId { get; set; }
         public int VersionGroupId { get; set; }

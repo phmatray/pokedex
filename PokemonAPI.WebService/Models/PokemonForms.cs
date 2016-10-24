@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokemonForms : IEFModel, IEFIdentifier
+    public sealed class EFPokemonForms : IEFIdentifier
     {
         public EFPokemonForms()
         {
@@ -23,10 +23,10 @@ namespace PokemonAPI.WebService.Models
         public int FormOrder { get; set; }
         public int Order { get; set; }
 
-        public virtual ICollection<EFPokemonFormGenerations> PokemonFormGenerations { get; set; }
-        public virtual ICollection<EFPokemonFormNames> PokemonFormNames { get; set; }
-        public virtual ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
-        public virtual EFVersionGroups IntroducedInVersionGroup { get; set; }
-        public virtual EFPokemon Pokemon { get; set; }
+        public ICollection<EFPokemonFormGenerations> PokemonFormGenerations { get; set; }
+        public ICollection<EFPokemonFormNames> PokemonFormNames { get; set; }
+        public ICollection<EFPokemonFormPokeathlonStats> PokemonFormPokeathlonStats { get; set; }
+        public EFVersionGroups IntroducedInVersionGroup { get; set; }
+        public EFPokemon Pokemon { get; set; }
     }
 }

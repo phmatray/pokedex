@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestMoveRanges : IEFModel, IEFIdentifier
+    public sealed class EFConquestMoveRanges : IEFIdentifier
     {
         public EFConquestMoveRanges()
         {
@@ -15,7 +15,7 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public int Targets { get; set; }
 
-        public virtual ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
-        public virtual ICollection<EFConquestMoveRangeProse> ConquestMoveRangeProse { get; set; }
+        public ICollection<EFConquestMoveData> ConquestMoveData { get; set; }
+        public ICollection<EFConquestMoveRangeProse> ConquestMoveRangeProse { get; set; }
     }
 }

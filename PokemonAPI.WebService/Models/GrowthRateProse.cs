@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFGrowthRateProse : IEFModel
+    public class EFGrowthRateProse : IEFModel
     {
         public int GrowthRateId { get; set; }
         public int LocalLanguageId { get; set; }

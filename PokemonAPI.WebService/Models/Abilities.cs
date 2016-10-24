@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFAbilities : IEFModel, IEFIdentifier
+    public sealed class EFAbilities : IEFIdentifier
     {
         public EFAbilities()
         {
@@ -20,12 +20,12 @@ namespace PokemonAPI.WebService.Models
         public int GenerationId { get; set; }
         public bool IsMainSeries { get; set; }
 
-        public virtual ICollection<EFAbilityChangelog> AbilityChangelog { get; set; }
-        public virtual ICollection<EFAbilityFlavorText> AbilityFlavorText { get; set; }
-        public virtual ICollection<EFAbilityNames> AbilityNames { get; set; }
-        public virtual ICollection<EFAbilityProse> AbilityProse { get; set; }
-        public virtual ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
-        public virtual ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
-        public virtual EFGenerations Generation { get; set; }
+        public ICollection<EFAbilityChangelog> AbilityChangelog { get; set; }
+        public ICollection<EFAbilityFlavorText> AbilityFlavorText { get; set; }
+        public ICollection<EFAbilityNames> AbilityNames { get; set; }
+        public ICollection<EFAbilityProse> AbilityProse { get; set; }
+        public ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
+        public ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
+        public EFGenerations Generation { get; set; }
     }
 }

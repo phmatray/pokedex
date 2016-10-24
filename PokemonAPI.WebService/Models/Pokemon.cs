@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokemon : IEFModel, IEFIdentifier
+    public sealed class EFPokemon : IEFIdentifier
     {
         public EFPokemon()
         {
@@ -26,14 +26,14 @@ namespace PokemonAPI.WebService.Models
         public int Order { get; set; }
         public bool IsDefault { get; set; }
 
-        public virtual ICollection<EFEncounters> Encounters { get; set; }
-        public virtual ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
-        public virtual ICollection<EFPokemonForms> PokemonForms { get; set; }
-        public virtual ICollection<EFPokemonGameIndices> PokemonGameIndices { get; set; }
-        public virtual ICollection<EFPokemonItems> PokemonItems { get; set; }
-        public virtual ICollection<EFPokemonMoves> PokemonMoves { get; set; }
-        public virtual ICollection<EFPokemonStats> PokemonStats { get; set; }
-        public virtual ICollection<EFPokemonTypes> PokemonTypes { get; set; }
-        public virtual EFPokemonSpecies Species { get; set; }
+        public ICollection<EFEncounters> Encounters { get; set; }
+        public ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
+        public ICollection<EFPokemonForms> PokemonForms { get; set; }
+        public ICollection<EFPokemonGameIndices> PokemonGameIndices { get; set; }
+        public ICollection<EFPokemonItems> PokemonItems { get; set; }
+        public ICollection<EFPokemonMoves> PokemonMoves { get; set; }
+        public ICollection<EFPokemonStats> PokemonStats { get; set; }
+        public ICollection<EFPokemonTypes> PokemonTypes { get; set; }
+        public EFPokemonSpecies Species { get; set; }
     }
 }

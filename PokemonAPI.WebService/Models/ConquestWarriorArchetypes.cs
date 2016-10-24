@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestWarriorArchetypes : IEFModel, IEFIdentifier
+    public sealed class EFConquestWarriorArchetypes : IEFIdentifier
     {
         public EFConquestWarriorArchetypes()
         {
@@ -13,6 +13,6 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFConquestWarriors> ConquestWarriors { get; set; }
+        public ICollection<EFConquestWarriors> ConquestWarriors { get; set; }
     }
 }

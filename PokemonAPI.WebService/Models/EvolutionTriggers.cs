@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEvolutionTriggers : IEFModel, IEFIdentifier
+    public sealed class EFEvolutionTriggers : IEFIdentifier
     {
         public EFEvolutionTriggers()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFEvolutionTriggerProse> EvolutionTriggerProse { get; set; }
-        public virtual ICollection<EFPokemonEvolution> PokemonEvolution { get; set; }
+        public ICollection<EFEvolutionTriggerProse> EvolutionTriggerProse { get; set; }
+        public ICollection<EFPokemonEvolution> PokemonEvolution { get; set; }
     }
 }

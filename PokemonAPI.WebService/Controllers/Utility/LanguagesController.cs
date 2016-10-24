@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -26,7 +26,7 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            return await base.GetAll(limit, offset, _context.Languages, this.Segment());
+            return await GetAll(limit, offset, _context.Languages, this.Segment());
         }
 
         // GET api/v1/languages/1
@@ -36,6 +36,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var language = await _context.Languages
+                    .Include(x => x.LanguageNamesLanguage).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Language
@@ -45,7 +46,7 @@ namespace PokemonAPI.WebService.Controllers
                     Iso639     = language.Iso639,
                     Iso3166    = language.Iso3166,
                     Official   = language.Official,
-                    Names      = await GetNames(language)
+                    Names      = GetNames(language)
                 };
 
                 return Ok(result);
@@ -56,13 +57,9 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFLanguages language)
+        private static List<Name> GetNames(EFLanguages language)
         {
-            return (await _context
-                    .LanguageNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.LanguageId == language.Id)
-                    .ToListAsync())
+            return language.LanguageNamesLanguage
                 .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }

@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFPokedexes : IEFModel, IEFIdentifier
+    public sealed class EFPokedexes : IEFIdentifier
     {
         public EFPokedexes()
         {
@@ -17,9 +17,9 @@ namespace PokemonAPI.WebService.Models
         public string Identifier { get; set; }
         public bool IsMainSeries { get; set; }
 
-        public virtual ICollection<EFPokedexProse> PokedexProse { get; set; }
-        public virtual ICollection<EFPokedexVersionGroups> PokedexVersionGroups { get; set; }
-        public virtual ICollection<EFPokemonDexNumbers> PokemonDexNumbers { get; set; }
-        public virtual EFRegions Region { get; set; }
+        public ICollection<EFPokedexProse> PokedexProse { get; set; }
+        public ICollection<EFPokedexVersionGroups> PokedexVersionGroups { get; set; }
+        public ICollection<EFPokemonDexNumbers> PokemonDexNumbers { get; set; }
+        public EFRegions Region { get; set; }
     }
 }

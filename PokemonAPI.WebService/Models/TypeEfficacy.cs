@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFTypeEfficacy : IEFModel
+    public class EFTypeEfficacy : IEFModel
     {
         public int DamageTypeId { get; set; }
         public int TargetTypeId { get; set; }

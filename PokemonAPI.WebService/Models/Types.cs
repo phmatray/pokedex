@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFTypes : IEFModel, IEFIdentifier
+    public sealed class EFTypes : IEFIdentifier
     {
         public EFTypes()
         {
@@ -27,20 +27,20 @@ namespace PokemonAPI.WebService.Models
         public int GenerationId { get; set; }
         public int? DamageClassId { get; set; }
 
-        public virtual ICollection<EFBerries> Berries { get; set; }
-        public virtual ICollection<EFConquestKingdoms> ConquestKingdoms { get; set; }
-        public virtual ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
-        public virtual ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
-        public virtual ICollection<EFMoveChangelog> MoveChangelog { get; set; }
-        public virtual ICollection<EFMoves> Moves { get; set; }
-        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionKnownMoveType { get; set; }
-        public virtual ICollection<EFPokemonEvolution> PokemonEvolutionPartyType { get; set; }
-        public virtual ICollection<EFPokemonTypes> PokemonTypes { get; set; }
-        public virtual ICollection<EFTypeEfficacy> TypeEfficacyDamageType { get; set; }
-        public virtual ICollection<EFTypeEfficacy> TypeEfficacyTargetType { get; set; }
-        public virtual ICollection<EFTypeGameIndices> TypeGameIndices { get; set; }
-        public virtual ICollection<EFTypeNames> TypeNames { get; set; }
-        public virtual EFMoveDamageClasses DamageClass { get; set; }
-        public virtual EFGenerations Generation { get; set; }
+        public ICollection<EFBerries> Berries { get; set; }
+        public ICollection<EFConquestKingdoms> ConquestKingdoms { get; set; }
+        public ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
+        public ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
+        public ICollection<EFMoveChangelog> MoveChangelog { get; set; }
+        public ICollection<EFMoves> Moves { get; set; }
+        public ICollection<EFPokemonEvolution> PokemonEvolutionKnownMoveType { get; set; }
+        public ICollection<EFPokemonEvolution> PokemonEvolutionPartyType { get; set; }
+        public ICollection<EFPokemonTypes> PokemonTypes { get; set; }
+        public ICollection<EFTypeEfficacy> TypeEfficacyDamageType { get; set; }
+        public ICollection<EFTypeEfficacy> TypeEfficacyTargetType { get; set; }
+        public ICollection<EFTypeGameIndices> TypeGameIndices { get; set; }
+        public ICollection<EFTypeNames> TypeNames { get; set; }
+        public EFMoveDamageClasses DamageClass { get; set; }
+        public EFGenerations Generation { get; set; }
     }
 }

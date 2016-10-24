@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PokemonAPI.WebService.Controllers.Base;
 using PokemonAPI.WebService.Core;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
+using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Models;
 
 namespace PokemonAPI.WebService.Controllers
@@ -87,7 +87,7 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private List<int> GetPossibleValues(EFCharacteristics characteristic)
+        private static List<int> GetPossibleValues(EFCharacteristics characteristic)
         {
             switch (characteristic.GeneMod5)
             {

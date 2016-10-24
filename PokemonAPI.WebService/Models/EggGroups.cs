@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFEggGroups : IEFModel, IEFIdentifier
+    public sealed class EFEggGroups : IEFIdentifier
     {
         public EFEggGroups()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFEggGroupProse> EggGroupProse { get; set; }
-        public virtual ICollection<EFPokemonEggGroups> PokemonEggGroups { get; set; }
+        public ICollection<EFEggGroupProse> EggGroupProse { get; set; }
+        public ICollection<EFPokemonEggGroups> PokemonEggGroups { get; set; }
     }
 }

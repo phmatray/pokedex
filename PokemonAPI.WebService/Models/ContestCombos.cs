@@ -2,7 +2,7 @@
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFContestCombos : IEFModel
+    public class EFContestCombos : IEFModel
     {
         public int FirstMoveId { get; set; }
         public int SecondMoveId { get; set; }

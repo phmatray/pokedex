@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFStats : IEFModel, IEFIdentifier
+    public sealed class EFStats : IEFIdentifier
     {
         public EFStats()
         {
@@ -21,12 +21,12 @@ namespace PokemonAPI.WebService.Models
         public bool IsBattleOnly { get; set; }
         public int? GameIndex { get; set; }
 
-        public virtual ICollection<EFCharacteristics> Characteristics { get; set; }
-        public virtual ICollection<EFMoveMetaStatChanges> MoveMetaStatChanges { get; set; }
-        public virtual ICollection<EFNatures> NaturesDecreasedStat { get; set; }
-        public virtual ICollection<EFNatures> NaturesIncreasedStat { get; set; }
-        public virtual ICollection<EFPokemonStats> PokemonStats { get; set; }
-        public virtual ICollection<EFStatNames> StatNames { get; set; }
-        public virtual EFMoveDamageClasses DamageClass { get; set; }
+        public ICollection<EFCharacteristics> Characteristics { get; set; }
+        public ICollection<EFMoveMetaStatChanges> MoveMetaStatChanges { get; set; }
+        public ICollection<EFNatures> NaturesDecreasedStat { get; set; }
+        public ICollection<EFNatures> NaturesIncreasedStat { get; set; }
+        public ICollection<EFPokemonStats> PokemonStats { get; set; }
+        public ICollection<EFStatNames> StatNames { get; set; }
+        public EFMoveDamageClasses DamageClass { get; set; }
     }
 }

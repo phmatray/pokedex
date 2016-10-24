@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public partial class EFConquestWarriorSkills : IEFModel, IEFIdentifier
+    public sealed class EFConquestWarriorSkills : IEFIdentifier
     {
         public EFConquestWarriorSkills()
         {
@@ -14,7 +14,7 @@ namespace PokemonAPI.WebService.Models
         public int Id { get; set; }
         public string Identifier { get; set; }
 
-        public virtual ICollection<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
-        public virtual ICollection<EFConquestWarriorSkillNames> ConquestWarriorSkillNames { get; set; }
+        public ICollection<EFConquestWarriorRanks> ConquestWarriorRanks { get; set; }
+        public ICollection<EFConquestWarriorSkillNames> ConquestWarriorSkillNames { get; set; }
     }
 }
