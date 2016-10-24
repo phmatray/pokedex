@@ -30,11 +30,10 @@ namespace PokemonAPI.WebService.Controllers
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var dbset      = _context.Machines;
-                var urlSegment = typeof(MachinesController).Segment();
-
+                var controller = typeof(MachinesController);
                 var count      = await dbset.CountAsync();
-                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
-                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
+                var previous   = controller.Previous(limit, offset);
+                var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
                         .Skip(offset)

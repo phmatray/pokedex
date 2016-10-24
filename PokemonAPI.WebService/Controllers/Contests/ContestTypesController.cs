@@ -24,11 +24,8 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/contest-types
         // GET api/v1/contest-types?skip=0&take=20
         [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.ContestTypes, this.Segment());
-        }
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0) 
+            => await GetAll(limit, offset, _context.ContestTypes, GetType());
 
         // GET api/v1/contest-types/1
         [HttpGet("{id}")]
@@ -66,7 +63,7 @@ namespace PokemonAPI.WebService.Controllers
             return new NamedAPIResource
             (
                 contestTypeName.Flavor.ToLower(),
-                $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(BerryFlavorsController).Segment()}/{contestTypeName.ContestTypeId}"
+                typeof(BerryFlavorsController).RscUrl(contestTypeName.ContestTypeId)
             );
         }
 

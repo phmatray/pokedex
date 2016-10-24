@@ -25,10 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/items?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.Items, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Items, GetType());
 
         // GET api/v1/items/1
         [HttpGet("{id}")]
@@ -223,8 +220,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Machines
                 .Select(x => new MachineVersionDetail
                 {
-                    Machine = new APIResource(
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MachinesController).Segment()}/{x.MachineNumber}/{x.VersionGroupId}/"),
+                    Machine = new APIResource(typeof(MachinesController).RscUrl($"{x.MachineNumber}/{x.VersionGroupId}/")),
                     VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();

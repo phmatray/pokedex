@@ -25,9 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/languages?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await GetAll(limit, offset, _context.Languages, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Languages, GetType());
 
         // GET api/v1/languages/1
         [HttpGet("{id}")]

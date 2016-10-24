@@ -32,11 +32,10 @@ namespace PokemonAPI.WebService.Controllers
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var dbset      = _context.Berries;
-                var urlSegment = typeof(BerriesController).Segment();
-
+                var controller = typeof(BerriesController);
                 var count      = await dbset.CountAsync();
-                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
-                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
+                var previous   = controller.Previous(limit, offset);
+                var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
                         .Include(x => x.Item)
@@ -46,7 +45,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Select(x => new NamedAPIResource
                     (
                         x.Item.Identifier.Replace("-berry", ""),
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}/{x.Id}"
+                        controller.RscUrl(x.Id)
                     ))
                     .Cast<APIResource>()
                     .ToList();
@@ -69,7 +68,7 @@ namespace PokemonAPI.WebService.Controllers
             {
                 var berry = await _context.Berries
                     .Include(x => x.Firmness)
-                    .Include(x => x.BerryFlavors)
+                    .Include(x => x.BerryFlavors).ThenInclude(x => x.ContestType).ThenInclude(x => x.ContestTypeNames)
                     .Include(x => x.Item)
                     .Include(x => x.NaturalGiftType)
                     .FirstOrDefaultAsync(x => x.Id == id);
@@ -85,7 +84,7 @@ namespace PokemonAPI.WebService.Controllers
                     Smoothness       = berry.Smoothness,
                     SoilDryness      = berry.SoilDryness,
                     Firmness         = GetFirmness(berry),
-                    Flavors          = await GetFlavors(berry),
+                    Flavors          = GetFlavors(berry),
                     Item             = GetItem(berry),
                     NaturalGiftType  = GetNaturalGiftType(berry)
                 };
@@ -104,21 +103,17 @@ namespace PokemonAPI.WebService.Controllers
                 .ToNamedApiResource();
         }
 
-        private async Task<List<BerryFlavorMap>> GetFlavors(EFBerries berry)
+        private static List<BerryFlavorMap> GetFlavors(EFBerries berry)
         {
-            return (await _context
-                    .BerryFlavors
-                    .Include(x => x.ContestType)
-                    .Include(x => x.ContestType.ContestTypeNames)
-                    .Where(x => x.BerryId == berry.Id)
-                    .ToListAsync())
+            return berry
+                .BerryFlavors
                 .Select(x => new BerryFlavorMap
                 {
                     Potency = x.Flavor,
                     Flavor = new NamedAPIResource
                     (
                         x.ContestType.ContestTypeNames.Single(y => y.LocalLanguageId == 9).Flavor.ToLower(),
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(BerryFlavorsController).Segment()}/{x.ContestTypeId}"
+                        typeof(BerryFlavorsController).RscUrl(x.ContestTypeId)
                     )
                 })
                 .ToList();

@@ -25,9 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/pokemonspecies?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, _context.PokemonSpecies, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.PokemonSpecies, GetType());
 
         // GET api/v1/pokemonspecies/1
         [HttpGet("{id}")]
@@ -36,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var species = await _context.PokemonSpecies
+                    .Include(x => x.PokemonEggGroups).ThenInclude(x => x.EggGroup)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonSpecies
@@ -52,7 +51,7 @@ namespace PokemonAPI.WebService.Controllers
                     FormsSwitchable      = species.FormsSwitchable,
                     GrowthRate           = await GetGrowthRate(species),
                     PokedexNumbers       = await GetPokedexNumbers(species),
-                    EggGroups            = await GetEggGroups(species),
+                    EggGroups            = GetEggGroups(species),
                     Color                = await GetColor(species),
                     Shape                = await GetShape(species),
                     EvolvesFromSpecies   = await GetEvolvesFromSpecies(species),
@@ -95,17 +94,14 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetEggGroups(EFPokemonSpecies species)
+        private static List<NamedAPIResource> GetEggGroups(EFPokemonSpecies species)
         {
-            return (await _context
-                    .PokemonEggGroups
-                    .Include(x => x.EggGroup)
-                    .Where(x => x.SpeciesId == species.Id)
-                    .ToListAsync())
+            return species
+                .PokemonEggGroups
                 .Select(x =>
                     new NamedAPIResource
                     (
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(EggGroupsController).Segment()}/{x.EggGroupId}/",
+                        typeof(EggGroupsController).RscUrl(x.EggGroupId),
                         x.EggGroup.Identifier
                     ))
                 .ToList();
@@ -146,7 +142,7 @@ namespace PokemonAPI.WebService.Controllers
             return (await _context
                     .EvolutionChains
                     .FirstOrDefaultAsync(x => x.Id == species.EvolutionChainId.Value))?
-                .ToApiResource(typeof(EvolutionChainsController).Segment());
+                .ToApiResource(typeof(EvolutionChainsController));
         }
 
         private async Task<NamedAPIResource> GetHabitat(EFPokemonSpecies species)

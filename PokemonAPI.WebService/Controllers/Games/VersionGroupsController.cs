@@ -25,9 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/versiongroups?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, _context.VersionGroups, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.VersionGroups, GetType());
 
         // GET api/v1/versiongroups/1
         [HttpGet("{id}")]
@@ -68,7 +66,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.PokemonMoveMethod.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(MoveLearnMethodsController).Segment()}/{x.PokemonMoveMethodId}/"
+                    typeof(MoveLearnMethodsController).RscUrl(x.PokemonMoveMethodId)
                 ))
                 .ToList();
         }
@@ -101,7 +99,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.Region.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(RegionsController).Segment()}/{x.RegionId}/"
+                    typeof(RegionsController).RscUrl(x.RegionId)
                 ))
                 .ToList();
         }
@@ -116,7 +114,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x => new NamedAPIResource
                 (
                     x.Pokedex.Identifier,
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(PokemonsController).Segment()}/{x.PokedexId}/"
+                    typeof(PokemonsController).RscUrl(x.PokedexId)
                 ))
                 .ToList();
         }

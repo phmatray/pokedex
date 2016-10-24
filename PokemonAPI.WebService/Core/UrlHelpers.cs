@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PokemonAPI.WebService.Controllers;
-using PokemonAPI.WebService.Controllers._Base;
 
 namespace PokemonAPI.WebService.Core
 {
@@ -65,7 +64,7 @@ namespace PokemonAPI.WebService.Core
         }
 
         public static string RscUrl(this Type controllerType)
-            => $"{Constants.SiteUrl}{Constants.BaseUrl}{controllerType.Segment()}/";
+            => $"{Constants.SiteUrl}{Constants.BaseUrl}{Segments[controllerType]}/";
 
         public static string RscUrl(this Type controllerType, int id)
             => $"{controllerType.RscUrl()}{id}/";
@@ -73,23 +72,17 @@ namespace PokemonAPI.WebService.Core
         public static string RscUrl(this Type controllerType, string id)
             => $"{controllerType.RscUrl()}{id}/";
 
-        public static string Segment(this ApiController controller)
-            => Segments[controller.GetType()];
-
-        public static string Segment(this Type controllerType)
-            => Segments[controllerType];
-
-        public static string Previous(int limit, int offset, string urlSegment)
+        public static string Previous(this Type controllerType, int limit, int offset)
         {
             return offset - limit >= 0
-                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset - limit}"
+                ? $"{controllerType.RscUrl().Trim('/')}?limit={limit}&offset={offset - limit}"
                 : null;
         }
 
-        public static string Next(int limit, int offset, int count, string urlSegment)
+        public static string Next(this Type controllerType, int limit, int offset, int count)
         {
             return offset + limit < count
-                ? $"{Constants.SiteUrl}{Constants.BaseUrl}{urlSegment}?limit={limit}&offset={offset + limit}"
+                ? $"{controllerType.RscUrl().Trim('/')}?limit={limit}&offset={offset + limit}"
                 : null;
         }
     }

@@ -25,9 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/pokemons?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, _context.Pokemon, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Pokemon, GetType());
 
         // GET api/v1/pokemons/1
         [HttpGet("{id}")]
@@ -185,7 +183,7 @@ namespace PokemonAPI.WebService.Controllers
 
         private static string GetLocationAreaEncounters(EFPokemon pokemon)
         {
-            return $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(PokemonsController).Segment()}/{pokemon.Id}/encounters";
+            return typeof(PokemonsController).RscUrl($"{pokemon.Id}/encounters/");
         }
 
         private async Task<List<PokemonMove>> GetMoves(EFPokemon pokemon)

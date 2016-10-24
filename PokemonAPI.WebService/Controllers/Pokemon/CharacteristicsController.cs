@@ -31,16 +31,17 @@ namespace PokemonAPI.WebService.Controllers
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-                var urlSegment = typeof(CharacteristicsController).Segment();
-                var count      = await _context.Characteristics.CountAsync();
-                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
-                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
+                var dbSet      = _context.Characteristics;
+                var controller = typeof(CharacteristicsController);
+                var count      = await dbSet.CountAsync();
+                var previous   = controller.Previous(limit, offset);
+                var next       = controller.Next(limit, offset, count);
 
-                var apiResults = (await _context.Characteristics
+                var apiResults = (await dbSet
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => x.ToApiResource(urlSegment))
+                    .Select(x => x.ToApiResource(controller))
                     .ToList();
 
                 var results = new APIResourceList(count, previous, next, apiResults);

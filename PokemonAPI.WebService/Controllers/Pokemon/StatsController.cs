@@ -25,10 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/stats?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.Stats, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Stats, GetType());
 
         // GET api/v1/stats/1
         [HttpGet("{id}")]
@@ -107,7 +104,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Characteristics
                     .Where(x => x.StatId == stat.Id)
                     .ToListAsync())
-                .Select(x => x.ToApiResource(typeof(CharacteristicsController).Segment()))
+                .Select(x => x.ToApiResource(typeof(CharacteristicsController)))
                 .ToList();
         }
 

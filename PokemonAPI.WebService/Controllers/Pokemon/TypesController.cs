@@ -27,9 +27,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/types?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, _context.Types, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Types, GetType());
 
         // GET api/v1/types/1
         [HttpGet("{id}")]

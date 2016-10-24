@@ -25,10 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/berry-firmnesses?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.BerryFirmness, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.BerryFirmness, GetType());
 
         // GET api/v1/berry-firmnesses/1
         [HttpGet("{id}")]
@@ -37,14 +34,16 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var berryFirmness = await _context.BerryFirmness
+                    .Include(x => x.Berries).ThenInclude(x => x.Item)
+                    .Include(x => x.BerryFirmnessNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new BerryFirmness
                 {
                     Id      = berryFirmness.Id,
                     Name    = berryFirmness.Identifier,
-                    Berries = await GetBerries(berryFirmness),
-                    Names   = await GetNames(berryFirmness)
+                    Berries = GetBerries(berryFirmness),
+                    Names   = GetNames(berryFirmness)
                 };
 
                 return Ok(result);
@@ -55,33 +54,23 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetBerries(EFBerryFirmness berryFirmness)
+        private static List<NamedAPIResource> GetBerries(EFBerryFirmness berryFirmness)
         {
-            return (await _context
-                    .Berries
-                    .Include(x => x.Item)
-                    .Where(x => x.FirmnessId == berryFirmness.Id)
-                    .ToListAsync())
+            return berryFirmness
+                .Berries
                 .Select(x => new NamedAPIResource
                 (
                     x.Item.Identifier.Replace("-berry", ""),
-                    $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(BerriesController).Segment()}/{x.Id}"
+                    typeof(BerriesController).RscUrl(x.Id)
                 ))
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFBerryFirmness berryFirmness)
+        private static List<Name> GetNames(EFBerryFirmness berryFirmness)
         {
-            return (await _context
-                    .BerryFirmnessNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.BerryFirmnessId == berryFirmness.Id)
-                    .ToListAsync())
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+            return berryFirmness
+                .BerryFirmnessNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

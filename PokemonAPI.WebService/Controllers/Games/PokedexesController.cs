@@ -25,9 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/pokedexes?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset, _context.Pokedexes, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.Pokedexes, GetType());
 
         // GET api/v1/pokedexes/1
         [HttpGet("{id}")]
@@ -76,8 +74,8 @@ namespace PokemonAPI.WebService.Controllers
                 .Select(x =>
                     new NamedAPIResource
                     (
-                        $"{Constants.SiteUrl}{Constants.BaseUrl}{typeof(VersionGroupsController).Segment()}/{x.VersionGroupId}/",
-                        x.VersionGroup.Identifier
+                        x.VersionGroup.Identifier,
+                        typeof(VersionGroupsController).RscUrl(x.VersionGroupId)
                     ))
                 .ToList();
         }

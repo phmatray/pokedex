@@ -24,11 +24,8 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/move-ailments
         // GET api/v1/move-ailments?skip=0&take=20
         [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.MoveMetaAilments, this.Segment());
-        }
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0) 
+            => await GetAll(limit, offset, _context.MoveMetaAilments, GetType());
 
         // GET api/v1/move-ailments/1
         [HttpGet("{id}")]

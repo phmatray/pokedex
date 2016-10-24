@@ -32,11 +32,10 @@ namespace PokemonAPI.WebService.Controllers
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
                 var dbset      = _context.ItemFlingEffects;
-                var urlSegment = typeof(ItemFlingEffectsController).Segment();
-
+                var controller = typeof(ItemFlingEffectsController);
                 var count      = await dbset.CountAsync();
-                var previous   = UrlHelpers.Previous(limit, offset, urlSegment);
-                var next       = UrlHelpers.Next(limit, offset, count, urlSegment);
+                var previous   = controller.Previous(limit, offset );
+                var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
                         .OrderBy(x => x.Id)

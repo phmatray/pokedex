@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models.Interfaces;
+using Type = System.Type;
 
 namespace PokemonAPI.WebService.Controllers._Base
 {
     public abstract class ApiController : Controller
     {
         protected async Task<IActionResult> GetAll<TModel>(int limit, int offset,
-            DbSet<TModel> dbset, string urlSegment)
+            DbSet<TModel> dbset, Type controllerType)
             where TModel : class, IEFIdentifier
         {
             try
@@ -20,19 +21,18 @@ namespace PokemonAPI.WebService.Controllers._Base
                 if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
                 if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
                 if (dbset == null) throw new ArgumentNullException(nameof(dbset));
-                if (string.IsNullOrWhiteSpace(urlSegment))
-                    throw new ArgumentException("Value cannot be null or whitespace.", nameof(urlSegment));
+                if (controllerType == null) throw new ArgumentNullException(nameof(controllerType));
 
                 var count    = await dbset.CountAsync();
-                var previous = UrlHelpers.Previous(limit, offset, urlSegment);
-                var next     = UrlHelpers.Next(limit, offset, count, urlSegment);
+                var previous = controllerType.Previous(limit, offset);
+                var next     = controllerType.Next(limit, offset, count);
 
                 var apiResults = (await dbset
                         .OrderBy(x => x.Id)
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => x.ToNamedApiResource(urlSegment))
+                    .Select(x => x.ToNamedApiResource(controllerType))
                     .Cast<APIResource>()
                     .ToList();
 

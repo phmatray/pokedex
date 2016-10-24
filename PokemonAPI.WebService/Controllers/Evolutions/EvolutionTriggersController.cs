@@ -25,10 +25,7 @@ namespace PokemonAPI.WebService.Controllers
         // GET api/v1/evolution-triggers?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-        {
-            return await base.GetAll(limit, offset,
-                _context.EvolutionTriggers, this.Segment());
-        }
+            => await GetAll(limit, offset, _context.EvolutionTriggers, GetType());
 
         // GET api/v1/evolution-triggers/1
         [HttpGet("{id}")]
