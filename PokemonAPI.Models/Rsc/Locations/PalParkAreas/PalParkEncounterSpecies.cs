@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PalParkEncounterSpecies
     {
+        public PalParkEncounterSpecies(int baseScore, int rate, NamedAPIResource pokemonSpecies)
+        {
+            BaseScore = baseScore;
+            Rate = rate;
+            PokemonSpecies = pokemonSpecies;
+        }
+
         /// <summary>
         /// The base score given to the player when this Pokémon is caught during a pal park run
         /// </summary>

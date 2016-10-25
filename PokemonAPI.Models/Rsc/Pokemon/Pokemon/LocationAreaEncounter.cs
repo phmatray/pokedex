@@ -4,6 +4,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class LocationAreaEncounter
     {
+        public LocationAreaEncounter(NamedAPIResource locationArea, List<VersionEncounterDetail> versionDetails)
+        {
+            LocationArea = locationArea;
+            VersionDetails = versionDetails;
+        }
+
         /// <summary>
         /// The location area the referenced Pokémon can be encountered in
         /// </summary>

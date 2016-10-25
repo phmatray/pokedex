@@ -66,12 +66,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return palParkArea
                 .PalPark
-                .Select(x => new PalParkEncounterSpecies
-                {
-                    BaseScore      = x.BaseScore,
-                    Rate           = x.Rate,
-                    PokemonSpecies = x.Species.ToNamedApiResource()
-                })
+                .Select(x => new PalParkEncounterSpecies(x.BaseScore, x.Rate, x.Species.ToNamedApiResource()))
                 .ToList();
         }
     }

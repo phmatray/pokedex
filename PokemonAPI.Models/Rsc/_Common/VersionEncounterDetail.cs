@@ -4,6 +4,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class VersionEncounterDetail
     {
+        public VersionEncounterDetail(NamedAPIResource version, int maxChance, List<Encounter> encounterDetails)
+        {
+            Version = version;
+            MaxChance = maxChance;
+            EncounterDetails = encounterDetails;
+        }
+
         /// <summary>
         /// The game version this encounter happens in
         /// </summary>

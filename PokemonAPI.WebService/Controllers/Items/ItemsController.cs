@@ -78,16 +78,9 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetFlingEffect(EFItems item)
         {
-            if (item.FlingEffectId != null)
-            {
-                return new NamedAPIResource
-                (
-                    item.FlingEffect.Identifier,
-                    typeof(ItemFlingEffectsController).RscUrl(item.FlingEffectId.Value)
-                );
-            }
-
-            return null;
+            return item
+                .FlingEffect?
+                .ToNamedApiResource();
         }
 
         private static List<NamedAPIResource> GetAttributes(EFItems item)
@@ -126,12 +119,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .ItemProse
-                .Select(x => new VerboseEffect
-                {
-                    Effect = x.Effect,
-                    ShortEffect = x.ShortEffect,
-                    Language = x.LocalLanguage.ToNamedApiResource()
-                })
+                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -152,11 +140,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .ItemGameIndices
-                .Select(x => new GenerationGameIndex
-                {
-                    GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource()
-                })
+                .Select(x => new GenerationGameIndex(x.GameIndex, x.Generation.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -164,11 +148,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .ItemNames
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -220,7 +200,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Machines
                 .Select(x => new MachineVersionDetail
                 {
-                    Machine = new APIResource(typeof(MachinesController).RscUrl($"{x.MachineNumber}/{x.VersionGroupId}/")),
+                    Machine = x.ToApiResource(),
                     VersionGroup = x.VersionGroup.ToNamedApiResource()
                 })
                 .ToList();

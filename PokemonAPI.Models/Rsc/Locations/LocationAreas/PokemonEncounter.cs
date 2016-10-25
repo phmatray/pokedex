@@ -4,6 +4,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonEncounter
     {
+        public PokemonEncounter(NamedAPIResource pokemon, List<VersionEncounterDetail> versionDetails)
+        {
+            Pokemon = pokemon;
+            VersionDetails = versionDetails;
+        }
+
         /// <summary>
         /// The Pokémon being encountered
         /// </summary>

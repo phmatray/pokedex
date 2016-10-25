@@ -105,9 +105,9 @@ namespace PokemonAPI.Models.Rsc
         public List<Name> Names { get; set; }
 
         /// <summary>
-        /// A list of encounters that can be had with this Pokémon species in pal park
+        /// The encounter that can be had with this Pokémon species in pal park
         /// </summary>
-        public List<PalParkEncounterArea> PalParkEncounters { get; set; }
+        public PalParkEncounterArea PalParkEncounter { get; set; }
 
         /// <summary>
         /// A list of flavor text entries for this Pokémon species

@@ -99,7 +99,8 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetFirmness(EFBerries berry)
         {
-            return berry.Firmness
+            return berry
+                .Firmness?
                 .ToNamedApiResource();
         }
 
@@ -121,13 +122,15 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetItem(EFBerries berry)
         {
-            return berry.Item
+            return berry
+                .Item?
                 .ToNamedApiResource();
         }
 
         private static NamedAPIResource GetNaturalGiftType(EFBerries berry)
         {
-            return berry.NaturalGiftType
+            return berry
+                .NaturalGiftType?
                 .ToNamedApiResource();
         }
     }

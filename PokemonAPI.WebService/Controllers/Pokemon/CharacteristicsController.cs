@@ -61,15 +61,17 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var characteristic = await _context.Characteristics
+                    .Include(x => x.Stat)
+                    .Include(x => x.CharacteristicText).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Characteristic
                 {
                     Id             = characteristic.Id,
                     GeneModulo     = characteristic.GeneMod5,
-                    HighestStat    = await GetHighestStat(characteristic),
+                    HighestStat    = GetHighestStat(characteristic),
                     PossibleValues = GetPossibleValues(characteristic),
-                    Descriptions   = await GetDescriptions(characteristic)
+                    Descriptions   = GetDescriptions(characteristic)
                 };
 
                 return Ok(result);
@@ -80,12 +82,9 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetHighestStat(EFCharacteristics characteristic)
+        private static NamedAPIResource GetHighestStat(EFCharacteristics characteristic)
         {
-            return (await _context
-                    .Stats
-                    .FirstOrDefaultAsync(x => x.Id == characteristic.StatId))?
-                .ToNamedApiResource();
+            return characteristic.Stat?.ToNamedApiResource();
         }
 
         private static List<int> GetPossibleValues(EFCharacteristics characteristic)
@@ -102,15 +101,11 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Description>> GetDescriptions(EFCharacteristics characteristic)
+        private static List<Description> GetDescriptions(EFCharacteristics characteristic)
         {
-            return (await _context
-                    .CharacteristicText
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.CharacteristicId == characteristic.Id)
-                    .ToListAsync())
-                .Select(x => new Description(x.Message,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return characteristic
+                .CharacteristicText
+                .Select(x => new Description(x.Message, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

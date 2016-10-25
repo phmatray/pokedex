@@ -34,14 +34,16 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokemonHabitat = await _context.PokemonHabitats
+                    .Include(x => x.PokemonHabitatNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonHabitat
                 {
                     Id             = pokemonHabitat.Id,
                     Name           = pokemonHabitat.Identifier,
-                    Names          = await GetNames(pokemonHabitat),
-                    PokemonSpecies = await GetPokemonSpecies(pokemonHabitat)
+                    Names          = GetNames(pokemonHabitat),
+                    PokemonSpecies = GetPokemonSpecies(pokemonHabitat)
                 };
 
                 return Ok(result);
@@ -52,24 +54,18 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFPokemonHabitats pokemonHabitat)
+        private static List<Name> GetNames(EFPokemonHabitats pokemonHabitat)
         {
-            return (await _context
-                    .PokemonHabitatNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonHabitatId == pokemonHabitat.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonHabitat
+                .PokemonHabitatNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFPokemonHabitats pokemonHabitat)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFPokemonHabitats pokemonHabitat)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Where(x => x.HabitatId == pokemonHabitat.Id)
-                    .ToListAsync())
+            return pokemonHabitat
+                .PokemonSpecies
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }

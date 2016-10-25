@@ -4,6 +4,16 @@ namespace PokemonAPI.Models.Rsc
 {
     public class Encounter
     {
+        public Encounter(int minLevel, int maxLevel, List<NamedAPIResource> conditionValues,
+            int? chance, NamedAPIResource method)
+        {
+            MinLevel = minLevel;
+            MaxLevel = maxLevel;
+            ConditionValues = conditionValues;
+            Chance = chance;
+            Method = method;
+        }
+
         /// <summary>
         /// The lowest level the Pokémon could be encountered at
         /// </summary>

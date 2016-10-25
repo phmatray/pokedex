@@ -34,16 +34,18 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokemonShape = await _context.PokemonShapes
+                    .Include(x => x.PokemonShapeProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonShape
                 {
                     Id             = pokemonShape.Id,
                     Name           = pokemonShape.Identifier,
-                    AwesomeNames   = await GetAwesomeNames(pokemonShape),
-                    Descriptions   = await GetDescriptions(pokemonShape),
-                    Names          = await GetNames(pokemonShape),
-                    PokemonSpecies = await GetPokemonSpecies(pokemonShape)
+                    AwesomeNames   = GetAwesomeNames(pokemonShape),
+                    Descriptions   = GetDescriptions(pokemonShape),
+                    Names          = GetNames(pokemonShape),
+                    PokemonSpecies = GetPokemonSpecies(pokemonShape)
                 };
 
                 return Ok(result);
@@ -54,48 +56,34 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<AwesomeName>> GetAwesomeNames(EFPokemonShapes pokemonShape)
+        private static List<AwesomeName> GetAwesomeNames(EFPokemonShapes pokemonShape)
         {
-            return (await _context
-                    .PokemonShapeProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonShapeId == pokemonShape.Id)
-                    .ToListAsync())
-                .Select(x => new AwesomeName(x.AwesomeName,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonShape
+                .PokemonShapeProse
+                .Select(x => new AwesomeName(x.AwesomeName, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<Description>> GetDescriptions(EFPokemonShapes pokemonShape)
+        private static List<Description> GetDescriptions(EFPokemonShapes pokemonShape)
         {
-            return (await _context
-                    .PokemonShapeProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonShapeId == pokemonShape.Id)
-                    .ToListAsync())
-                .Select(x => new Description(x.Description,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonShape
+                .PokemonShapeProse
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFPokemonShapes pokemonShape)
+        private static List<Name> GetNames(EFPokemonShapes pokemonShape)
         {
-            return (await _context
-                    .PokemonShapeProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonShapeId == pokemonShape.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonShape
+                .PokemonShapeProse
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFPokemonShapes pokemonShape)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFPokemonShapes pokemonShape)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Where(x => x.ShapeId == pokemonShape.Id)
-                    .ToListAsync())
+            return pokemonShape
+                .PokemonSpecies
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }

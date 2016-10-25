@@ -160,12 +160,7 @@ namespace PokemonAPI.WebService.Controllers
                     .Where(x => x.MoveEffectId == move.EffectId &&
                                 x.ShortEffect != null && x.Effect != null)
                     .ToListAsync())
-                .Select(x => new VerboseEffect
-                {
-                    Effect      = x.Effect,
-                    ShortEffect = x.ShortEffect,
-                    Language    = x.LocalLanguage.ToNamedApiResource()
-                })
+                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -179,17 +174,13 @@ namespace PokemonAPI.WebService.Controllers
                 .ToListAsync();
 
             return efMoveEffectChangelogs
-                .Select(x => new AbilityEffectChange
+                .Select(x =>
                 {
-                    EffectEntries = x.MoveEffectChangelogProse
-                        .Select(y => new Effect
-                        {
-                            EffectValue = y.Effect,
-                            Language = y.LocalLanguage.ToNamedApiResource()
-                        })
-                        .ToList(),
-                    VersionGroup = x.ChangedInVersionGroup
-                        .ToNamedApiResource()
+                    var effectEntries = x.MoveEffectChangelogProse
+                        .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
+                        .ToList();
+
+                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup.ToNamedApiResource());
                 })
                 .ToList();
         }
@@ -304,12 +295,7 @@ namespace PokemonAPI.WebService.Controllers
                             x.MoveEffectId == moveChangelog.EffectId &&
                             x.ShortEffect != null && x.Effect != null)
                 .ToList()
-                .Select(x => new VerboseEffect
-                {
-                    Effect = x.Effect, //TODO: Parse this result
-                    ShortEffect = x.ShortEffect,
-                    Language = x.LocalLanguage.ToNamedApiResource()
-                })
+                .Select(x => new VerboseEffect(x.Effect /*TODO: Parse this result*/, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 

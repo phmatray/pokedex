@@ -77,20 +77,16 @@ namespace PokemonAPI.WebService.Controllers
                     {
                         var efLocationAreaEncounterRateses = group as IList<EFLocationAreaEncounterRates> ?? group.ToList();
 
-                        return new EncounterMethodRate
-                        {
-                            EncounterMethod = efLocationAreaEncounterRateses
-                                .FirstOrDefault()?
-                                .EncounterMethod
-                                .ToNamedApiResource(),
-                            VersionDetails = efLocationAreaEncounterRateses
-                                .Select(g => new EncounterVersionDetails
-                                {
-                                    Rate = g.Rate,
-                                    Version = g.Version.ToNamedApiResource()
-                                })
-                                .ToList()
-                        };
+                        var encounterMethod = efLocationAreaEncounterRateses
+                            .FirstOrDefault()?
+                            .EncounterMethod
+                            .ToNamedApiResource();
+
+                        var encounterVersionDetails = efLocationAreaEncounterRateses
+                            .Select(g => new EncounterVersionDetails(g.Rate, g.Version.ToNamedApiResource()))
+                            .ToList();
+
+                        return new EncounterMethodRate(encounterMethod, encounterVersionDetails);
                     })
                 .ToList();
         }
@@ -119,48 +115,54 @@ namespace PokemonAPI.WebService.Controllers
                     {
                         var efEncounterses = group as IList<EFEncounters> ?? group.ToList();
 
-                        return new PokemonEncounter
-                        {
-                            Pokemon = efEncounterses
-                                .FirstOrDefault()?
-                                .Pokemon
-                                .ToNamedApiResource(),
-                            VersionDetails = efEncounterses
-                                .GroupBy(x2 => x2.Version.Id,
-                                    (key2, group2) =>
-                                    {
-                                        var encounterses = group2 as IList<EFEncounters> ?? group2.ToList();
+                        var pokemon = efEncounterses
+                            .FirstOrDefault()?
+                            .Pokemon
+                            .ToNamedApiResource();
 
-                                        return new VersionEncounterDetail
-                                        {
-                                            Version = encounterses
-                                                .FirstOrDefault()?
-                                                .Version
-                                                .ToNamedApiResource(),
-                                            MaxChance = encounterses.Sum(g2 => g2.EncounterSlot.Rarity ?? 0),
-                                            EncounterDetails = encounterses
-                                                .Select(g2 => new Encounter
-                                                {
-                                                    MinLevel = g2.MinLevel,
-                                                    MaxLevel = g2.MaxLevel,
-                                                    ConditionValues = g2
-                                                        .EncounterConditionValueMap
-                                                        .Select(cv => cv.EncounterConditionValue
-                                                            .ToNamedApiResource())
-                                                        .ToList(),
-                                                    Chance = g2.EncounterSlot.Rarity,
-                                                    Method = g2
-                                                        .EncounterSlot
-                                                        .EncounterMethod
-                                                        .ToNamedApiResource()
-                                                })
-                                                .ToList()
-                                        };
-                                    })
-                                .ToList()
-                        };
+                        var versionEncounterDetails = efEncounterses
+                            .GroupBy(x2 => x2.Version.Id,
+                                (key2, group2) =>
+                                {
+                                    var encounters = group2 as IList<EFEncounters> ?? group2.ToList();
+                                    return GetVersionEncounterDetails(encounters);
+                                })
+                            .ToList();
+
+                        return new PokemonEncounter(pokemon, versionEncounterDetails);
                     })
                 .ToList();
+        }
+
+        private static VersionEncounterDetail GetVersionEncounterDetails(IList<EFEncounters> encounterses)
+        {
+            var version = encounterses
+                .FirstOrDefault()?
+                .Version
+                .ToNamedApiResource();
+
+            var maxChance = encounterses
+                .Sum(encounters => encounters.EncounterSlot.Rarity ?? 0);
+
+            var encounterDetails = encounterses
+                .Select(encounters =>
+                {
+                    var conditionValues = encounters
+                        .EncounterConditionValueMap
+                        .Select(cv => cv.EncounterConditionValue.ToNamedApiResource())
+                        .ToList();
+
+                    var method = encounters
+                        .EncounterSlot
+                        .EncounterMethod
+                        .ToNamedApiResource();
+
+                    return new Encounter(encounters.MinLevel, encounters.MaxLevel, conditionValues,
+                        encounters.EncounterSlot.Rarity, method);
+                })
+                .ToList();
+
+            return new VersionEncounterDetail(version, maxChance, encounterDetails);
         }
     }
 }

@@ -26,9 +26,6 @@ namespace PokemonAPI.WebService.Core
         internal static APIResource ToNamedApiResource(this EFEvolutionChains src)
             => src.ToApiResource<EvolutionChainsController>();
 
-        internal static APIResource ToNamedApiResource(this EFItemFlingEffects src)
-            => src.ToApiResource<ItemFlingEffectsController>();
-
         internal static APIResource ToApiResource(this EFMachines src)
             => new APIResource(typeof(MachinesController).RscUrl($"{src.MachineNumber}/{src.VersionGroupId}"));
 
@@ -75,6 +72,9 @@ namespace PokemonAPI.WebService.Core
         internal static NamedAPIResource ToNamedApiResource(this EFItemFlags src)
             => src.ToNamedApiResource<ItemAttributesController>();
 
+        internal static NamedAPIResource ToNamedApiResource(this EFItemFlingEffects src)
+            => src.ToNamedApiResource<ItemFlingEffectsController>();
+
         internal static NamedAPIResource ToNamedApiResource(this EFItemCategories src)
             => src.ToNamedApiResource<ItemCategoriesController>();
 
@@ -88,7 +88,12 @@ namespace PokemonAPI.WebService.Core
             => src.ToNamedApiResource<LanguagesController>();
 
         internal static NamedAPIResource ToNamedApiResource(this EFLocationAreas src)
-            => src.ToNamedApiResource<LocationAreasController>();
+            => src.Location == null
+                ? src.ToNamedApiResource<LocationAreasController>()
+                : new NamedAPIResource(
+                    $"{src.Location.Identifier}-{src.Identifier ?? "area"}",
+                    typeof(LocationAreasController).RscUrl(src.Id)
+                );
 
         internal static NamedAPIResource ToNamedApiResource(this EFLocations src)
             => src.ToNamedApiResource<LocationsController>();

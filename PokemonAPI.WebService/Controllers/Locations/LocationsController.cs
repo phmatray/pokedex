@@ -68,11 +68,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return location
                 .LocationNames
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -80,11 +76,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return location
                 .LocationGameIndices
-                .Select(x => new GenerationGameIndex
-                {
-                    GameIndex = x.GameIndex,
-                    Generation = x.Generation.ToNamedApiResource()
-                })
+                .Select(x => new GenerationGameIndex(x.GameIndex, x.Generation.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -92,8 +84,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return location
                 .LocationAreas
-                .Select(x => new NamedAPIResource($"{location.Identifier}-{x.Identifier ?? "area"}",
-                    typeof(LocationAreasController).RscUrl(x.Id)))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
     }

@@ -3,7 +3,7 @@ using PokemonAPI.WebService.Models.Interfaces;
 
 namespace PokemonAPI.WebService.Models
 {
-    public sealed class EFItemFlingEffects : IEFId
+    public sealed class EFItemFlingEffects : IEFIdentifier
     {
         public EFItemFlingEffects()
         {

@@ -34,14 +34,16 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var eggGroup = await _context.EggGroups
+                    .Include(x => x.EggGroupProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonEggGroups).ThenInclude(x => x.Species)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new EggGroup
                 {
                     Id             = eggGroup.Id,
                     Name           = eggGroup.Identifier,
-                    Names          = await GetNames(eggGroup),
-                    PokemonSpecies = await GetPokemonSpecies(eggGroup)
+                    Names          = GetNames(eggGroup),
+                    PokemonSpecies = GetPokemonSpecies(eggGroup)
                 };
 
                 return Ok(result);
@@ -52,26 +54,19 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFEggGroups eggGroup)
+        private static List<Name> GetNames(EFEggGroups eggGroup)
         {
-            return (await _context
-                    .EggGroupProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.EggGroupId == eggGroup.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource()))
+            return eggGroup
+                .EggGroupProse
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFEggGroups eggGroup)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFEggGroups eggGroup)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Include(x => x.PokemonEggGroups)
-                    .Where(x => x.PokemonEggGroups.Any(y => y.EggGroupId == eggGroup.Id))
-                    .ToListAsync())
-                .Select(x => x.ToNamedApiResource())
+            return eggGroup
+                .PokemonEggGroups
+                .Select(x => x.Species.ToNamedApiResource())
                 .ToList();
         }
     }

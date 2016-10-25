@@ -6,11 +6,11 @@
 
     public interface IEFId : IEFModel
     {
-        int Id { get; set; }
+        int Id { get; }
     }
 
     public interface IEFIdentifier : IEFId
     {
-        string Identifier { get; set; }
+        string Identifier { get; }
     }
 }

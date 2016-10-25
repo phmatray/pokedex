@@ -4,6 +4,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class EncounterMethodRate
     {
+        public EncounterMethodRate(NamedAPIResource encounterMethod, List<EncounterVersionDetails> versionDetails)
+        {
+            EncounterMethod = encounterMethod;
+            VersionDetails = versionDetails;
+        }
+
         /// <summary>
         /// The method in which Pokémon may be encountered in an area.
         /// </summary>

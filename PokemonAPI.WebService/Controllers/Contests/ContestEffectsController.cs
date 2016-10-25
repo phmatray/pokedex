@@ -86,11 +86,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return contestEffect
                 .ContestEffectProse
-                .Select(x => new Effect
-                {
-                    EffectValue = x.Effect,
-                    Language = x.LocalLanguage.ToNamedApiResource()
-                })
+                .Select(x => new Effect(x.Effect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 

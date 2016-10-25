@@ -34,19 +34,26 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var nature = await _context.Natures
+                    .Include(x => x.DecreasedStat)
+                    .Include(x => x.IncreasedStat)
+                    .Include(x => x.HatesFlavor).ThenInclude(x => x.ContestTypeNames)
+                    .Include(x => x.LikesFlavor).ThenInclude(x => x.ContestTypeNames)
+                    .Include(x => x.NaturePokeathlonStats).ThenInclude(x => x.PokeathlonStat)
+                    .Include(x => x.NatureBattleStylePreferences).ThenInclude(x => x.MoveBattleStyle)
+                    .Include(x => x.NatureNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Nature
                 {
                     Id                         = nature.Id,
                     Name                       = nature.Identifier,
-                    DecreasedStat              = await GetDecreasedStat(nature),
-                    IncreasedStat              = await GetIncreasedStat(nature),
-                    HatesFlavor                = await GetHatesFlavor(nature),
-                    LikesFlavor                = await GetLikesFlavor(nature),
-                    PokeathlonStatChanges      = await GetPokeathlonStatChanges(nature),
-                    MoveBattleStylePreferences = await GetMoveBattleStylePreferences(nature),
-                    Names                      = await GetNames(nature)
+                    DecreasedStat              = GetDecreasedStat(nature),
+                    IncreasedStat              = GetIncreasedStat(nature),
+                    HatesFlavor                = GetHatesFlavor(nature),
+                    LikesFlavor                = GetLikesFlavor(nature),
+                    PokeathlonStatChanges      = GetPokeathlonStatChanges(nature),
+                    MoveBattleStylePreferences = GetMoveBattleStylePreferences(nature),
+                    Names                      = GetNames(nature)
                 };
 
                 return Ok(result);
@@ -57,59 +64,58 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetDecreasedStat(EFNatures nature)
+        private static NamedAPIResource GetDecreasedStat(EFNatures nature)
         {
-            return (await _context
-                    .Stats
-                    .Where(x => x.Id == nature.DecreasedStatId)
-                    .FirstOrDefaultAsync())?
+            return nature
+                .DecreasedStat
                 .ToNamedApiResource();
         }
 
-        private async Task<NamedAPIResource> GetIncreasedStat(EFNatures nature)
+        private static NamedAPIResource GetIncreasedStat(EFNatures nature)
         {
-            return (await _context
-                    .Stats
-                    .Where(x => x.Id == nature.IncreasedStatId)
-                    .FirstOrDefaultAsync())?
+            return nature
+                .IncreasedStat
                 .ToNamedApiResource();
         }
 
-        private async Task<NamedAPIResource> GetHatesFlavor(EFNatures nature)
+        private static NamedAPIResource GetHatesFlavor(EFNatures nature)
         {
-            var flavor = await _context
+            var flavor = nature
+                .HatesFlavor
                 .ContestTypeNames
-                .Where(x => x.ContestTypeId == nature.HatesFlavorId
-                            && x.LocalLanguageId == 9)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault(x => x.LocalLanguageId == 9);
 
-            return new NamedAPIResource(
+            if (flavor == null)
+                return null;
+
+            return new NamedAPIResource
+            (
                 flavor.Flavor.ToLower(),
                 typeof(BerryFlavorsController).RscUrl(flavor.ContestTypeId)
             );
         }
 
-        private async Task<NamedAPIResource> GetLikesFlavor(EFNatures nature)
+        private static NamedAPIResource GetLikesFlavor(EFNatures nature)
         {
-            var flavor = await _context
+            var flavor = nature
+                .LikesFlavor
                 .ContestTypeNames
-                .Where(x => x.ContestTypeId == nature.LikesFlavorId &&
-                            x.LocalLanguageId == 9)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault(x => x.LocalLanguageId == 9);
 
-            return new NamedAPIResource(
+            if (flavor == null)
+                return null;
+
+            return new NamedAPIResource
+            (
                 flavor.Flavor.ToLower(),
                 typeof(BerryFlavorsController).RscUrl(flavor.ContestTypeId)
             );
         }
 
-        private async Task<List<NatureStatChange>> GetPokeathlonStatChanges(EFNatures nature)
+        private static List<NatureStatChange> GetPokeathlonStatChanges(EFNatures nature)
         {
-            return (await _context
-                    .NaturePokeathlonStats
-                    .Include(x => x.PokeathlonStat)
-                    .Where(x => x.NatureId == nature.Id)
-                    .ToListAsync())
+            return nature
+                .NaturePokeathlonStats
                 .Select(x => new NatureStatChange
                 {
                     MaxChange = x.MaxChange,
@@ -118,13 +124,10 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<MoveBattleStylePreference>> GetMoveBattleStylePreferences(EFNatures nature)
+        private static List<MoveBattleStylePreference> GetMoveBattleStylePreferences(EFNatures nature)
         {
-            return (await _context
-                    .NatureBattleStylePreferences
-                    .Include(x => x.MoveBattleStyle)
-                    .Where(x => x.NatureId == nature.Id)
-                    .ToListAsync())
+            return nature
+                .NatureBattleStylePreferences
                 .Select(x => new MoveBattleStylePreference
                 {
                     HighHpPreference = x.HighHpPreference,
@@ -134,13 +137,10 @@ namespace PokemonAPI.WebService.Controllers
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFNatures nature)
+        private static List<Name> GetNames(EFNatures nature)
         {
-            return (await _context
-                    .NatureNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.NatureId == nature.Id)
-                    .ToListAsync())
+            return nature
+                .NatureNames
                 .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }

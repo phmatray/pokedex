@@ -73,17 +73,13 @@ namespace PokemonAPI.WebService.Core
             => $"{controllerType.RscUrl()}{id}/";
 
         public static string Previous(this Type controllerType, int limit, int offset)
-        {
-            return offset - limit >= 0
+            => offset - limit >= 0
                 ? $"{controllerType.RscUrl().Trim('/')}?limit={limit}&offset={offset - limit}"
                 : null;
-        }
 
         public static string Next(this Type controllerType, int limit, int offset, int count)
-        {
-            return offset + limit < count
+            => offset + limit < count
                 ? $"{controllerType.RscUrl().Trim('/')}?limit={limit}&offset={offset + limit}"
                 : null;
-        }
     }
 }

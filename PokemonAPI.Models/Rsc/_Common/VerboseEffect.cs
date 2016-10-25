@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class VerboseEffect
     {
+        public VerboseEffect(string effect, string shortEffect, NamedAPIResource language)
+        {
+            Effect = effect;
+            ShortEffect = shortEffect;
+            Language = language;
+        }
+
         /// <summary>
         /// The localized effect text for an API resource in a specific language
         /// </summary>

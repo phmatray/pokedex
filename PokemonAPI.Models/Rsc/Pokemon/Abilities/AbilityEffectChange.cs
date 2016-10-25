@@ -4,6 +4,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class AbilityEffectChange
     {
+        public AbilityEffectChange(List<Effect> effectEntries, NamedAPIResource versionGroup)
+        {
+            EffectEntries = effectEntries;
+            VersionGroup = versionGroup;
+        }
+
         /// <summary>
         /// The previous effect of this ability listed in different languages
         /// </summary>

@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonType
     {
+        public PokemonType(int slot, NamedAPIResource type)
+        {
+            Slot = slot;
+            Type = type;
+        }
+
         /// <summary>
         /// The order the Pokémon's types are listed in
         /// </summary>

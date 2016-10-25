@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonMoveVersion
     {
+        public PokemonMoveVersion(NamedAPIResource moveLearnMethod, NamedAPIResource versionGroup, int levelLearnedAt)
+        {
+            MoveLearnMethod = moveLearnMethod;
+            VersionGroup = versionGroup;
+            LevelLearnedAt = levelLearnedAt;
+        }
+
         /// <summary>
         /// The method by which the move is learned
         /// </summary>

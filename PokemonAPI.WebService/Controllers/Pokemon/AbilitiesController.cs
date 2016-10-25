@@ -67,7 +67,8 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetGeneration(EFAbilities ability)
         {
-            return ability.Generation
+            return ability
+                .Generation?
                 .ToNamedApiResource();
         }
 
@@ -75,11 +76,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ability
                 .AbilityNames
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -87,12 +84,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ability
                 .AbilityProse
-                .Select(x => new VerboseEffect
-                {
-                    Effect = x.Effect,
-                    ShortEffect = x.ShortEffect,
-                    Language = x.LocalLanguage.ToNamedApiResource()
-                })
+                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -100,16 +92,13 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ability
                 .AbilityChangelog
-                .Select(x => new AbilityEffectChange
+                .Select(x =>
                 {
-                    EffectEntries = x.AbilityChangelogProse
-                        .Select(y => new Effect
-                        {
-                            EffectValue = y.Effect,
-                            Language = y.LocalLanguage.ToNamedApiResource()
-                        })
-                        .ToList(),
-                    VersionGroup = x.ChangedInVersionGroup.ToNamedApiResource()
+                    var effectEntries = x.AbilityChangelogProse
+                        .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
+                        .ToList();
+
+                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup.ToNamedApiResource());
                 })
                 .ToList();
         }
@@ -118,12 +107,8 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ability
                 .AbilityFlavorText
-                .Select(x => new AbilityFlavorText
-                {
-                    FlavorText = x.FlavorText,
-                    Language = x.Language.ToNamedApiResource(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource()
-                })
+                .Select(x => new AbilityFlavorText(x.FlavorText,
+                    x.Language.ToNamedApiResource(), x.VersionGroup.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -131,12 +116,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ability
                 .PokemonAbilities
-                .Select(x => new AbilityPokemon
-                {
-                    IsHidden = x.IsHidden,
-                    Slot     = x.Slot,
-                    Pokemon  = x.Pokemon.ToNamedApiResource()
-                })
+                .Select(x => new AbilityPokemon(x.IsHidden, x.Slot, x.Pokemon.ToNamedApiResource()))
                 .ToList();
         }
     }

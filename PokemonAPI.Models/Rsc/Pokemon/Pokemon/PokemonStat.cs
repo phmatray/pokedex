@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonStat
     {
+        public PokemonStat(NamedAPIResource stat, int effort, int baseStat)
+        {
+            Stat = stat;
+            Effort = effort;
+            BaseStat = baseStat;
+        }
+
         /// <summary>
         /// The stat the Pokémon has
         /// </summary>

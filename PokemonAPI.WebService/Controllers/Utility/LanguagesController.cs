@@ -57,7 +57,8 @@ namespace PokemonAPI.WebService.Controllers
 
         private static List<Name> GetNames(EFLanguages language)
         {
-            return language.LanguageNamesLanguage
+            return language
+                .LanguageNamesLanguage
                 .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }

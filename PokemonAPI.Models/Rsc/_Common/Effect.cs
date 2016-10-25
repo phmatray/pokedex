@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class Effect
     {
+        public Effect(string effectValue, NamedAPIResource language)
+        {
+            EffectValue = effectValue;
+            Language = language;
+        }
+
         /// <summary>
         /// The localized effect text for an API resource in a specific language
         /// </summary>

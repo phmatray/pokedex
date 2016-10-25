@@ -34,17 +34,22 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var region = await _context.Regions
+                    .Include(x => x.Locations)
+                    .Include(x => x.VersionGroupRegions).ThenInclude(x => x.VersionGroup)
+                    .Include(x => x.RegionNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.Generations)
+                    .Include(x => x.Pokedexes)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Region
                 {
                     Id             = region.Id,
                     Name           = region.Identifier,
-                    Locations      = await GetLocations(region),
-                    VersionGroups  = await GetVersionGroups(region),
-                    Names          = await GetNames(region),
-                    MainGeneration = await GetMainGeneration(region),
-                    Pokedexes      = await GetPokedexes(region)
+                    Locations      = GetLocations(region),
+                    VersionGroups  = GetVersionGroups(region),
+                    Names          = GetNames(region),
+                    MainGeneration = GetMainGeneration(region),
+                    Pokedexes      = GetPokedexes(region)
                 };
 
                 return Ok(result);
@@ -55,57 +60,42 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetLocations(EFRegions region)
+        private static List<NamedAPIResource> GetLocations(EFRegions region)
         {
-            return (await _context
-                    .Locations
-                    .Where(x => x.RegionId == region.Id)
-                    .ToListAsync())
+            return region
+                .Locations
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersionGroups(EFRegions region)
+        private static List<NamedAPIResource> GetVersionGroups(EFRegions region)
         {
-            return (await _context
-                    .VersionGroupRegions
-                    .Include(x => x.VersionGroup)
-                    .Where(x => x.RegionId == region.Id)
-                    .ToListAsync())
-                .Select(x => new NamedAPIResource
-                (
-                    x.VersionGroup.Identifier,
-                    typeof(VersionGroupsController).RscUrl(x.VersionGroupId)
-                ))
+            return region
+                .VersionGroupRegions
+                .Select(x => x.VersionGroup.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFRegions region)
+        private static List<Name> GetNames(EFRegions region)
         {
-            return (await _context
-                    .RegionNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.RegionId == region.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return region
+                .RegionNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetMainGeneration(EFRegions region)
+        private static NamedAPIResource GetMainGeneration(EFRegions region)
         {
-            return (await _context
-                    .Generations
-                    .FirstOrDefaultAsync(x => x.MainRegionId == region.Id))?
+            return region
+                .Generations
+                .FirstOrDefault(x => x.MainRegionId == region.Id)?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokedexes(EFRegions region)
+        private static List<NamedAPIResource> GetPokedexes(EFRegions region)
         {
-            return (await _context
-                    .Pokedexes
-                    .Where(x => x.RegionId == region.Id)
-                    .ToListAsync())
+            return region
+                .Pokedexes
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }

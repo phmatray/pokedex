@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class AbilityPokemon
     {
+        public AbilityPokemon(bool isHidden, int slot, NamedAPIResource pokemon)
+        {
+            IsHidden = isHidden;
+            Slot = slot;
+            Pokemon = pokemon;
+        }
+
         /// <summary>
         /// Whether or not this a hidden ability for the referenced Pokémon
         /// </summary>

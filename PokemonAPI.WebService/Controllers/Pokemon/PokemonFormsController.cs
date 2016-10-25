@@ -34,6 +34,9 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokemonForm = await _context.PokemonForms
+                    .Include(x => x.Pokemon)
+                    .Include(x => x.IntroducedInVersionGroup)
+                    .Include(x => x.PokemonFormNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonForm
@@ -46,11 +49,11 @@ namespace PokemonAPI.WebService.Controllers
                     IsBattleOnly = pokemonForm.IsBattleOnly,
                     IsMega       = pokemonForm.IsMega,
                     FormName     = pokemonForm.FormIdentifier,
-                    Pokemon      = await GetPokemon(pokemonForm),
+                    Pokemon      = GetPokemon(pokemonForm),
                     Sprites      = null,//GetSprites(pokemonForm),
-                    VersionGroup = await GetVersionGroup(pokemonForm),
-                    Names        = await GetNames(pokemonForm),
-                    FormNames    = await GetFormNames(pokemonForm)
+                    VersionGroup = GetVersionGroup(pokemonForm),
+                    Names        = GetNames(pokemonForm),
+                    FormNames    = GetFormNames(pokemonForm)
                 };
 
                 return Ok(result);
@@ -61,11 +64,10 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetPokemon(EFPokemonForms pokemonForm)
+        private static NamedAPIResource GetPokemon(EFPokemonForms pokemonForm)
         {
-            return (await _context
-                    .Pokemon
-                    .FirstOrDefaultAsync(x => x.Id == pokemonForm.PokemonId))
+            return pokemonForm
+                .Pokemon
                 .ToNamedApiResource();
         }
 
@@ -82,35 +84,27 @@ namespace PokemonAPI.WebService.Controllers
         //    };
         //}
 
-        private async Task<NamedAPIResource> GetVersionGroup(EFPokemonForms pokemonForm)
+        private static NamedAPIResource GetVersionGroup(EFPokemonForms pokemonForm)
         {
-            return (await _context
-                    .VersionGroups
-                    .FirstOrDefaultAsync(x => x.Id == pokemonForm.IntroducedInVersionGroupId))
+            return pokemonForm
+                .IntroducedInVersionGroup
                 .ToNamedApiResource();
         }
 
-        private async Task<List<Name>> GetNames(EFPokemonForms pokemonForm)
+        private static List<Name> GetNames(EFPokemonForms pokemonForm)
         {
-            return (await _context
-                    .PokemonFormNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonFormId == pokemonForm.Id && x.PokemonName != null)
-                    .ToListAsync())
-                .Select(x => new Name(x.PokemonName,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonForm
+                .PokemonFormNames
+                .Where(x => x.PokemonName != null)
+                .Select(x => new Name(x.PokemonName, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<Name>> GetFormNames(EFPokemonForms pokemonForm)
+        private static List<Name> GetFormNames(EFPokemonForms pokemonForm)
         {
-            return (await _context
-                    .PokemonFormNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonFormId == pokemonForm.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.FormName,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonForm
+                .PokemonFormNames
+                .Select(x => new Name(x.FormName, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

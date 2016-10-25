@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class EncounterVersionDetails
     {
+        public EncounterVersionDetails(int? rate, NamedAPIResource version)
+        {
+            Rate = rate;
+            Version = version;
+        }
+
         /// <summary>
         /// The chance of an encounter to occur.
         /// </summary>

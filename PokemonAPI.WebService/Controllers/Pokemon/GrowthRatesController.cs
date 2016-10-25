@@ -34,6 +34,9 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var growthRate = await _context.GrowthRates
+                    .Include(x => x.GrowthRateProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.Experience)
+                    .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new GrowthRate
@@ -41,9 +44,9 @@ namespace PokemonAPI.WebService.Controllers
                     Id             = growthRate.Id,
                     Name           = growthRate.Identifier,
                     Formula        = growthRate.Formula,
-                    Descriptions   = await GetDescriptions(growthRate),
-                    Levels         = await GetLevels(growthRate),
-                    PokemonSpecies = await GetPokemonSpecies(growthRate)
+                    Descriptions   = GetDescriptions(growthRate),
+                    Levels         = GetLevels(growthRate),
+                    PokemonSpecies = GetPokemonSpecies(growthRate)
                 };
 
                 return Ok(result);
@@ -54,34 +57,26 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Description>> GetDescriptions(EFGrowthRates growthRate)
+        private static List<Description> GetDescriptions(EFGrowthRates growthRate)
         {
-            return (await _context
-                    .GrowthRateProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.GrowthRateId == growthRate.Id)
-                    .ToListAsync())
-                .Select(x => new Description(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource()))
+            return growthRate
+                .GrowthRateProse
+                .Select(x => new Description(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<GrowthRateExperienceLevel>> GetLevels(EFGrowthRates growthRate)
+        private static List<GrowthRateExperienceLevel> GetLevels(EFGrowthRates growthRate)
         {
-            return (await _context
-                    .Experience
-                    .Where(x => x.GrowthRateId == growthRate.Id)
-                    .ToListAsync())
+            return growthRate
+                .Experience
                 .Select(x => new GrowthRateExperienceLevel(x.Level, x.Experience1))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFGrowthRates growthRate)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFGrowthRates growthRate)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Where(x => x.GrowthRateId == growthRate.Id)
-                    .ToListAsync())
+            return growthRate
+                .PokemonSpecies
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }

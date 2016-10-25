@@ -4,6 +4,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class PokemonHeldItem
     {
+        public PokemonHeldItem(NamedAPIResource item, List<PokemonHeldItemVersion> versionDetails)
+        {
+            Item = item;
+            VersionDetails = versionDetails;
+        }
+
         /// <summary>
         /// The item the referenced Pokémon holds
         /// </summary>

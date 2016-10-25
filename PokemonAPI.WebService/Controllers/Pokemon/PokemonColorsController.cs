@@ -34,14 +34,16 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokemonColor = await _context.PokemonColors
+                    .Include(x => x.PokemonColorNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new PokemonColor
                 {
                     Id             = pokemonColor.Id,
                     Name           = pokemonColor.Identifier,
-                    Names          = await GetNames(pokemonColor),
-                    PokemonSpecies = await GetPokemonSpecies(pokemonColor)
+                    Names          = GetNames(pokemonColor),
+                    PokemonSpecies = GetPokemonSpecies(pokemonColor)
                 };
 
                 return Ok(result);
@@ -52,24 +54,18 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFPokemonColors pokemonColor)
+        private static List<Name> GetNames(EFPokemonColors pokemonColor)
         {
-            return (await _context
-                    .PokemonColorNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokemonColorId == pokemonColor.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokemonColor
+                .PokemonColorNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokemonSpecies(EFPokemonColors pokemonColor)
+        private static List<NamedAPIResource> GetPokemonSpecies(EFPokemonColors pokemonColor)
         {
-            return (await _context
-                    .PokemonSpecies
-                    .Where(x => x.ColorId == pokemonColor.Id)
-                    .ToListAsync())
+            return pokemonColor
+                .PokemonSpecies
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }

@@ -34,6 +34,12 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var stat = await _context.Stats
+                    .Include(x => x.MoveMetaStatChanges).ThenInclude(x => x.Move)
+                    .Include(x => x.NaturesIncreasedStat)
+                    .Include(x => x.NaturesDecreasedStat)
+                    .Include(x => x.Characteristics)
+                    .Include(x => x.DamageClass)
+                    .Include(x => x.StatNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Stat
@@ -42,11 +48,11 @@ namespace PokemonAPI.WebService.Controllers
                     Name             = stat.Identifier,
                     GameIndex        = stat.GameIndex,
                     IsBattleOnly     = stat.IsBattleOnly,
-                    AffectingMoves   = await GetAffectingMoves(stat),
-                    AffectingNatures = await GetAffectingNatures(stat),
-                    Characteristics  = await GetCharacteristics(stat),
-                    MoveDamageClass  = await GetMoveDamageClass(stat),
-                    Names            = await GetNames(stat)
+                    AffectingMoves   = GetAffectingMoves(stat),
+                    AffectingNatures = GetAffectingNatures(stat),
+                    Characteristics  = GetCharacteristics(stat),
+                    MoveDamageClass  = GetMoveDamageClass(stat),
+                    Names            = GetNames(stat)
                 };
 
                 return Ok(result);
@@ -57,17 +63,11 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<MoveStatAffectSets> GetAffectingMoves(EFStats stat)
+        private static MoveStatAffectSets GetAffectingMoves(EFStats stat)
         {
-            var moveMetaStatChanges = (await _context.MoveMetaStatChanges
-                    .Include(x => x.Move)
-                    .Where(x => x.StatId == stat.Id)
-                    .ToListAsync())
-                .Select(x => new MoveStatAffect
-                {
-                    Change = x.Change,
-                    Move = x.Move.ToNamedApiResource()
-                })
+            var moveMetaStatChanges = stat
+                .MoveMetaStatChanges
+                .Select(x => new MoveStatAffect(x.Change, x.Move.ToNamedApiResource()))
                 .ToList();
 
             return new MoveStatAffectSets
@@ -81,51 +81,43 @@ namespace PokemonAPI.WebService.Controllers
             };
         }
 
-        private async Task<NatureStatAffectSets> GetAffectingNatures(EFStats stat)
+        private static NatureStatAffectSets GetAffectingNatures(EFStats stat)
         {
             return new NatureStatAffectSets
             {
-                Increase = (await _context.Natures
-                        .Where(x => x.IncreasedStatId == stat.Id && x.DecreasedStatId != stat.Id)
-                        .ToListAsync())
+                Increase = stat
+                    .NaturesIncreasedStat
+                    .Where(x => x.DecreasedStatId != stat.Id)
                     .Select(x => x.ToNamedApiResource())
                     .ToList(),
-                Decrease = (await _context.Natures
-                        .Where(x => x.DecreasedStatId == stat.Id && x.IncreasedStatId != stat.Id)
-                        .ToListAsync())
+                Decrease = stat
+                    .NaturesDecreasedStat
+                    .Where(x => x.IncreasedStatId != stat.Id)
                     .Select(x => x.ToNamedApiResource())
                     .ToList()
             };
         }
 
-        private async Task<List<APIResource>> GetCharacteristics(EFStats stat)
+        private static List<APIResource> GetCharacteristics(EFStats stat)
         {
-            return (await _context
-                    .Characteristics
-                    .Where(x => x.StatId == stat.Id)
-                    .ToListAsync())
-                .Select(x => x.ToApiResource(typeof(CharacteristicsController)))
+            return stat
+                .Characteristics
+                .Select(x => x.ToApiResource())
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetMoveDamageClass(EFStats stat)
+        private static NamedAPIResource GetMoveDamageClass(EFStats stat)
         {
-            return (await _context
-                    .MoveDamageClasses
-                    .Where(x => x.Id == stat.DamageClassId)
-                    .FirstOrDefaultAsync())?
+            return stat
+                .DamageClass?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<Name>> GetNames(EFStats stat)
+        private static List<Name> GetNames(EFStats stat)
         {
-            return (await _context
-                    .StatNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.StatId == stat.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource()))
+            return stat
+                .StatNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

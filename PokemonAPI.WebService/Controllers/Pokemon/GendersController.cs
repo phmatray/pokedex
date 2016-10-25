@@ -59,17 +59,20 @@ namespace PokemonAPI.WebService.Controllers
             switch (gender.Identifier)
             {
                 case "female":
-                    pokemonSpecies = await _context.PokemonSpecies
+                    pokemonSpecies = await _context
+                        .PokemonSpecies
                         .Where(x => x.GenderRate >= 1 && x.GenderRate <= 8)
                         .ToListAsync();
                     break;
                 case "male":
-                    pokemonSpecies = await _context.PokemonSpecies
+                    pokemonSpecies = await _context
+                        .PokemonSpecies
                         .Where(x => x.GenderRate >= 0 && x.GenderRate <= 7)
                         .ToListAsync();
                     break;
                 case "genderless":
-                    pokemonSpecies = await _context.PokemonSpecies
+                    pokemonSpecies = await _context
+                        .PokemonSpecies
                         .Where(x => x.GenderRate == -1)
                         .ToListAsync();
                     break;
