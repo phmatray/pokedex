@@ -58,11 +58,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return evolutionTrigger
                 .EvolutionTriggerProse
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 

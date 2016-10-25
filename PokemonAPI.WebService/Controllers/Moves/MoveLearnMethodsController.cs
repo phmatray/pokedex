@@ -59,11 +59,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return moveMethod
                 .PokemonMoveMethodProse
-                .Select(x => new Description
-                (
-                    x.Description,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -71,11 +67,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return moveMethod
                 .PokemonMoveMethodProse
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 

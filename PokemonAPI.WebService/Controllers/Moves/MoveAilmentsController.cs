@@ -41,8 +41,8 @@ namespace PokemonAPI.WebService.Controllers
 
                 var result = new MoveAilment
                 {
-                    Id = ailment.Id,
-                    Name = ailment.Identifier,
+                    Id    = ailment.Id,
+                    Name  = ailment.Identifier,
                     Moves = GetMoves(ailment),
                     Names = GetNames(ailment)
                 };
@@ -67,11 +67,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return ailment
                 .MoveMetaAilmentNames
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

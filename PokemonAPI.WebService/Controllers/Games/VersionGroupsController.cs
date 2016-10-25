@@ -34,6 +34,11 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var versionGroup = await _context.VersionGroups
+                    .Include(x => x.VersionGroupPokemonMoveMethods).ThenInclude(x => x.PokemonMoveMethod)
+                    .Include(x => x.Versions)
+                    .Include(x => x.Generation)
+                    .Include(x => x.VersionGroupRegions).ThenInclude(x => x.Region)
+                    .Include(x => x.PokedexVersionGroups).ThenInclude(x => x.Pokedex)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new VersionGroup
@@ -41,11 +46,11 @@ namespace PokemonAPI.WebService.Controllers
                     Id               = versionGroup.Id,
                     Name             = versionGroup.Identifier,
                     Order            = versionGroup.Order,
-                    MoveLearnMethods = await GetMoveLearnMethods(versionGroup),
-                    Versions         = await GetVersions(versionGroup),
-                    Generation       = await GetGeneration(versionGroup),
-                    Regions          = await GetRegions(versionGroup),
-                    Pokedexes        = await GetPokedexes(versionGroup)
+                    MoveLearnMethods = GetMoveLearnMethods(versionGroup),
+                    Versions         = GetVersions(versionGroup),
+                    Generation       = GetGeneration(versionGroup),
+                    Regions          = GetRegions(versionGroup),
+                    Pokedexes        = GetPokedexes(versionGroup)
                 };
 
                 return Ok(result);
@@ -56,66 +61,42 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<NamedAPIResource>> GetMoveLearnMethods(EFVersionGroups versionGroup)
+        private static List<NamedAPIResource> GetMoveLearnMethods(EFVersionGroups versionGroup)
         {
-            return (await _context
-                    .VersionGroupPokemonMoveMethods
-                    .Include(x => x.PokemonMoveMethod)
-                    .Where(x => x.VersionGroupId == versionGroup.Id)
-                    .ToListAsync())
-                .Select(x => new NamedAPIResource
-                (
-                    x.PokemonMoveMethod.Identifier,
-                    typeof(MoveLearnMethodsController).RscUrl(x.PokemonMoveMethodId)
-                ))
+            return versionGroup
+                .VersionGroupPokemonMoveMethods
+                .Select(x => x.PokemonMoveMethod?.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersions(EFVersionGroups versionGroup)
+        private static List<NamedAPIResource> GetVersions(EFVersionGroups versionGroup)
         {
-            return (await _context
-                    .Versions
-                    .Where(x => x.VersionGroupId == versionGroup.Id)
-                    .ToListAsync())
+            return versionGroup
+                .Versions
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetGeneration(EFVersionGroups versionGroup)
+        private static NamedAPIResource GetGeneration(EFVersionGroups versionGroup)
         {
-            return (await _context
-                    .Generations
-                    .FirstOrDefaultAsync(x => x.Id == versionGroup.GenerationId))?
+            return versionGroup
+                .Generation?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetRegions(EFVersionGroups versionGroup)
+        private static List<NamedAPIResource> GetRegions(EFVersionGroups versionGroup)
         {
-            return (await _context
-                    .VersionGroupRegions
-                    .Include(x => x.Region)
-                    .Where(x => x.VersionGroupId == versionGroup.Id)
-                    .ToListAsync())
-                .Select(x => new NamedAPIResource
-                (
-                    x.Region.Identifier,
-                    typeof(RegionsController).RscUrl(x.RegionId)
-                ))
+            return versionGroup
+                .VersionGroupRegions
+                .Select(x => x.Region?.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<NamedAPIResource>> GetPokedexes(EFVersionGroups versionGroup)
+        private static List<NamedAPIResource> GetPokedexes(EFVersionGroups versionGroup)
         {
-            return (await _context
-                    .PokedexVersionGroups
-                    .Include(x => x.Pokedex)
-                    .Where(x => x.VersionGroupId == versionGroup.Id)
-                    .ToListAsync())
-                .Select(x => new NamedAPIResource
-                (
-                    x.Pokedex.Identifier,
-                    typeof(PokemonsController).RscUrl(x.PokedexId)
-                ))
+            return versionGroup
+                .PokedexVersionGroups
+                .Select(x => x.Pokedex?.ToNamedApiResource())
                 .ToList();
         }
     }

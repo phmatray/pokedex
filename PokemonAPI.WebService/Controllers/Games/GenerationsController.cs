@@ -77,14 +77,15 @@ namespace PokemonAPI.WebService.Controllers
         {
             return generation
                 .Types
-                .Where(x => x.GenerationId == generation.Id && x.Id < 10000)
+                .Where(x => x.Id < 10000)
                 .Select(x => x.ToNamedApiResource())
                 .ToList();
         }
 
         private static NamedAPIResource GetMainRegion(EFGenerations generation)
         {
-            return generation.MainRegion
+            return generation
+                .MainRegion
                 .ToNamedApiResource();
         }
 

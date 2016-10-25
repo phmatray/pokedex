@@ -67,11 +67,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return category
                 .MoveMetaCategoryProse
-                .Select(x => new Description
-                (
-                    x.Description,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

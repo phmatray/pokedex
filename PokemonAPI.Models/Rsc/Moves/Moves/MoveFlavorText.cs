@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class MoveFlavorText
     {
+        public MoveFlavorText(string flavorText, NamedAPIResource language, NamedAPIResource versionGroup)
+        {
+            FlavorText = flavorText;
+            Language = language;
+            VersionGroup = versionGroup;
+        }
+
         /// <summary>
         /// The localized flavor text for an api resource in a specific language
         /// </summary>

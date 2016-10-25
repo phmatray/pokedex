@@ -41,10 +41,10 @@ namespace PokemonAPI.WebService.Controllers
 
                 var result = new ItemCategory
                 {
-                    Id = itemCategory.Id,
-                    Name = itemCategory.Identifier,
-                    Items = GetItems(itemCategory),
-                    Names = GetNames(itemCategory),
+                    Id     = itemCategory.Id,
+                    Name   = itemCategory.Identifier,
+                    Items  = GetItems(itemCategory),
+                    Names  = GetNames(itemCategory),
                     Pocket = GetPocket(itemCategory)
                 };
 
@@ -74,7 +74,8 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetPocket(EFItemCategories itemCategory)
         {
-            return itemCategory.Pocket
+            return itemCategory
+                .Pocket?
                 .ToNamedApiResource();
         }
     }

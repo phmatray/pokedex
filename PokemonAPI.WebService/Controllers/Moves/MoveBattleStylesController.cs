@@ -34,13 +34,14 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var moveBattleStyle = await _context.MoveBattleStyles
+                    .Include(x => x.MoveBattleStyleProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new MoveBattleStyle
                 {
                     Id    = moveBattleStyle.Id,
                     Name  = moveBattleStyle.Identifier,
-                    Names = await GetNames(moveBattleStyle),
+                    Names = GetNames(moveBattleStyle),
                 };
 
                 return Ok(result);
@@ -51,15 +52,11 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFMoveBattleStyles moveBattleStyle)
+        private static List<Name> GetNames(EFMoveBattleStyles moveBattleStyle)
         {
-            return (await _context
-                    .MoveBattleStyleProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.MoveBattleStyleId == moveBattleStyle.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return moveBattleStyle
+                .MoveBattleStyleProse
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

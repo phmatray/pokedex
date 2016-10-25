@@ -2,6 +2,12 @@ namespace PokemonAPI.Models.Rsc
 {
     public class MoveStatChange
     {
+        public MoveStatChange(int change, NamedAPIResource stat)
+        {
+            Change = change;
+            Stat = stat;
+        }
+
         /// <summary>
         /// The amount of change
         /// </summary>

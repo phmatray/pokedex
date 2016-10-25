@@ -2,6 +2,13 @@ namespace PokemonAPI.Models.Rsc
 {
     public class VersionGroupFlavorText
     {
+        public VersionGroupFlavorText(string text, NamedAPIResource language, NamedAPIResource versionGroup)
+        {
+            Text = text;
+            Language = language;
+            VersionGroup = versionGroup;
+        }
+
         /// <summary>
         /// The localized name for an API resource in a specific language
         /// </summary>

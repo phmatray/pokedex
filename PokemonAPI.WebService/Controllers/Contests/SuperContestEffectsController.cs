@@ -86,11 +86,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return superContestEffect
                 .SuperContestEffectProse
-                .Select(x => new FlavorText
-                (
-                    x.FlavorText,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+                .Select(x => new FlavorText(x.FlavorText, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 

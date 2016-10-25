@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var contestType = await _context.ContestTypes
+                    .Include(x => x.ContestTypeNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.BerryFlavors)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -41,8 +42,8 @@ namespace PokemonAPI.WebService.Controllers
                 {
                     Id          = contestType.Id,
                     Name        = contestType.Identifier,
-                    BerryFlavor = await GetBerryFlavor(contestType),
-                    Names       = await GetNames(contestType)
+                    BerryFlavor = GetBerryFlavor(contestType),
+                    Names       = GetNames(contestType)
                 };
 
                 return Ok(result);
@@ -53,34 +54,20 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetBerryFlavor(EFContestTypes contestType)
+        private static NamedAPIResource GetBerryFlavor(EFContestTypes contestType)
         {
-            var contestTypeName = await _context
+            return contestType
                 .ContestTypeNames
-                .SingleAsync(x => x.ContestTypeId == contestType.Id &&
-                                  x.LocalLanguageId == 9);
-
-            return new NamedAPIResource
-            (
-                contestTypeName.Flavor.ToLower(),
-                typeof(BerryFlavorsController).RscUrl(contestTypeName.ContestTypeId)
-            );
+                .SingleOrDefault(x => x.LocalLanguageId == 9)
+                .ToNamedApiResource();
         }
 
-        private async Task<List<ContestName>> GetNames(EFContestTypes contestType)
+        private static List<ContestName> GetNames(EFContestTypes contestType)
         {
-            return (await _context
-                    .ContestTypeNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.ContestTypeId == contestType.Id &&
-                                x.Color != null)
-                    .ToListAsync())
-                .Select(x => new ContestName
-                (
-                    x.Name,
-                    x.Color,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+            return contestType
+                .ContestTypeNames
+                .Where(x => x.Color != null)
+                .Select(x => new ContestName(x.Name, x.Color, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }

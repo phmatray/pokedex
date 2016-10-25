@@ -93,26 +93,9 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetCategory(EFItems item)
         {
-            return item.Category
+            return item
+                .Category?
                 .ToNamedApiResource();
-
-            //var cat = item.Category;
-
-            //return new ItemCategory
-            //{
-            //    Id = cat.Id,
-            //    Name = cat.Identifier,
-            //    Items = cat.Items.Select(x => x.ToNamedApiResource()).ToList(),
-            //    Names = cat
-            //        .ItemCategoryProse
-            //        .Select(x => new Name
-            //        (
-            //            x.Name,
-            //            x.LocalLanguage.ToNamedApiResource()
-            //        ))
-            //        .ToList(),
-            //    Pocket = cat.Pocket.ToNamedApiResource()
-            //};
         }
 
         private static List<VerboseEffect> GetEffectEntries(EFItems item)
@@ -127,12 +110,8 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .ItemFlavorText
-                .Select(x => new VersionGroupFlavorText
-                {
-                    Text = x.FlavorText,
-                    Language = x.Language.ToNamedApiResource(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource()
-                })
+                .Select(x => new VersionGroupFlavorText(x.FlavorText,
+                    x.Language.ToNamedApiResource(), x.VersionGroup.ToNamedApiResource()))
                 .ToList();
         }
 
@@ -178,7 +157,7 @@ namespace PokemonAPI.WebService.Controllers
                             .Select(g => new ItemHolderPokemonVersionDetail
                             {
                                 Rarity = g.Rarity,
-                                Version = g.Version.ToNamedApiResource()
+                                Version = g.Version?.ToNamedApiResource()
                             })
                             .ToList()
                     };
@@ -198,11 +177,7 @@ namespace PokemonAPI.WebService.Controllers
         {
             return item
                 .Machines
-                .Select(x => new MachineVersionDetail
-                {
-                    Machine = x.ToApiResource(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource()
-                })
+                .Select(x => new MachineVersionDetail(x.ToApiResource(), x.VersionGroup.ToNamedApiResource()))
                 .ToList();
         }
     }

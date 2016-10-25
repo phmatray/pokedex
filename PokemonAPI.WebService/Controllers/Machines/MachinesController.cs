@@ -68,9 +68,9 @@ namespace PokemonAPI.WebService.Controllers
                 var result = new Machine
                 {
                     Id           = $"{machineNumber}/{versionGroupId}",
-                    Item         = machine.Item.ToNamedApiResource(),
-                    Move         = machine.Move.ToNamedApiResource(),
-                    VersionGroup = machine.VersionGroup.ToNamedApiResource()
+                    Item         = machine.Item?.ToNamedApiResource(),
+                    Move         = machine.Move?.ToNamedApiResource(),
+                    VersionGroup = machine.VersionGroup?.ToNamedApiResource()
                 };
 
                 return Ok(result);

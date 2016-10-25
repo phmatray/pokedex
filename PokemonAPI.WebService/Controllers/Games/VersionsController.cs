@@ -35,14 +35,16 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var version = await _context.Versions
+                    .Include(x => x.VersionNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.VersionGroup)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Version
                 {
                     Id           = version.Id,
                     Name         = version.Identifier,
-                    Names        = await GetNames(version),
-                    VersionGroup = await GetVersionGroup(version)
+                    Names        = GetNames(version),
+                    VersionGroup = GetVersionGroup(version)
                 };
 
                 return Ok(result);
@@ -53,24 +55,18 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<List<Name>> GetNames(EFVersions version)
+        private static List<Name> GetNames(EFVersions version)
         {
-            return (await _context
-                    .VersionNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.VersionId == version.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return version
+                .VersionNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<NamedAPIResource> GetVersionGroup(EFVersions version)
+        private static NamedAPIResource GetVersionGroup(EFVersions version)
         {
-            return (await _context
-                    .VersionGroups
-                    .Where(x => x.Id == version.VersionGroupId)
-                    .FirstOrDefaultAsync())
+            return version
+                .VersionGroup?
                 .ToNamedApiResource();
         }
     }

@@ -96,10 +96,10 @@ namespace PokemonAPI.WebService.Controllers
         {
             return new ChainLink
             {
-                IsBaby = firstStadeSpecies.IsBaby,
-                Species = firstStadeSpecies.ToNamedApiResource(),
-                EvolutionDetails = new List<EvolutionDetail>(),
-                EvolvesTo = GetEvolvesToChainLinks(firstStadeSpecies)
+                IsBaby           = firstStadeSpecies.IsBaby,
+                Species          = firstStadeSpecies.ToNamedApiResource(),
+                EvolutionDetails = new List<EvolutionDetail>(), // We MUST return an empty list for the first node
+                EvolvesTo        = GetEvolvesToChainLinks(firstStadeSpecies)
             };
         }
 

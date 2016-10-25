@@ -45,6 +45,12 @@ namespace PokemonAPI.WebService.Core
         internal static NamedAPIResource ToNamedApiResource(this EFContestTypes src)
             => src.ToNamedApiResource<ContestTypesController>();
 
+        internal static NamedAPIResource ToNamedApiResource(this EFContestTypeNames src)
+            => new NamedAPIResource(
+                src.Flavor?.ToLower(),
+                typeof(BerryFlavorsController).RscUrl(src.ContestTypeId)
+            );
+
         internal static NamedAPIResource ToNamedApiResource(this EFEggGroups src)
             => src.ToNamedApiResource<EggGroupsController>();
 

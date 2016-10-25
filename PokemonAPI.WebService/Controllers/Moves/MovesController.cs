@@ -34,6 +34,22 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var move = await _context.Moves
+                    .Include(x => x.ContestCombosFirstMove).ThenInclude(x => x.SecondMove)
+                    .Include(x => x.ContestCombosSecondMove).ThenInclude(x => x.FirstMove)
+                    .Include(x => x.SuperContestCombosFirstMove).ThenInclude(x => x.SecondMove)
+                    .Include(x => x.SuperContestCombosSecondMove).ThenInclude(x => x.FirstMove)
+                    .Include(x => x.Effect).ThenInclude(x => x.MoveEffectProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.Effect).ThenInclude(x => x.MoveEffectChangelog).ThenInclude(x => x.MoveEffectChangelogProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.Effect).ThenInclude(x => x.MoveEffectChangelog).ThenInclude(x => x.ChangedInVersionGroup)
+                    .Include(x => x.MoveFlavorText).ThenInclude(x => x.Language)
+                    .Include(x => x.MoveFlavorText).ThenInclude(x => x.VersionGroup)
+                    .Include(x => x.Machines).ThenInclude(x => x.VersionGroup)
+                    .Include(x => x.MoveMeta).ThenInclude(x => x.MetaAilment)
+                    .Include(x => x.MoveMeta).ThenInclude(x => x.MetaCategory)
+                    .Include(x => x.MoveNames).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.MoveChangelog).ThenInclude(x => x.Type)
+                    .Include(x => x.MoveChangelog).ThenInclude(x => x.ChangedInVersionGroup)
+                    .Include(x => x.MoveMetaStatChanges).ThenInclude(x => x.Stat)
                     .Include(x => x.ContestType)
                     .Include(x => x.ContestEffect)
                     .Include(x => x.DamageClass)
@@ -52,19 +68,19 @@ namespace PokemonAPI.WebService.Controllers
                     Pp                 = move.Pp,
                     Priority           = move.Priority,
                     Power              = move.Power,
-                    ContestCombos      = await GetContestCombos(move),
+                    ContestCombos      = GetContestCombos(move),
                     ContestType        = GetContestType(move),
                     ContestEffect      = GetContestEffect(move),
                     DamageClass        = GetDamageClass(move),
-                    EffectEntries      = await GetEffectEntries(move),
-                    EffectChanges      = await GetEffectChanges(move),
-                    FlavorTextEntries  = await GetFlavorTextEntries(move),
+                    EffectEntries      = GetEffectEntries(move),
+                    EffectChanges      = GetEffectChanges(move),
+                    FlavorTextEntries  = GetFlavorTextEntries(move),
                     Generation         = GetGeneration(move),
-                    Machines           = await GetMachines(move),
-                    Meta               = await GetMeta(move),
-                    Names              = await GetNames(move),
-                    PastValues         = await GetPastValues(move),
-                    StatChanges        = await GetStatChanges(move),
+                    Machines           = GetMachines(move),
+                    Meta               = GetMeta(move),
+                    Names              = GetNames(move),
+                    PastValues         = GetPastValues(move),
+                    StatChanges        = GetStatChanges(move),
                     SuperContestEffect = GetSuperContestEffect(move),
                     Target             = GetTarget(move),
                     Type               = GetType(move),
@@ -78,38 +94,26 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<ContestComboSets> GetContestCombos(EFMoves move)
+        private static ContestComboSets GetContestCombos(EFMoves move)
         {
-            var normalUseBefore = (await _context
-                    .ContestCombos
-                    .Include(x => x.SecondMove)
-                    .Where(x => x.FirstMoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => x.SecondMove.ToNamedApiResource<MovesController>(x.SecondMoveId))
+            var normalUseBefore = move
+                .ContestCombosFirstMove
+                .Select(x => x.SecondMove.ToNamedApiResource())
                 .ToList();
 
-            var normalUseAfter = (await _context
-                    .ContestCombos
-                    .Include(x => x.FirstMove)
-                    .Where(x => x.SecondMoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => x.FirstMove.ToNamedApiResource<MovesController>(x.FirstMoveId))
+            var normalUseAfter = move
+                .ContestCombosSecondMove
+                .Select(x => x.FirstMove.ToNamedApiResource())
                 .ToList();
 
-            var superUseBefore = (await _context
-                    .SuperContestCombos
-                    .Include(x => x.SecondMove)
-                    .Where(x => x.FirstMoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => x.SecondMove.ToNamedApiResource<MovesController>(x.SecondMoveId))
+            var superUseBefore = move
+                .SuperContestCombosFirstMove
+                .Select(x => x.SecondMove.ToNamedApiResource())
                 .ToList();
 
-            var superUseAfter = (await _context
-                    .SuperContestCombos
-                    .Include(x => x.FirstMove)
-                    .Where(x => x.SecondMoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => x.FirstMove.ToNamedApiResource<MovesController>(x.FirstMoveId))
+            var superUseAfter = move
+                .SuperContestCombosSecondMove
+                .Select(x => x.FirstMove.ToNamedApiResource())
                 .ToList();
 
             var fnua = normalUseAfter.Any();
@@ -136,107 +140,83 @@ namespace PokemonAPI.WebService.Controllers
 
         private static NamedAPIResource GetContestType(EFMoves move)
         {
-            return move.ContestType
+            return move
+                .ContestType?
                 .ToNamedApiResource();
         }
 
         private static APIResource GetContestEffect(EFMoves move)
         {
-            return move.ContestEffect
+            return move
+                .ContestEffect?
                 .ToApiResource<ContestEffectsController>();
         }
 
         private static NamedAPIResource GetDamageClass(EFMoves move)
         {
-            return move.DamageClass
+            return move
+                .DamageClass?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<VerboseEffect>> GetEffectEntries(EFMoves move)
+        private static List<VerboseEffect> GetEffectEntries(EFMoves move)
         {
-            return (await _context
-                    .MoveEffectProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.MoveEffectId == move.EffectId &&
-                                x.ShortEffect != null && x.Effect != null)
-                    .ToListAsync())
-                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
+            return move
+                .Effect
+                .MoveEffectProse
+                .Where(x => x.ShortEffect != null && x.Effect != null)
+                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage?.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<AbilityEffectChange>> GetEffectChanges(EFMoves move)
+        private static List<AbilityEffectChange> GetEffectChanges(EFMoves move)
         {
-            var efMoveEffectChangelogs = await _context
+            return move
+                .Effect
                 .MoveEffectChangelog
-                .Include(x => x.MoveEffectChangelogProse).ThenInclude(x => x.LocalLanguage)
-                .Include(x => x.ChangedInVersionGroup)
-                .Where(x => x.EffectId == move.EffectId)
-                .ToListAsync();
-
-            return efMoveEffectChangelogs
                 .Select(x =>
                 {
                     var effectEntries = x.MoveEffectChangelogProse
                         .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
                         .ToList();
 
-                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup.ToNamedApiResource());
+                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup?.ToNamedApiResource());
                 })
                 .ToList();
         }
 
-        private async Task<List<MoveFlavorText>> GetFlavorTextEntries(EFMoves move)
+        private static List<MoveFlavorText> GetFlavorTextEntries(EFMoves move)
         {
-            return (await _context
-                    .MoveFlavorText
-                    .Include(x => x.Language)
-                    .Include(x => x.VersionGroup)
-                    .Where(x => x.MoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => new MoveFlavorText
-                {
-                    FlavorText   = x.FlavorText,
-                    Language     = x.Language.ToNamedApiResource(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource()
-                })
+            return move
+                .MoveFlavorText
+                .Select(x => new MoveFlavorText(x.FlavorText,
+                    x.Language.ToNamedApiResource(), x.VersionGroup.ToNamedApiResource()))
                 .ToList();
         }
 
         private static NamedAPIResource GetGeneration(EFMoves move)
         {
-            return move.Generation
+            return move
+                .Generation?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<MachineVersionDetail>> GetMachines(EFMoves move)
+        private static List<MachineVersionDetail> GetMachines(EFMoves move)
         {
-            var machines = await _context
+            return move
                 .Machines
-                .Include(x => x.VersionGroup)
-                .Where(x => x.MoveId == move.Id)
-                .ToListAsync();
-
-            return machines
-                .Select(x => new MachineVersionDetail
-                {
-                    Machine = x.ToApiResource(),
-                    VersionGroup = x.VersionGroup.ToNamedApiResource()
-                })
+                .Select(x => new MachineVersionDetail(x.ToApiResource(), x.VersionGroup?.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<MoveMetaData> GetMeta(EFMoves move)
+        private static MoveMetaData GetMeta(EFMoves move)
         {
-            var meta = await _context
-                .MoveMeta
-                .Include(x => x.MetaAilment)
-                .Include(x => x.MetaCategory)
-                .SingleAsync(x => x.MoveId == move.Id);
+            var meta = move.MoveMeta;
 
             return new MoveMetaData
             {
-                Ailment       = meta.MetaAilment.ToNamedApiResource(),
-                Category      = meta.MetaCategory.ToNamedApiResource(),
+                Ailment       = meta.MetaAilment?.ToNamedApiResource(),
+                Category      = meta.MetaCategory?.ToNamedApiResource(),
                 MinHits       = meta.MinHits,
                 MaxHits       = meta.MaxHits,
                 MinTurns      = meta.MinTurns,
@@ -250,85 +230,68 @@ namespace PokemonAPI.WebService.Controllers
             };
         }
 
-        private async Task<List<Name>> GetNames(EFMoves move)
+        private static List<Name> GetNames(EFMoves move)
         {
-            return (await _context
-                    .MoveNames
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.MoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => new Name
-                (
-                    x.Name,
-                    x.LocalLanguage.ToNamedApiResource()
-                ))
+            return move
+                .MoveNames
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<PastMoveStatValues>> GetPastValues(EFMoves move)
+        private static List<PastMoveStatValues> GetPastValues(EFMoves move)
         {
-            return (await _context
-                    .MoveChangelog
-                    .Include(x => x.Type)
-                    .Include(x => x.ChangedInVersionGroup)
-                    .Where(x => x.MoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => new PastMoveStatValues
+            return move
+                .MoveChangelog
+                .Select(moveChangelog =>
                 {
-                    Accuracy      = x.Accuracy,
-                    EffectChance  = x.EffectChance,
-                    Power         = x.Power,
-                    Pp            = x.Pp,
-                    EffectEntries = GetPastValuesEffectEntries(x),
-                    Type          = x.Type?.ToNamedApiResource(),
-                    VersionGroup  = x.ChangedInVersionGroup?.ToNamedApiResource()
+                    var effectEntries = moveChangelog
+                        .Effect
+                        .MoveEffectProse
+                        .Where(m => m.ShortEffect != null && moveChangelog.Effect != null)
+                        .Select(m => new VerboseEffect(m.Effect /*TODO: Parse this result*/,
+                            m.ShortEffect, m.LocalLanguage.ToNamedApiResource()))
+                        .ToList();
+
+                    return new PastMoveStatValues
+                    {
+                        Accuracy      = moveChangelog.Accuracy,
+                        EffectChance  = moveChangelog.EffectChance,
+                        Power         = moveChangelog.Power,
+                        Pp            = moveChangelog.Pp,
+                        EffectEntries = effectEntries,
+                        Type          = moveChangelog.Type?.ToNamedApiResource(),
+                        VersionGroup  = moveChangelog.ChangedInVersionGroup?.ToNamedApiResource()
+                    };
                 })
                 .ToList();
         }
 
-        private List<VerboseEffect> GetPastValuesEffectEntries(EFMoveChangelog moveChangelog)
+        private static List<MoveStatChange> GetStatChanges(EFMoves move)
         {
-            return _context
-                .MoveEffectProse
-                .Include(x => x.LocalLanguage)
-                .Where(x => moveChangelog.EffectId.HasValue &&
-                            x.MoveEffectId == moveChangelog.EffectId &&
-                            x.ShortEffect != null && x.Effect != null)
-                .ToList()
-                .Select(x => new VerboseEffect(x.Effect /*TODO: Parse this result*/, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private async Task<List<MoveStatChange>> GetStatChanges(EFMoves move)
-        {
-            return (await _context
-                    .MoveMetaStatChanges
-                    .Include(x => x.Stat)
-                    .Where(x => x.MoveId == move.Id)
-                    .ToListAsync())
-                .Select(x => new MoveStatChange
-                {
-                    Change = x.Change,
-                    Stat = x.Stat.ToNamedApiResource()
-                })
+            return move
+                .MoveMetaStatChanges
+                .Select(x => new MoveStatChange(x.Change, x.Stat.ToNamedApiResource()))
                 .ToList();
         }
 
         private static APIResource GetSuperContestEffect(EFMoves move)
         {
-            return move.SuperContestEffect
+            return move
+                .SuperContestEffect?
                 .ToApiResource<SuperContestEffectsController>();
         }
 
         private static NamedAPIResource GetTarget(EFMoves move)
         {
-            return move.Target
+            return move
+                .Target?
                 .ToNamedApiResource();
         }
 
         private static NamedAPIResource GetType(EFMoves move)
         {
-            return move.Type
+            return move
+                .Type?
                 .ToNamedApiResource();
         }
     }

@@ -34,6 +34,10 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokedex = await _context.Pokedexes
+                    .Include(x => x.Region)
+                    .Include(x => x.PokedexVersionGroups).ThenInclude(x => x.VersionGroup)
+                    .Include(x => x.PokedexProse).ThenInclude(x => x.LocalLanguage)
+                    .Include(x => x.PokemonDexNumbers).ThenInclude(x => x.Species)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 var result = new Pokedex
@@ -41,11 +45,11 @@ namespace PokemonAPI.WebService.Controllers
                     Id             = pokedex.Id,
                     Name           = pokedex.Identifier,
                     IsMainSeries   = pokedex.IsMainSeries,
-                    Region         = await GetRegion(pokedex),
-                    VersionGroups  = await GetVersionGroups(pokedex),
-                    Descriptions   = await GetDescriptions(pokedex),
-                    PokemonEntries = await GetEntries(pokedex),
-                    Names          = await GetNames(pokedex)
+                    Region         = GetRegion(pokedex),
+                    VersionGroups  = GetVersionGroups(pokedex),
+                    Descriptions   = GetDescriptions(pokedex),
+                    PokemonEntries = GetEntries(pokedex),
+                    Names          = GetNames(pokedex)
                 };
 
                 return Ok(result);
@@ -56,64 +60,43 @@ namespace PokemonAPI.WebService.Controllers
             }
         }
 
-        private async Task<NamedAPIResource> GetRegion(EFPokedexes pokedex)
+        private static NamedAPIResource GetRegion(EFPokedexes pokedex)
         {
-            return (await _context
-                    .Regions
-                    .FirstOrDefaultAsync(x => x.Id == pokedex.RegionId))?
+            return pokedex
+                .Region?
                 .ToNamedApiResource();
         }
 
-        private async Task<List<NamedAPIResource>> GetVersionGroups(EFPokedexes pokedex)
+        private static List<NamedAPIResource> GetVersionGroups(EFPokedexes pokedex)
         {
-            return (await _context
-                    .PokedexVersionGroups
-                    .Include(x => x.VersionGroup)
-                    .Where(x => x.PokedexId == pokedex.Id)
-                    .ToListAsync())
-                .Select(x =>
-                    new NamedAPIResource
-                    (
-                        x.VersionGroup.Identifier,
-                        typeof(VersionGroupsController).RscUrl(x.VersionGroupId)
-                    ))
+            return pokedex
+                .PokedexVersionGroups
+                .Select(x => x.VersionGroup.ToNamedApiResource())
                 .ToList();
         }
 
-        private async Task<List<Description>> GetDescriptions(EFPokedexes pokedex)
+        private static List<Description> GetDescriptions(EFPokedexes pokedex)
         {
-            return (await _context
-                    .PokedexProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokedexId == pokedex.Id)
-                    .ToListAsync())
-                .Select(x => new Description(x.Description,
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokedex
+                .PokedexProse
+                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<PokemonEntry>> GetEntries(EFPokedexes pokedex)
+        private static List<PokemonEntry> GetEntries(EFPokedexes pokedex)
         {
-            return (await _context
-                    .PokemonDexNumbers
-                    .Include(x => x.Species)
-                    .Where(x => x.PokedexId == pokedex.Id)
-                    .OrderBy(x => x.PokedexNumber)
-                    .ToListAsync())
-                .Select(x => new PokemonEntry(x.PokedexNumber,
-                    x.Species.ToNamedApiResource()))
+            return pokedex
+                .PokemonDexNumbers
+                .OrderBy(x => x.PokedexNumber)
+                .Select(x => new PokemonEntry(x.PokedexNumber, x.Species.ToNamedApiResource()))
                 .ToList();
         }
 
-        private async Task<List<Name>> GetNames(EFPokedexes pokedex)
+        private static List<Name> GetNames(EFPokedexes pokedex)
         {
-            return (await _context
-                    .PokedexProse
-                    .Include(x => x.LocalLanguage)
-                    .Where(x => x.PokedexId == pokedex.Id)
-                    .ToListAsync())
-                .Select(x => new Name(x.Name, 
-                    x.LocalLanguage.ToNamedApiResource()))
+            return pokedex
+                .PokedexProse
+                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
     }
