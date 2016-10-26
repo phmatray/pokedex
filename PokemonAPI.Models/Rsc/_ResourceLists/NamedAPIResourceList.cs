@@ -4,6 +4,14 @@ namespace PokemonAPI.Models.Rsc
 {
     public class NamedAPIResourceList
     {
+        public NamedAPIResourceList(int count, string previous, string next, List<NamedAPIResource> results)
+        {
+            Count    = count;
+            Previous = previous;
+            Next     = next;
+            Results  = results;
+        }
+
         /// <summary>
         /// The total number of resources available from this API
         /// </summary>

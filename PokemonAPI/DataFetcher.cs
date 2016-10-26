@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using PokemonAPI.Models.Rsc;
 
 namespace PokemonAPI
@@ -92,7 +93,21 @@ namespace PokemonAPI
             var json = await response.Content.ReadAsStringAsync();
             var deserializedObject = JsonConvert.DeserializeObject<T>(json);
 
+
+            JsonConvert.DefaultSettings
+                    var resolver = options.SerializerSettings.ContractResolver;
+            var res = resolver as DefaultContractResolver;
+            if (res != null)
+                res.NamingStrategy = new SnakeCaseNamingStrategy();
+
+
             return deserializedObject;
+        }
+
+        public static async Task<T> GetResourceEmpty<T>(string requestUri)
+        {
+            var response = await _client.GetAsync(requestUri);
+            return default(T);
         }
 
         public static async Task<List<T>> GetDetails<T>(this NamedAPIResourceList namedApiResourceList)

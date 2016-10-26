@@ -46,7 +46,7 @@ namespace PokemonAPI.CliCore
                 var p = pokemons.Results[i];
                 var pokemon = await DataFetcher.GetResource<Pokemon>(p.Url);
                 results.Add(pokemon);
-                WriteLine($"{i+1:D3}/{count} : {pokemon.Name} added");
+                WriteLine($"{i+1:D3}/{count} : {pokemon?.Name ?? "pokemon"} added");
             }
             var end = DateTime.Now - _start;
             WriteLine($"{end:g} elapsed");

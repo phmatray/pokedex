@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PokemonAPI.WebService.Controllers;
 using Swashbuckle.Swagger.Model;
 
 namespace PokemonAPI.WebService
@@ -32,17 +35,23 @@ namespace PokemonAPI.WebService
             // Add framework services.
             // JSON options issue solved
             // http://stackoverflow.com/questions/39024354/asp-net-core-api-only-returning-first-result-of-list
-            services.AddMvc()
-                .AddJsonOptions(options => {
-                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+            services
+                .AddMvc(o =>
+                {
+                    o.ReturnHttpNotAcceptable = true;
+                    o.RespectBrowserAcceptHeader = true;
+                })
+                .AddJsonOptions(o =>
+                {
+                    o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    o.SerializerSettings.Formatting = Formatting.Indented;
 
                     // Use Snake Case Naming
-                    var resolver = options.SerializerSettings.ContractResolver;
-                    if (resolver != null)
-                    {
-                        var res = resolver as DefaultContractResolver;
-                        res.NamingStrategy = new SnakeCaseNamingStrategy();  // <<!-- this removes the camelcasing
-                    }
+                    var resolver = o.SerializerSettings.ContractResolver;
+                    var res = resolver as DefaultContractResolver;
+                    if (res != null)
+                        res.NamingStrategy = new SnakeCaseNamingStrategy(); // <<!-- this change the camelcasing
                 });
 
             var connection = @"Server=(localdb)\MSSQLLocalDB;Database=veekun;Trusted_Connection=True;";
@@ -51,7 +60,15 @@ namespace PokemonAPI.WebService
                 .ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning)));
 
             // Add Memory Caching
-            //services.AddMemoryCache();
+            services.AddMemoryCache();
+
+
+
+            services.AddTransient<IPokemonsService, PokemonsService>();
+            services.AddTransient<IPokemonsCacheService, PokemonsCacheService>();
+
+
+
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen();
@@ -82,6 +99,9 @@ namespace PokemonAPI.WebService
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            // Enable middleware to caching
+            //app.UsePokemonsMiddleware();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
