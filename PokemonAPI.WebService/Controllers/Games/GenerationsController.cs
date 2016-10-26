@@ -43,6 +43,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var generation = await _context.Generations
+                    .AsNoTracking()
                     .Include(x => x.MainRegion)
                     .Include(x => x.GenerationNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.VersionGroups)

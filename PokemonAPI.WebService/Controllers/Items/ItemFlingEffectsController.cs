@@ -38,6 +38,7 @@ namespace PokemonAPI.WebService.Controllers
                 var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .OrderBy(x => x.Id)
                         .Skip(offset)
                         .Take(limit)
@@ -63,6 +64,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var itemFlingEffect = await _context.ItemFlingEffects
+                    .AsNoTracking()
                     .Include(x => x.ItemFlingEffectProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Items)
                     .FirstOrDefaultAsync(x => x.Id == id);

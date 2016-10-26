@@ -35,6 +35,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var version = await _context.Versions
+                    .AsNoTracking()
                     .Include(x => x.VersionNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.VersionGroup)
                     .FirstOrDefaultAsync(x => x.Id == id);

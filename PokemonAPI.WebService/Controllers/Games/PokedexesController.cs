@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var pokedex = await _context.Pokedexes
+                    .AsNoTracking()
                     .Include(x => x.Region)
                     .Include(x => x.PokedexVersionGroups).ThenInclude(x => x.VersionGroup)
                     .Include(x => x.PokedexProse).ThenInclude(x => x.LocalLanguage)

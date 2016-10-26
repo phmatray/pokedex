@@ -5,13 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-      xmlns:resources="using:PokemonAPI.Models.Resources"
       xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
       mc:Ignorable="d">
 
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <viewModels:GamesPageViewModel x:Name="ViewModel" />
-    </Page.DataContext>
+    </Page.DataContext>-->
 
     <Page.Resources>
     </Page.Resources>
@@ -62,7 +61,7 @@
 
         </controlsT10:PageHeader>
 
-        <controls:AdaptiveGridView ItemsSource="{x:Bind ViewModel.Generations, Mode=OneWay}"
+        <!--<controls:AdaptiveGridView ItemsSource="{x:Bind ViewModel.Generations, Mode=OneWay}"
                                    ItemHeight="220"
                                    DesiredWidth="200"
                                    RelativePanel.AlignLeftWithPanel="True"
@@ -77,7 +76,7 @@
                     </StackPanel>
                 </DataTemplate>
             </controls:AdaptiveGridView.ItemTemplate>
-        </controls:AdaptiveGridView>
+        </controls:AdaptiveGridView>-->
     </RelativePanel>
 </Page>
 

@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var item = await _context.Items
+                    .AsNoTracking()
                     .Include(x => x.FlingEffect)
                     .Include(x => x.ItemFlagMap).ThenInclude(x => x.ItemFlag)
                     .Include(x => x.Category).ThenInclude(x => x.Items)

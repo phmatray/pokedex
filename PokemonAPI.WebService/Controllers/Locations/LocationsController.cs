@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var location = await _context.Locations
+                    .AsNoTracking()
                     .Include(x => x.Region)
                     .Include(x => x.LocationNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.LocationGameIndices).ThenInclude(x => x.Generation)

@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var language = await _context.Languages
+                var language = await _context
+                    .Languages
+                    .AsNoTracking()
                     .Include(x => x.LanguageNamesLanguage).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 

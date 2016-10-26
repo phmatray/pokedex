@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemonShape = await _context.PokemonShapes
+                var pokemonShape = await _context
+                    .PokemonShapes
+                    .AsNoTracking()
                     .Include(x => x.PokemonShapeProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -62,6 +62,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var evolutionChain = await _context.EvolutionChains
+                    .AsNoTracking()
                     .Include(x => x.BabyTriggerItem)
                     .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);

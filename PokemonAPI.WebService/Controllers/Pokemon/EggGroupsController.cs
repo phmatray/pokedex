@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var eggGroup = await _context.EggGroups
+                var eggGroup = await _context
+                    .EggGroups
+                    .AsNoTracking()
                     .Include(x => x.EggGroupProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PokemonEggGroups).ThenInclude(x => x.Species)
                     .FirstOrDefaultAsync(x => x.Id == id);

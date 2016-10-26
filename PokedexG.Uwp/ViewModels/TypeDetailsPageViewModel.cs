@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using PokedexG.Uwp.Models;
 using PokedexG.Uwp.Services.VeekunServices;
 using PokedexG.Uwp.Views;
-using PokemonAPI;
-using PokemonAPI.Models.Resources;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 
@@ -32,12 +29,12 @@ namespace PokedexG.Uwp.ViewModels
         public List<PokemonLite> PokemonsByType { get; set; }
 
 
-        public TypeResource Type { get; set; }
-        public string TypeName { get; set; }
-        public GenerationResource Generation { get; set; }
-        public string GenerationName { get; set; }
-        public List<TypeEfficacyResource> DamageFrom { get; set; }
-        public List<TypeEfficacyResource> DamageTo { get; set; }
+        //public TypeResource Type { get; set; }
+        //public string TypeName { get; set; }
+        //public GenerationResource Generation { get; set; }
+        //public string GenerationName { get; set; }
+        //public List<TypeEfficacyResource> DamageFrom { get; set; }
+        //public List<TypeEfficacyResource> DamageTo { get; set; }
 
         #endregion
 
@@ -72,20 +69,20 @@ namespace PokedexG.Uwp.ViewModels
                 ? (int)suspensionState[nameof(CurrentTypeId)]
                 : (int)parameter;
 
-            var dataFetcher = new DataFetcher();
-            Type = await dataFetcher.GetType(CurrentTypeId);
-            TypeName = Type.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
+            //var dataFetcher = new DataFetcher();
+            //Type = await dataFetcher.GetType(CurrentTypeId);
+            //TypeName = Type.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
 
-            DamageTo = Type.DamageFactors.Where(x => x.DamageType.Id == Type.Id).ToList();
-            DamageFrom = Type.DamageFactors.Where(x => x.TargetType.Id == Type.Id).ToList();
+            //DamageTo = Type.DamageFactors.Where(x => x.DamageType.Id == Type.Id).ToList();
+            //DamageFrom = Type.DamageFactors.Where(x => x.TargetType.Id == Type.Id).ToList();
 
             // TEST
-            var apiResourceList = await dataFetcher.GetGenerations();
+            //var apiResourceList = await dataFetcher.GetGenerations();
             // END OF TEST
 
 
-            Generation = await dataFetcher.GetGeneration(Type.Generation.Id);
-            GenerationName = Generation.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
+            //Generation = await dataFetcher.GetGeneration(Type.Generation.Id);
+            //GenerationName = Generation.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
 
             CurrentType = await Veekun.GetType(CurrentTypeId);
             PokemonsByType = await Veekun.GetPokemonsByType(CurrentTypeId);

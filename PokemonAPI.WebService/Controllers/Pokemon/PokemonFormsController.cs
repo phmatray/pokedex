@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemonForm = await _context.PokemonForms
+                var pokemonForm = await _context
+                    .PokemonForms
+                    .AsNoTracking()
                     .Include(x => x.Pokemon)
                     .Include(x => x.IntroducedInVersionGroup)
                     .Include(x => x.PokemonFormNames).ThenInclude(x => x.LocalLanguage)

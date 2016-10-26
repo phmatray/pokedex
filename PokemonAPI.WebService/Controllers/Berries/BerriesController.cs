@@ -38,15 +38,12 @@ namespace PokemonAPI.WebService.Controllers
                 var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .Include(x => x.Item)
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
-                    .Select(x => new NamedAPIResource
-                    (
-                        x.Item.Identifier.Replace("-berry", ""),
-                        controller.RscUrl(x.Id)
-                    ))
+                    .Select(x => x.ToNamedApiResource())
                     .Cast<APIResource>()
                     .ToList();
 
@@ -67,6 +64,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var berry = await _context.Berries
+                    .AsNoTracking()
                     .Include(x => x.Firmness)
                     .Include(x => x.BerryFlavors).ThenInclude(x => x.ContestType).ThenInclude(x => x.ContestTypeNames)
                     .Include(x => x.Item)

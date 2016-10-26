@@ -71,6 +71,16 @@ namespace PokemonAPI
             return await GetResource<Generation>($"generations/{id}");
         }
 
+        public static async Task<NamedAPIResourceList> GetPokemons()
+        {
+            return await GetResource<NamedAPIResourceList>("pokemons?limit=1000&offset=0");
+        }
+
+        public static async Task<Pokemon> GetPokemon(int id)
+        {
+            return await GetResource<Pokemon>($"pokemons/{id}");
+        }
+
 
 
 

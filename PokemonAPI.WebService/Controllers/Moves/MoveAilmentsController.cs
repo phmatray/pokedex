@@ -35,6 +35,7 @@ namespace PokemonAPI.WebService.Controllers
             {
                 var ailment = await _context
                     .MoveMetaAilments
+                    .AsNoTracking()
                     .Include(x => x.MoveMeta).ThenInclude(x => x.Move)
                     .Include(x => x.MoveMetaAilmentNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -35,6 +35,7 @@ namespace PokemonAPI.WebService.Controllers
             {
                 var category = await _context
                     .MoveMetaCategories
+                    .AsNoTracking()
                     .Include(x => x.MoveMeta).ThenInclude(x => x.Move)
                     .Include(x => x.MoveMetaCategoryProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

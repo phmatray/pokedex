@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemonHabitat = await _context.PokemonHabitats
+                var pokemonHabitat = await _context
+                    .PokemonHabitats
+                    .AsNoTracking()
                     .Include(x => x.PokemonHabitatNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var growthRate = await _context.GrowthRates
+                var growthRate = await _context
+                    .GrowthRates
+                    .AsNoTracking()
                     .Include(x => x.GrowthRateProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Experience)
                     .Include(x => x.PokemonSpecies)

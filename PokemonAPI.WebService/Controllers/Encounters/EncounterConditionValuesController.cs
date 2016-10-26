@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var encounterConditionValue = await _context.EncounterConditionValues
+                    .AsNoTracking()
                     .Include(x => x.EncounterCondition)
                     .Include(x => x.EncounterConditionValueProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

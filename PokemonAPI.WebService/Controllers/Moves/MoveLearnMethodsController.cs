@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var moveMethod = await _context.PokemonMoveMethods
+                var moveMethod = await _context
+                    .PokemonMoveMethods
+                    .AsNoTracking()
                     .Include(x => x.PokemonMoveMethodProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.VersionGroupPokemonMoveMethods).ThenInclude(x => x.VersionGroup)
                     .FirstOrDefaultAsync(x => x.Id == id);

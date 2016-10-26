@@ -38,6 +38,7 @@ namespace PokemonAPI.WebService.Controllers
                 var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .Where(x => x.LocalLanguageId == 9)
                         .Skip(offset)
                         .Take(limit)
@@ -65,6 +66,7 @@ namespace PokemonAPI.WebService.Controllers
             {
                 var contestType = await _context
                     .ContestTypes
+                    .AsNoTracking()
                     .Include(x => x.ContestTypeNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.BerryFlavors).ThenInclude(x => x.Berry).ThenInclude(x => x.Item)
                     .Where(x => x.Id == id)

@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var moveBattleStyle = await _context.MoveBattleStyles
+                var moveBattleStyle = await _context
+                    .MoveBattleStyles
+                    .AsNoTracking()
                     .Include(x => x.MoveBattleStyleProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 

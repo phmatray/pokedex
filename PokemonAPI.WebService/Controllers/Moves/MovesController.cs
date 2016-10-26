@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var move = await _context.Moves
+                var move = await _context
+                    .Moves
+                    .AsNoTracking()
                     .Include(x => x.ContestCombosFirstMove).ThenInclude(x => x.SecondMove)
                     .Include(x => x.ContestCombosSecondMove).ThenInclude(x => x.FirstMove)
                     .Include(x => x.SuperContestCombosFirstMove).ThenInclude(x => x.SecondMove)

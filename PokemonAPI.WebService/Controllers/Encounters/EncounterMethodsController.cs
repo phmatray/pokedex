@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var encounterMethod = await _context.EncounterMethods
+                    .AsNoTracking()
                     .Include(x => x.EncounterMethodProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);
 

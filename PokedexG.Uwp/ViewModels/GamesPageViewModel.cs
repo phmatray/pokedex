@@ -1,63 +1,62 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Navigation;
-using PokemonAPI;
-using PokemonAPI.Models.Resources;
-using Template10.Mvvm;
-using Template10.Services.NavigationService;
+﻿//using System.Collections.Generic;
+//using System.Threading.Tasks;
+//using Windows.UI.Xaml.Navigation;
+//using PokemonAPI;
+//using Template10.Mvvm;
+//using Template10.Services.NavigationService;
 
-namespace PokedexG.Uwp.ViewModels
-{
-    public class GamesPageViewModel : ViewModelBase
-    {
-        #region Constructors
+//namespace PokedexG.Uwp.ViewModels
+//{
+//    public class GamesPageViewModel : ViewModelBase
+//    {
+//        #region Constructors
 
-        public GamesPageViewModel()
-        {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                //Value = "Designtime value";
-            }
-            else
-            {
-            }
-        }
+//        public GamesPageViewModel()
+//        {
+//            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+//            {
+//                //Value = "Designtime value";
+//            }
+//            else
+//            {
+//            }
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Properties
+//        #region Properties
 
-        private List<APIResourceBase> _generations;
-        public List<APIResourceBase> Generations
-        {
-            get { return _generations; }
-            set { Set(ref _generations, value); }
-        }
+//        private List<APIResourceBase> _generations;
+//        public List<APIResourceBase> Generations
+//        {
+//            get { return _generations; }
+//            set { Set(ref _generations, value); }
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Navigation
+//        #region Navigation
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
-        {
-            var apiResourceList = await new DataFetcher().GetGenerations();
-            Generations = apiResourceList.Results;
+//        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
+//        {
+//            var apiResourceList = await new DataFetcher().GetGenerations();
+//            Generations = apiResourceList.Results;
 
-            await Task.CompletedTask;
-        }
+//            await Task.CompletedTask;
+//        }
 
-        public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
-        {
-            await Task.CompletedTask;
-        }
+//        public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
+//        {
+//            await Task.CompletedTask;
+//        }
 
-        public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
-        {
-            args.Cancel = false;
-            await Task.CompletedTask;
-        }
+//        public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
+//        {
+//            args.Cancel = false;
+//            await Task.CompletedTask;
+//        }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}
 

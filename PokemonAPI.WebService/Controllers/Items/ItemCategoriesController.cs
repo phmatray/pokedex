@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var itemCategory = await _context.ItemCategories
+                    .AsNoTracking()
                     .Include(x => x.Items)
                     .Include(x => x.ItemCategoryProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Pocket)

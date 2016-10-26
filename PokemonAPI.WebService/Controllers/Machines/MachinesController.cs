@@ -36,6 +36,7 @@ namespace PokemonAPI.WebService.Controllers
                 var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .Skip(offset)
                         .Take(limit)
                         .ToListAsync())
@@ -59,6 +60,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var machine = await _context.Machines
+                    .AsNoTracking()
                     .Include(x => x.Item)
                     .Include(x => x.Move)
                     .Include(x => x.VersionGroup)

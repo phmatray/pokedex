@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var species = await _context.PokemonSpecies
+                var species = await _context
+                    .PokemonSpecies
+                    .AsNoTracking()
                     .Include(x => x.GrowthRate)
                     .Include(x => x.PokemonDexNumbers).ThenInclude(x => x.Pokedex)
                     .Include(x => x.PokemonEggGroups).ThenInclude(x => x.EggGroup)

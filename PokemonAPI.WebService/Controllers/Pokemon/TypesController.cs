@@ -34,7 +34,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var type = await _context.Types
+                var type = await _context
+                    .Types
+                    .AsNoTracking()
                     .Include(x => x.TypeEfficacyDamageType).ThenInclude(x => x.TargetType)
                     .Include(x => x.TypeEfficacyTargetType).ThenInclude(x => x.DamageType)
                     .Include(x => x.TypeGameIndices).ThenInclude(x => x.Generation)

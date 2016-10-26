@@ -38,6 +38,7 @@ namespace PokemonAPI.WebService.Controllers
                 var next       = controller.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .OrderBy(x => x.Id)
                         .Skip(offset)
                         .Take(limit)
@@ -62,6 +63,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var superContestEffect = await _context.SuperContestEffects
+                    .AsNoTracking()
                     .Include(x => x.SuperContestEffectProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Moves)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var nature = await _context.Natures
+                var nature = await _context
+                    .Natures
+                    .AsNoTracking()
                     .Include(x => x.DecreasedStat)
                     .Include(x => x.IncreasedStat)
                     .Include(x => x.HatesFlavor).ThenInclude(x => x.ContestTypeNames)

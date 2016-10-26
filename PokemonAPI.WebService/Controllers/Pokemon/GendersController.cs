@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var gender = await _context.Genders
+                var gender = await _context
+                    .Genders
+                    .AsNoTracking()
                     .Include(x => x.PokemonEvolution).ThenInclude(x => x.EvolvedSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
 

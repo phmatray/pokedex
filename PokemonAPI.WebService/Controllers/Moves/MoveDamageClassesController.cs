@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var moveDamageClass = await _context.MoveDamageClasses
+                var moveDamageClass = await _context
+                    .MoveDamageClasses
+                    .AsNoTracking()
                     .Include(x => x.MoveDamageClassProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Moves)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var evolutionTrigger = await _context.EvolutionTriggers
+                    .AsNoTracking()
                     .Include(x => x.EvolutionTriggerProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PokemonEvolution).ThenInclude(x => x.EvolvedSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);

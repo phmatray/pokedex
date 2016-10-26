@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokeathlonStat = await _context.PokeathlonStats
+                var pokeathlonStat = await _context
+                    .PokeathlonStats
+                    .AsNoTracking()
                     .Include(x => x.NaturePokeathlonStats).ThenInclude(x => x.Nature)
                     .Include(x => x.PokeathlonStatNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

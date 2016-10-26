@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var palParkArea = await _context.PalParkAreas
+                    .AsNoTracking()
                     .Include(x => x.PalParkAreaNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PalPark).ThenInclude(x => x.Species)
                     .FirstOrDefaultAsync(x => x.Id == id);

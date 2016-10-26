@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var itemPocket = await _context.ItemPockets
+                    .AsNoTracking()
                     .Include(x => x.ItemCategories)
                     .Include(x => x.ItemPocketNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

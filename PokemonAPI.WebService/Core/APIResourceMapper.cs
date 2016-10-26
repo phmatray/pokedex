@@ -11,9 +11,6 @@ namespace PokemonAPI.WebService.Core
     {
         #region ApiResources
 
-        //internal static NamedAPIResource ToNamedApiResource(this EFBerries src)
-        //    => src.ToNamedApiResource<BerriesController>();
-
         //internal static NamedAPIResource ToNamedApiResource(this EFBerryFlavors src)
         //    => src.ToNamedApiResource<BerryFlavorsController>();
 
@@ -38,6 +35,12 @@ namespace PokemonAPI.WebService.Core
 
         internal static NamedAPIResource ToNamedApiResource(this EFAbilities src)
             => src.ToNamedApiResource<AbilitiesController>();
+
+        internal static NamedAPIResource ToNamedApiResource(this EFBerries src)
+            => new NamedAPIResource(
+                src.Item.Identifier.Replace("-berry", ""),
+                typeof(BerriesController).RscUrl(src.Id)
+            );
 
         internal static NamedAPIResource ToNamedApiResource(this EFBerryFirmness src)
             => src.ToNamedApiResource<BerryFirmnessesController>();

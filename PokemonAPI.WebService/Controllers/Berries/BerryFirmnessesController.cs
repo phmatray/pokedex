@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var berryFirmness = await _context.BerryFirmness
+                    .AsNoTracking()
                     .Include(x => x.Berries).ThenInclude(x => x.Item)
                     .Include(x => x.BerryFirmnessNames).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

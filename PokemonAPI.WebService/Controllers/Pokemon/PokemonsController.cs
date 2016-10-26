@@ -33,39 +33,41 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemon = await _context.Pokemon
-                    .Include(x => x.PokemonAbilities).ThenInclude(x => x.Ability)
-                    .Include(x => x.PokemonForms)
-                    .Include(x => x.PokemonGameIndices).ThenInclude(x => x.Version)
-                    .Include(x => x.PokemonItems).ThenInclude(x => x.Item)
-                    .Include(x => x.PokemonItems).ThenInclude(x => x.Version)
-                    .Include(x => x.PokemonMoves).ThenInclude(x => x.Move)
-                    .Include(x => x.PokemonMoves).ThenInclude(x => x.VersionGroup)
-                    .Include(x => x.PokemonMoves).ThenInclude(x => x.PokemonMoveMethod)
-                    .Include(x => x.Species)
-                    .Include(x => x.PokemonStats).ThenInclude(x => x.Stat)
-                    .Include(x => x.PokemonTypes).ThenInclude(x => x.Type)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+                var pokemon = await _context
+                    .Pokemon
+                    .AsNoTracking()
+                    //.Include(x => x.PokemonAbilities).ThenInclude(x => x.Ability)
+                    //.Include(x => x.PokemonForms)
+                    //.Include(x => x.PokemonGameIndices).ThenInclude(x => x.Version)
+                    //.Include(x => x.PokemonItems).ThenInclude(x => x.Item)
+                    //.Include(x => x.PokemonItems).ThenInclude(x => x.Version)
+                    //.Include(x => x.PokemonMoves).ThenInclude(x => x.Move)
+                    //.Include(x => x.PokemonMoves).ThenInclude(x => x.VersionGroup)
+                    //.Include(x => x.PokemonMoves).ThenInclude(x => x.PokemonMoveMethod)
+                    //.Include(x => x.Species)
+                    //.Include(x => x.PokemonStats).ThenInclude(x => x.Stat)
+                    //.Include(x => x.PokemonTypes).ThenInclude(x => x.Type)
+                    .FirstAsync(x => x.Id == id);
 
                 var results = new Pokemon
                 {
-                    Id = pokemon.Id,
-                    Name = pokemon.Identifier,
-                    BaseExperience = pokemon.BaseExperience,
-                    Height = pokemon.Height,
-                    IsDefault = pokemon.IsDefault,
-                    Order = pokemon.Order,
-                    Weight = pokemon.Weight,
-                    Abilities = GetAbilities(pokemon),
-                    Forms = GetForms(pokemon),
-                    GameIndices = GetGameIndices(pokemon),
-                    HeldItems = GetHeldItems(pokemon),
-                    LocationAreaEncounters = GetLocationAreaEncounters(pokemon),
-                    Moves = GetMoves(pokemon),
-                    Sprites = null, //GetSprites(pokemon),
-                    Species = GetSpecies(pokemon),
-                    Stats = GetStats(pokemon),
-                    Types = GetTypes(pokemon)
+                    Id                     = pokemon.Id,
+                    Name                   = pokemon.Identifier,
+                    BaseExperience         = pokemon.BaseExperience,
+                    Height                 = pokemon.Height,
+                    IsDefault              = pokemon.IsDefault,
+                    Order                  = pokemon.Order,
+                    Weight                 = pokemon.Weight,
+                    //Abilities              = GetAbilities(pokemon),
+                    //Forms                  = GetForms(pokemon),
+                    //GameIndices            = GetGameIndices(pokemon),
+                    //HeldItems              = GetHeldItems(pokemon),
+                    //LocationAreaEncounters = GetLocationAreaEncounters(pokemon),
+                    //Moves                  = GetMoves(pokemon),
+                    //Sprites                = null, //GetSprites(pokemon),
+                    //Species                = GetSpecies(pokemon),
+                    //Stats                  = GetStats(pokemon),
+                    //Types                  = GetTypes(pokemon)
                 };
 
                 return Ok(results);
@@ -84,6 +86,7 @@ namespace PokemonAPI.WebService.Controllers
             {
                 var efEncounterses = await _context
                     .Encounters
+                    .AsNoTracking()
                     .Include(x => x.LocationArea).ThenInclude(x => x.Location)
                     .Include(x => x.Version)
                     .Include(x => x.EncounterConditionValueMap).ThenInclude(x => x.EncounterConditionValue)

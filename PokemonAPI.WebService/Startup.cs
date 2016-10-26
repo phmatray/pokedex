@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.Swagger.Model;
 
 namespace PokemonAPI.WebService
@@ -33,10 +35,23 @@ namespace PokemonAPI.WebService
             services.AddMvc()
                 .AddJsonOptions(options => {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+                    // Use Snake Case Naming
+                    var resolver = options.SerializerSettings.ContractResolver;
+                    if (resolver != null)
+                    {
+                        var res = resolver as DefaultContractResolver;
+                        res.NamingStrategy = new SnakeCaseNamingStrategy();  // <<!-- this removes the camelcasing
+                    }
                 });
 
             var connection = @"Server=(localdb)\MSSQLLocalDB;Database=veekun;Trusted_Connection=True;";
-            services.AddDbContext<VeekunContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<VeekunContext>(options => options
+                .UseSqlServer(connection)
+                .ConfigureWarnings(warnings => warnings.Throw(CoreEventId.IncludeIgnoredWarning)));
+
+            // Add Memory Caching
+            //services.AddMemoryCache();
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen();

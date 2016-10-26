@@ -60,7 +60,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var characteristic = await _context.Characteristics
+                var characteristic = await _context
+                    .Characteristics
+                    .AsNoTracking()
                     .Include(x => x.Stat)
                     .Include(x => x.CharacteristicText).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

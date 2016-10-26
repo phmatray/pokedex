@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var stat = await _context.Stats
+                var stat = await _context
+                    .Stats
+                    .AsNoTracking()
                     .Include(x => x.MoveMetaStatChanges).ThenInclude(x => x.Move)
                     .Include(x => x.NaturesIncreasedStat)
                     .Include(x => x.NaturesDecreasedStat)

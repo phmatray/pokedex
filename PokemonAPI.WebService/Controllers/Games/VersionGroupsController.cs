@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var versionGroup = await _context.VersionGroups
+                    .AsNoTracking()
                     .Include(x => x.VersionGroupPokemonMoveMethods).ThenInclude(x => x.PokemonMoveMethod)
                     .Include(x => x.Versions)
                     .Include(x => x.Generation)

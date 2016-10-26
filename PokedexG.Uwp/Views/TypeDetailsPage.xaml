@@ -8,6 +8,7 @@
       xmlns:userControls="using:PokedexG.Uwp.Views.UserControls"
       xmlns:models="using:PokedexG.Uwp.Models"
       xmlns:resources="using:PokemonAPI.Models.Resources"
+      xmlns:rsc="using:PokemonAPI.Models.Rsc"
       mc:Ignorable="d">
 
     <Page.DataContext>
@@ -58,10 +59,10 @@
               RelativePanel.AlignRightWithPanel="True"
               RelativePanel.Below="pageHeader">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{x:Bind ViewModel.TypeName, FallbackValue=Normal, Mode=OneWay}"
+                <!--<TextBlock Text="{x:Bind ViewModel.TypeName, FallbackValue=Normal, Mode=OneWay}"
                             Style="{StaticResource TitleTextBlockStyle}"
                             VerticalAlignment="Center" Margin="10,4,10,0" FontWeight="Bold" FontFamily="Segoe UI Semibold" FontSize="18">
-                </TextBlock>
+                </TextBlock>-->
             </StackPanel>
         </Grid>
 
@@ -89,28 +90,28 @@
                             <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,10">
                                 <StackPanel x:Name="SectionDamageFrom">
                                     <userControls:UserControlTitle Title="Damage From"/>
-                                    <GridView ItemsSource="{x:Bind ViewModel.DamageFrom}" SelectionMode="None">
+                                    <!--<GridView ItemsSource="{x:Bind ViewModel.DamageFrom}" SelectionMode="None">
                                         <GridView.ItemTemplate>
-                                            <DataTemplate x:DataType="resources:TypeResource">
+                                            <DataTemplate x:DataType="rsc:Type">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />
+                                                    --><!--<userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />--><!--
                                                 </StackPanel>
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
-                                    </GridView>
+                                    </GridView>-->
 
                                 </StackPanel>
                                 <StackPanel x:Name="SectionDamageTo">
                                     <userControls:UserControlTitle Title="Damage To"/>
-                                    <GridView ItemsSource="{x:Bind ViewModel.DamageTo}" SelectionMode="None">
+                                    <!--<GridView ItemsSource="{x:Bind ViewModel.DamageTo}" SelectionMode="None">
                                         <GridView.ItemTemplate>
-                                            <DataTemplate x:DataType="resources:TypeResource">
+                                            <DataTemplate x:DataType="rsc:Type">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />
+                                                    --><!--<userControls:UserControlWeaknessNew TypeResource="{x:Bind}" Margin="5" Tapped="Type_OnTapped" />--><!--
                                                 </StackPanel>
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
-                                    </GridView>
+                                    </GridView>-->
 
                                     <!--<GridView ItemsSource="{x:Bind ViewModel.Weaknesses}" SelectionMode="None"
                                               HorizontalAlignment="Left" MaxWidth="520">
@@ -128,7 +129,7 @@
                                     <userControls:UserControlTitle Title="Informations"/>
                                     <TextBlock>
                                         <Run Text="Ce type est apparu en"/>
-                                        <Run Text="{x:Bind ViewModel.GenerationName}"/>
+                                        <!--<Run Text="{x:Bind ViewModel.GenerationName}"/>-->
                                     </TextBlock>
                                 </StackPanel>
                             </StackPanel>

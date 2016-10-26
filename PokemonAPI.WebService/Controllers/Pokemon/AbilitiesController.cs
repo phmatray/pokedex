@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var ability = await _context.Abilities
+                var ability = await _context
+                    .Abilities
+                    .AsNoTracking()
                     .Include(x => x.Generation)
                     .Include(x => x.AbilityNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.AbilityProse).ThenInclude(x => x.LocalLanguage)

@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var contestType = await _context.ContestTypes
+                    .AsNoTracking()
                     .Include(x => x.ContestTypeNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.BerryFlavors)
                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -34,6 +34,7 @@ namespace PokemonAPI.WebService.Controllers
             try
             {
                 var itemAttribute = await _context.ItemFlags
+                    .AsNoTracking()
                     .Include(x => x.ItemFlagMap).ThenInclude(x => x.Item)
                     .Include(x => x.ItemFlagProse).ThenInclude(x => x.LocalLanguage)
                     .FirstOrDefaultAsync(x => x.Id == id);

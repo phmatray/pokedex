@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var moveTarget = await _context.MoveTargets
+                var moveTarget = await _context
+                    .MoveTargets
+                    .AsNoTracking()
                     .Include(x => x.MoveTargetProse).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.Moves)
                     .FirstOrDefaultAsync(x => x.Id == id);

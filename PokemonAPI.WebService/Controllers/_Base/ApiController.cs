@@ -28,6 +28,7 @@ namespace PokemonAPI.WebService.Controllers._Base
                 var next     = controllerType.Next(limit, offset, count);
 
                 var apiResults = (await dbset
+                        .AsNoTracking()
                         .OrderBy(x => x.Id)
                         .Skip(offset)
                         .Take(limit)

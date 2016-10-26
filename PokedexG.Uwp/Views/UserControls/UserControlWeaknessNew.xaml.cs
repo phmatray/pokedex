@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using PokedexG.Uwp.Models;
 using PokedexG.Uwp.Services.VeekunServices.Business;
-using PokemonAPI.Models.Resources;
+using PokemonAPI.Models.Rsc;
 using ColorHelper = Microsoft.Toolkit.Uwp.ColorHelper;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -20,45 +19,45 @@ namespace PokedexG.Uwp.Views.UserControls
             if (frameworkElement != null) frameworkElement.DataContext = this;
         }
 
-        public static readonly DependencyProperty TypeEfficacyResourceProperty = DependencyProperty.Register(
-            "TypeEfficacyResource", typeof(TypeEfficacyResource), typeof(UserControlWeaknessNew), new PropertyMetadata(default(TypeEfficacyResource)));
+        ////public static readonly DependencyProperty TypeEfficacyResourceProperty = DependencyProperty.Register(
+        ////    "TypeEfficacyResource", typeof(TypeEfficacyResource), typeof(UserControlWeaknessNew), new PropertyMetadata(default(TypeEfficacyResource)));
 
-        public TypeEfficacyResource TypeEfficacyResource
-        {
-            get { return (TypeEfficacyResource)GetValue(TypeEfficacyResourceProperty); }
-            set
-            {
-                SetValue(TypeEfficacyResourceProperty, value);
-                if (value != null)
-                {
-                    //value.DamageType.;
-                    SetDamageFactor(value.DamageFactor);
-                    Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.DamageType.Id));
-
-
-                    //TypeName = value.Names?.FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)?.Name;
-                    //Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.Id));
-                }
-            }
-        }
+        ////public TypeEfficacyResource TypeEfficacyResource
+        ////{
+        ////    get { return (TypeEfficacyResource)GetValue(TypeEfficacyResourceProperty); }
+        ////    set
+        ////    {
+        ////        SetValue(TypeEfficacyResourceProperty, value);
+        ////        if (value != null)
+        ////        {
+        ////            //value.DamageType.;
+        ////            SetDamageFactor(value.DamageFactor);
+        ////            Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.DamageType.Id));
 
 
-        public static readonly DependencyProperty TypeResourceProperty = DependencyProperty.Register(
-            "TypeResource", typeof(TypeResource), typeof(UserControlWeaknessNew), new PropertyMetadata(default(TypeResource)));
+        ////            //TypeName = value.Names?.FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)?.Name;
+        ////            //Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.Id));
+        ////        }
+        ////    }
+        ////}
 
-        public TypeResource TypeResource
-        {
-            get { return (TypeResource) GetValue(TypeResourceProperty); }
-            set
-            {
-                SetValue(TypeResourceProperty, value);
-                if (value != null)
-                {
-                    TypeName = value.Names?.FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)?.Name;
-                    Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.Id));
-                }
-            }
-        }
+
+        ////public static readonly DependencyProperty TypeResourceProperty = DependencyProperty.Register(
+        ////    "TypeResource", typeof(Type), typeof(UserControlWeaknessNew), new PropertyMetadata(default(Type)));
+
+        ////public Type TypeResource
+        ////{
+        ////    get { return (Type)GetValue(TypeResourceProperty); }
+        ////    set
+        ////    {
+        ////        SetValue(TypeResourceProperty, value);
+        ////        if (value != null)
+        ////        {
+        ////            TypeName = value.Names?.FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)?.Name;
+        ////            Background = new SolidColorBrush(ColorCodes.GetColorByTypeId(value.Id));
+        ////        }
+        ////    }
+        ////}
 
         private string TypeName { get; set; }
 
@@ -89,7 +88,7 @@ namespace PokedexG.Uwp.Views.UserControls
 
         private string DamageTypeName
         {
-            get { return (string) GetValue(DamageTypeNameProperty); }
+            get { return (string)GetValue(DamageTypeNameProperty); }
             set { SetValue(DamageTypeNameProperty, value); }
         }
 
@@ -98,7 +97,7 @@ namespace PokedexG.Uwp.Views.UserControls
 
         private string DamageFactor
         {
-            get { return (string) GetValue(DamageFactorProperty); }
+            get { return (string)GetValue(DamageFactorProperty); }
             set { SetValue(DamageFactorProperty, value); }
         }
 
@@ -107,7 +106,7 @@ namespace PokedexG.Uwp.Views.UserControls
 
         private SolidColorBrush DamageFactorBackground
         {
-            get { return (SolidColorBrush) GetValue(DamageFactorBackgroundProperty); }
+            get { return (SolidColorBrush)GetValue(DamageFactorBackgroundProperty); }
             set { SetValue(DamageFactorBackgroundProperty, value); }
         }
 
@@ -116,7 +115,7 @@ namespace PokedexG.Uwp.Views.UserControls
 
         private SolidColorBrush DamageFactorForeground
         {
-            get { return (SolidColorBrush) GetValue(DamageFactorForegroundProperty); }
+            get { return (SolidColorBrush)GetValue(DamageFactorForegroundProperty); }
             set { SetValue(DamageFactorForegroundProperty, value); }
         }
 

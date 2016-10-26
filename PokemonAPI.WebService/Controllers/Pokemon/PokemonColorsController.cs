@@ -33,7 +33,9 @@ namespace PokemonAPI.WebService.Controllers
         {
             try
             {
-                var pokemonColor = await _context.PokemonColors
+                var pokemonColor = await _context
+                    .PokemonColors
+                    .AsNoTracking()
                     .Include(x => x.PokemonColorNames).ThenInclude(x => x.LocalLanguage)
                     .Include(x => x.PokemonSpecies)
                     .FirstOrDefaultAsync(x => x.Id == id);
