@@ -28,7 +28,7 @@ namespace PokemonAPI.WebService.Controllers
         }
 
         // GET api/v1/pokemons/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             var pokemon = await _pokemonsService.Get(id);
@@ -38,13 +38,35 @@ namespace PokemonAPI.WebService.Controllers
             return Ok(pokemon);
         }
 
+        // GET api/v1/pokemons/pikachu
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
+        {
+            var pokemon = await _pokemonsService.Get(name);
+            if (pokemon == null)
+                return NotFound(name);
+
+            return Ok(pokemon);
+        }
+
         // GET api/v1/pokemons/1/encounters
-        [HttpGet("{id}/encounters")]
+        [HttpGet("{id:int}/encounters")]
         public async Task<IActionResult> GetEncounters(int id)
         {
             var encounters = await _pokemonsService.GetEncounters(id);
-            if (encounters == null)
+            if (encounters == null || encounters.Count == 0)
                 return NotFound(id);
+
+            return Ok(encounters);
+        }
+
+        // GET api/v1/pokemons/1/encounters
+        [HttpGet("{name}/encounters")]
+        public async Task<IActionResult> GetEncounters(string name)
+        {
+            var encounters = await _pokemonsService.GetEncounters(name);
+            if (encounters == null || encounters.Count == 0)
+                return NotFound(name);
 
             return Ok(encounters);
         }

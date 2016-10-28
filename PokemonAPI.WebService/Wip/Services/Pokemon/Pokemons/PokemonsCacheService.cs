@@ -70,6 +70,30 @@ namespace PokemonAPI.WebService.Controllers
             return pokemon;
         }
 
+        public async Task<Pokemon> Get(string name)
+        {
+            string cacheKey = $"PokemonsService-Get-{name}";
+            Pokemon pokemon;
+
+            // TryGet returns true if the cache entry was found
+            if (!_memoryCache.TryGetValue(cacheKey, out pokemon))
+            {
+                // fetch the value from the source
+                pokemon = await _pokemonsService.Get(name);
+
+                // store in the cache
+                _memoryCache.Set(cacheKey, pokemon, new MemoryCacheEntryOptions());
+                //.SetAbsoluteExpiration(TimeSpan.FromMinutes(1)));
+                _logger.LogInformation($"{cacheKey} updated from source.");
+            }
+            else
+            {
+                _logger.LogInformation($"{cacheKey} retrieved from cache.");
+            }
+
+            return pokemon;
+        }
+
         public async Task<List<LocationAreaEncounter>> GetEncounters(int pokemonId)
         {
             string cacheKey = $"PokemonsService-GetEncounters-{pokemonId}";
@@ -80,6 +104,30 @@ namespace PokemonAPI.WebService.Controllers
             {
                 // fetch the value from the source
                 encounters = await _pokemonsService.GetEncounters(pokemonId);
+
+                // store in the cache
+                _memoryCache.Set(cacheKey, encounters, new MemoryCacheEntryOptions());
+                //.SetAbsoluteExpiration(TimeSpan.FromMinutes(1)));
+                _logger.LogInformation($"{cacheKey} updated from source.");
+            }
+            else
+            {
+                _logger.LogInformation($"{cacheKey} retrieved from cache.");
+            }
+
+            return encounters;
+        }
+
+        public async Task<List<LocationAreaEncounter>> GetEncounters(string pokemonName)
+        {
+            string cacheKey = $"PokemonsService-GetEncounters-{pokemonName}";
+            List<LocationAreaEncounter> encounters;
+
+            // TryGet returns true if the cache entry was found
+            if (!_memoryCache.TryGetValue(cacheKey, out encounters))
+            {
+                // fetch the value from the source
+                encounters = await _pokemonsService.GetEncounters(pokemonName);
 
                 // store in the cache
                 _memoryCache.Set(cacheKey, encounters, new MemoryCacheEntryOptions());

@@ -91,15 +91,14 @@ namespace PokemonAPI
         {
             var response = await _client.GetAsync(requestUri);
             var json = await response.Content.ReadAsStringAsync();
-            var deserializedObject = JsonConvert.DeserializeObject<T>(json);
 
-
-            JsonConvert.DefaultSettings
-                    var resolver = options.SerializerSettings.ContractResolver;
+            var serializerSettings = JsonConvert.DefaultSettings();
+            var resolver = serializerSettings.ContractResolver;
             var res = resolver as DefaultContractResolver;
             if (res != null)
                 res.NamingStrategy = new SnakeCaseNamingStrategy();
 
+            var deserializedObject = JsonConvert.DeserializeObject<T>(json, serializerSettings);
 
             return deserializedObject;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
@@ -43,6 +44,16 @@ namespace PokemonAPI.WebService.Controllers
 
         public async Task<Pokemon> Get(int id)
         {
+            return await Get(x => x.Id == id);
+        }
+
+        public async Task<Pokemon> Get(string name)
+        {
+            return await Get(x => x.Identifier == name);
+        }
+
+        private async Task<Pokemon> Get(Expression<Func<EFPokemon, bool>> predicate)
+        {
             var pokemon = await _context
                 .Pokemon
                 .AsNoTracking()
@@ -57,7 +68,7 @@ namespace PokemonAPI.WebService.Controllers
                 .Include(x => x.Species)
                 .Include(x => x.PokemonStats).ThenInclude(x => x.Stat)
                 .Include(x => x.PokemonTypes).ThenInclude(x => x.Type)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(predicate);
 
             if (pokemon == null)
                 return null;
@@ -86,6 +97,16 @@ namespace PokemonAPI.WebService.Controllers
 
         public async Task<List<LocationAreaEncounter>> GetEncounters(int pokemonId)
         {
+            return await GetEncounters(x => x.PokemonId == pokemonId);
+        }
+
+        public async Task<List<LocationAreaEncounter>> GetEncounters(string pokemonName)
+        {
+            return await GetEncounters(x => x.Pokemon.Identifier == pokemonName);
+        }
+
+        private async Task<List<LocationAreaEncounter>> GetEncounters(Expression<Func<EFEncounters, bool>> predicate)
+        {
             var efEncounterses = await _context
                 .Encounters
                 .AsNoTracking()
@@ -93,7 +114,8 @@ namespace PokemonAPI.WebService.Controllers
                 .Include(x => x.Version)
                 .Include(x => x.EncounterConditionValueMap).ThenInclude(x => x.EncounterConditionValue)
                 .Include(x => x.EncounterSlot).ThenInclude(x => x.EncounterMethod)
-                .Where(x => x.PokemonId == pokemonId)
+                .Include(x => x.Pokemon)
+                .Where(predicate)
                 .ToListAsync();
 
             return efEncounterses
@@ -124,7 +146,7 @@ namespace PokemonAPI.WebService.Controllers
                 })
                 .ToList();
         }
-        
+
         private static List<PokemonAbility> GetAbilities(EFPokemon pokemon)
         {
             return pokemon
