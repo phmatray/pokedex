@@ -152,6 +152,7 @@
     <Compile Include="Rsc\_Common\VersionGameIndex.cs" />
     <Compile Include="Rsc\Games\VersionGroups\VersionGroup.cs" />
     <Compile Include="Rsc\_Common\VersionGroupFlavorText.cs" />
+    <Compile Include="Rsc\_ResourceLists\ResourceList.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
