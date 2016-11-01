@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Core;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
@@ -8,9 +11,9 @@ namespace PokemonAPI.WebService.Controllers
     [ResponseCache(Duration = 30)]
     public class PokemonsController : ApiController
     {
-        private readonly IPokemonsService _pokemonsService;
+        private readonly IPokemonsCacheService _pokemonsService;
 
-        public PokemonsController(IPokemonsService pokemonsService)
+        public PokemonsController(IPokemonsCacheService pokemonsService)
         {
             _pokemonsService = pokemonsService;
         }
@@ -20,12 +23,34 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            var pokemons = await _pokemonsService.GetAll(limit, offset);
+            var count          = await _pokemonsService.Count();
+            var controllerType = typeof(PokemonsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var pokemons = await _pokemonsService.GetAll(limit, offset, controllerType);
             if (pokemons == null)
                 return NotFound($"Not found with {limit} {offset}");
 
-            return Ok(pokemons);
+            return Ok(new NamedAPIResourceList(count, previous, next, pokemons));
         }
+
+        //// GET api/v1/pokemons/details
+        //// GET api/v1/pokemons/details?limit=0&offset=20
+        //[HttpGet("details")]
+        //public async Task<IActionResult> GetAllDetails(int limit = 20, int offset = 0)
+        //{
+        //    var count          = await _pokemonsService.Count();
+        //    var controllerType = typeof(PokemonsController);
+        //    var previous       = controllerType.Previous(limit, offset);
+        //    var next           = controllerType.Next(limit, offset, count);
+
+        //    var pokemons = await _pokemonsService.GetAllDetails(limit, offset, controllerType);
+        //    if (pokemons == null)
+        //        return NotFound($"Not found with {limit} {offset}");
+
+        //    return Ok(new ResourceList<Pokemon>(count, previous, next, pokemons));
+        //}
 
         // GET api/v1/pokemons/1
         [HttpGet("{id:int}")]
