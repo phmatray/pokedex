@@ -1,75 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/move-ailments")]
     public class MoveAilmentsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IMoveAilmentsCacheService _moveAilmentsCacheService;
 
-        public MoveAilmentsController(VeekunContext context)
+        public MoveAilmentsController(IMoveAilmentsCacheService moveAilmentsCacheService)
         {
-            _context = context;
+            _moveAilmentsCacheService = moveAilmentsCacheService;
         }
 
         // GET api/v1/move-ailments
         // GET api/v1/move-ailments?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0) 
-            => await GetAll(limit, offset, _context.MoveMetaAilments, GetType());
+        {
+            var count          = await _moveAilmentsCacheService.Count();
+            var controllerType = typeof(MoveAilmentsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var moveAilments = await _moveAilmentsCacheService.GetAll(limit, offset);
+            if (moveAilments == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, moveAilments));
+        }
 
         // GET api/v1/move-ailments/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var ailment = await _context
-                    .MoveMetaAilments
-                    .AsNoTracking()
-                    .Include(x => x.MoveMeta).ThenInclude(x => x.Move)
-                    .Include(x => x.MoveMetaAilmentNames).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var moveAilment = await _moveAilmentsCacheService.Get(id);
+            if (moveAilment == null)
+                return NotFound(id);
 
-                var result = new MoveAilment
-                {
-                    Id    = ailment.Id,
-                    Name  = ailment.Identifier,
-                    Moves = GetMoves(ailment),
-                    Names = GetNames(ailment)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(moveAilment);
         }
 
-        private static List<NamedAPIResource> GetMoves(EFMoveMetaAilments ailment)
+        // GET api/v1/move-ailments/burn
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return ailment
-                .MoveMeta
-                .Select(x => x.Move.ToNamedApiResource())
-                .ToList();
-        }
+            var moveAilment = await _moveAilmentsCacheService.Get(name);
+            if (moveAilment == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFMoveMetaAilments ailment)
-        {
-            return ailment
-                .MoveMetaAilmentNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(moveAilment);
         }
     }
 }

@@ -1,92 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/locations")]
     public class LocationsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly ILocationsCacheService _locationsCacheService;
 
-        public LocationsController(VeekunContext context)
+        public LocationsController(ILocationsCacheService locationsCacheService)
         {
-            _context = context;
+            _locationsCacheService = locationsCacheService;
         }
 
         // GET api/v1/locations
         // GET api/v1/locations?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.Locations, GetType());
+        {
+            var count          = await _locationsCacheService.Count();
+            var controllerType = typeof(LocationsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var locations = await _locationsCacheService.GetAll(limit, offset);
+            if (locations == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, locations));
+        }
 
         // GET api/v1/locations/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var location = await _context.Locations
-                    .AsNoTracking()
-                    .Include(x => x.Region)
-                    .Include(x => x.LocationNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.LocationGameIndices).ThenInclude(x => x.Generation)
-                    .Include(x => x.LocationAreas)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var location = await _locationsCacheService.Get(id);
+            if (location == null)
+                return NotFound(id);
 
-                var result = new Location
-                {
-                    Id          = location.Id,
-                    Name        = location.Identifier,
-                    Region      = GetRegion(location),
-                    Names       = GetNames(location),
-                    GameIndices = GetGameIndices(location),
-                    Areas       = GetAreas(location)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(location);
         }
 
-        private static NamedAPIResource GetRegion(EFLocations location)
+        // GET api/v1/locations/canalave-city
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return location.Region
-                .ToNamedApiResource();
-        }
+            var location = await _locationsCacheService.Get(name);
+            if (location == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFLocations location)
-        {
-            return location
-                .LocationNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<GenerationGameIndex> GetGameIndices(EFLocations location)
-        {
-            return location
-                .LocationGameIndices
-                .Select(x => new GenerationGameIndex(x.GameIndex, x.Generation.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetAreas(EFLocations location)
-        {
-            return location
-                .LocationAreas
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(location);
         }
     }
 }

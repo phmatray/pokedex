@@ -1,74 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/pal-park-areas")]
     public class PalParkAreasController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IPalParkAreasCacheService _palParkAreasCacheService;
 
-        public PalParkAreasController(VeekunContext context)
+        public PalParkAreasController(IPalParkAreasCacheService palParkAreasCacheService)
         {
-            _context = context;
+            _palParkAreasCacheService = palParkAreasCacheService;
         }
 
         // GET api/v1/pal-park-areas
         // GET api/v1/pal-park-areas?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.PalParkAreas, GetType());
+        {
+            var count          = await _palParkAreasCacheService.Count();
+            var controllerType = typeof(PalParkAreasController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var palParkAreas = await _palParkAreasCacheService.GetAll(limit, offset);
+            if (palParkAreas == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, palParkAreas));
+        }
 
         // GET api/v1/pal-park-areas/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var palParkArea = await _context.PalParkAreas
-                    .AsNoTracking()
-                    .Include(x => x.PalParkAreaNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.PalPark).ThenInclude(x => x.Species)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var palParkArea = await _palParkAreasCacheService.Get(id);
+            if (palParkArea == null)
+                return NotFound(id);
 
-                var result = new PalParkArea
-                {
-                    Id                = palParkArea.Id,
-                    Name              = palParkArea.Identifier,
-                    Names             = GetNames(palParkArea),
-                    PokemonEncounters = GetPokemonEncounters(palParkArea)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(palParkArea);
         }
 
-        private static List<Name> GetNames(EFPalParkAreas palParkArea)
+        // GET api/v1/pal-park-areas/forest
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return palParkArea
-                .PalParkAreaNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var palParkArea = await _palParkAreasCacheService.Get(name);
+            if (palParkArea == null)
+                return NotFound(name);
 
-        private static List<PalParkEncounterSpecies> GetPokemonEncounters(EFPalParkAreas palParkArea)
-        {
-            return palParkArea
-                .PalPark
-                .Select(x => new PalParkEncounterSpecies(x.BaseScore, x.Rate, x.Species.ToNamedApiResource()))
-                .ToList();
+            return Ok(palParkArea);
         }
     }
 }

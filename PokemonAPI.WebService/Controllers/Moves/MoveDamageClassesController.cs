@@ -1,84 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/move-damage-classes")]
     public class MoveDamageClassesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IMoveDamageClassesCacheService _moveDamageClassesCacheService;
 
-        public MoveDamageClassesController(VeekunContext context)
+        public MoveDamageClassesController(IMoveDamageClassesCacheService moveDamageClassesCacheService)
         {
-            _context = context;
+            _moveDamageClassesCacheService = moveDamageClassesCacheService;
         }
 
         // GET api/v1/move-damage-classes
         // GET api/v1/move-damage-classes?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.MoveDamageClasses, GetType());
+        {
+            var count          = await _moveDamageClassesCacheService.Count();
+            var controllerType = typeof(MoveDamageClassesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var moveDamageClasses = await _moveDamageClassesCacheService.GetAll(limit, offset);
+            if (moveDamageClasses == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, moveDamageClasses));
+        }
 
         // GET api/v1/move-damage-classes/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var moveDamageClass = await _context
-                    .MoveDamageClasses
-                    .AsNoTracking()
-                    .Include(x => x.MoveDamageClassProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.Moves)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var moveDamageClass = await _moveDamageClassesCacheService.Get(id);
+            if (moveDamageClass == null)
+                return NotFound(id);
 
-                var result = new MoveDamageClass
-                {
-                    Id           = moveDamageClass.Id,
-                    Name         = moveDamageClass.Identifier,
-                    Descriptions = GetDescriptions(moveDamageClass),
-                    Moves        = GetMoves(moveDamageClass),
-                    Names        = GetNames(moveDamageClass)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(moveDamageClass);
         }
 
-        private static List<Description> GetDescriptions(EFMoveDamageClasses moveDamageClass)
+        // GET api/v1/move-damage-classes/1
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return moveDamageClass
-                .MoveDamageClassProse
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var moveDamageClass = await _moveDamageClassesCacheService.Get(name);
+            if (moveDamageClass == null)
+                return NotFound(name);
 
-        private static List<NamedAPIResource> GetMoves(EFMoveDamageClasses moveDamageClass)
-        {
-            return moveDamageClass
-                .Moves
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
-
-        private static List<Name> GetNames(EFMoveDamageClasses moveDamageClass)
-        {
-            return moveDamageClass
-                .MoveDamageClassProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(moveDamageClass);
         }
     }
 }

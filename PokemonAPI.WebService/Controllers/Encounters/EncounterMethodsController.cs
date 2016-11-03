@@ -1,65 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/encounter-methods")]
     public class EncounterMethodsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IEncounterMethodsCacheService _encounterMethodsCacheService;
 
-        public EncounterMethodsController(VeekunContext context)
+        public EncounterMethodsController(IEncounterMethodsCacheService encounterMethodsCacheService)
         {
-            _context = context;
+            _encounterMethodsCacheService = encounterMethodsCacheService;
         }
 
         // GET api/v1/encounter-methods
         // GET api/v1/encounter-methods?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.EncounterMethods, GetType());
-
-        // GET api/v1/encounter-methods/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var encounterMethod = await _context.EncounterMethods
-                    .AsNoTracking()
-                    .Include(x => x.EncounterMethodProse).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var count          = await _encounterMethodsCacheService.Count();
+            var controllerType = typeof(EncounterMethodsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var result = new EncounterMethod
-                {
-                    Id    = encounterMethod.Id,
-                    Name  = encounterMethod.Identifier,
-                    Order = encounterMethod.Order,
-                    Names = GetNames(encounterMethod),
-                };
+            var encounterMethods = await _encounterMethodsCacheService.GetAll(limit, offset);
+            if (encounterMethods == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new NamedAPIResourceList(count, previous, next, encounterMethods));
         }
 
-        private static List<Name> GetNames(EFEncounterMethods encounterMethod)
+        // GET api/v1/encounter-methods/1
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Get(int id)
         {
-            return encounterMethod
-                .EncounterMethodProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            var encounterMethod = await _encounterMethodsCacheService.Get(id);
+            if (encounterMethod == null)
+                return NotFound(id);
+
+            return Ok(encounterMethod);
+        }
+
+        // GET api/v1/encounter-methods/1
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
+        {
+            var encounterMethod = await _encounterMethodsCacheService.Get(name);
+            if (encounterMethod == null)
+                return NotFound(name);
+
+            return Ok(encounterMethod);
         }
     }
 }

@@ -1,86 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/growth-rates")]
     public class GrowthRatesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IGrowthRatesCacheService _growthRatesCacheService;
 
-        public GrowthRatesController(VeekunContext context)
+        public GrowthRatesController(IGrowthRatesCacheService growthRatesCacheService)
         {
-            _context = context;
+            _growthRatesCacheService = growthRatesCacheService;
         }
 
         // GET api/v1/growthrates
         // GET api/v1/growthrates?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.GrowthRates, GetType());
+        {
+            var count          = await _growthRatesCacheService.Count();
+            var controllerType = typeof(GrowthRatesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var growthRates = await _growthRatesCacheService.GetAll(limit, offset);
+            if (growthRates == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, growthRates));
+        }
 
         // GET api/v1/growthrates/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var growthRate = await _context
-                    .GrowthRates
-                    .AsNoTracking()
-                    .Include(x => x.GrowthRateProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.Experience)
-                    .Include(x => x.PokemonSpecies)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var growthRate = await _growthRatesCacheService.Get(id);
+            if (growthRate == null)
+                return NotFound(id);
 
-                var result = new GrowthRate
-                {
-                    Id             = growthRate.Id,
-                    Name           = growthRate.Identifier,
-                    Formula        = growthRate.Formula,
-                    Descriptions   = GetDescriptions(growthRate),
-                    Levels         = GetLevels(growthRate),
-                    PokemonSpecies = GetPokemonSpecies(growthRate)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(growthRate);
         }
 
-        private static List<Description> GetDescriptions(EFGrowthRates growthRate)
+        // GET api/v1/growthrates/slow
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return growthRate
-                .GrowthRateProse
-                .Select(x => new Description(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var growthRate = await _growthRatesCacheService.Get(name);
+            if (growthRate == null)
+                return NotFound(name);
 
-        private static List<GrowthRateExperienceLevel> GetLevels(EFGrowthRates growthRate)
-        {
-            return growthRate
-                .Experience
-                .Select(x => new GrowthRateExperienceLevel(x.Level, x.Experience1))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetPokemonSpecies(EFGrowthRates growthRate)
-        {
-            return growthRate
-                .PokemonSpecies
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(growthRate);
         }
     }
 }

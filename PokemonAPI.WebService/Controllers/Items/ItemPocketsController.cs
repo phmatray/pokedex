@@ -1,74 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Core;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/item-pockets")]
     public class ItemPocketsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IItemPocketsCacheService _itemPocketsCacheService;
 
-        public ItemPocketsController(VeekunContext context)
+        public ItemPocketsController(IItemPocketsCacheService itemPocketsCacheService)
         {
-            _context = context;
+            _itemPocketsCacheService = itemPocketsCacheService;
         }
 
         // GET api/v1/item-pockets
         // GET api/v1/item-pockets?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.ItemPockets, GetType());
+        {
+            var count          = await _itemPocketsCacheService.Count();
+            var controllerType = typeof(ItemPocketsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var itemPockets = await _itemPocketsCacheService.GetAll(limit, offset);
+            if (itemPockets == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, itemPockets));
+        }
 
         // GET api/v1/item-pockets/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var itemPocket = await _context.ItemPockets
-                    .AsNoTracking()
-                    .Include(x => x.ItemCategories)
-                    .Include(x => x.ItemPocketNames).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var itemPocket = await _itemPocketsCacheService.Get(id);
+            if (itemPocket == null)
+                return NotFound(id);
 
-                var result = new ItemPocket
-                {
-                    Id         = itemPocket.Id,
-                    Name       = itemPocket.Identifier,
-                    Categories = GetCategories(itemPocket),
-                    Names      = GetNames(itemPocket),
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(itemPocket);
         }
 
-        private static List<NamedAPIResource> GetCategories(EFItemPockets itemPocket)
+        // GET api/v1/item-pockets/medicine
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return itemPocket
-                .ItemCategories
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
+            var itemPocket = await _itemPocketsCacheService.Get(name);
+            if (itemPocket == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFItemPockets itemPocket)
-        {
-            return itemPocket
-                .ItemPocketNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(itemPocket);
         }
     }
 }

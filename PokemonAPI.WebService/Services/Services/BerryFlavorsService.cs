@@ -9,7 +9,6 @@ using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -27,13 +26,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.BerryFlavors.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFContestTypeNames, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFContestTypeNames, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -60,7 +58,10 @@ namespace PokemonAPI.WebService.Services.Services
 
         public async Task<BerryFlavor> Get(string name)
         {
-            return await Get(x => x.Identifier == name);
+            return await Get(x => x.ContestTypeNames
+                                      .FirstOrDefault(y => y.LocalLanguageId == 9)
+                                      .Flavor
+                                      .ToLower() == name);
         }
 
         public async Task<BerryFlavor> Get(Expression<Func<EFContestTypes, bool>> predicate)

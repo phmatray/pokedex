@@ -3,23 +3,21 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.CacheServices
 {
-    public class EncounterConditionsValuesCacheService : IEncounterConditionValuesCacheService
+    public class EncounterConditionValuesCacheService : IEncounterConditionValuesCacheService
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly ILogger<EncounterConditionsValuesCacheService> _logger;
+        private readonly ILogger<EncounterConditionValuesCacheService> _logger;
         private readonly IEncounterConditionValuesService _encounterConditionsValuesService;
         private readonly string _typeName;
 
-        public EncounterConditionsValuesCacheService(
+        public EncounterConditionValuesCacheService(
             IMemoryCache memoryCache,
-            ILogger<EncounterConditionsValuesCacheService> logger,
+            ILogger<EncounterConditionValuesCacheService> logger,
             IEncounterConditionValuesService encounterConditionsValuesService)
         {
             _memoryCache                      = memoryCache;
@@ -33,10 +31,10 @@ namespace PokemonAPI.WebService.Services.CacheServices
                 $"{_typeName}-Count",
                 entry => _encounterConditionsValuesService.Count());
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-GetAll-{limit}-{offset}",
-                entry => _encounterConditionsValuesService.GetAll(limit, offset, typeof(EncounterConditionValuesController)));
+                entry => _encounterConditionsValuesService.GetAll(limit, offset));
 
         public async Task<EncounterConditionValue> Get(int id)
             => await _memoryCache.GetOrCreateAsync(

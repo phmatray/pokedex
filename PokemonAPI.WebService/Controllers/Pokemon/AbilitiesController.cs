@@ -1,125 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/abilities")]
     public class AbilitiesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IAbilitiesCacheService _abilitiesCacheService;
 
-        public AbilitiesController(VeekunContext context)
+        public AbilitiesController(IAbilitiesCacheService abilitiesCacheService)
         {
-            _context = context;
+            _abilitiesCacheService = abilitiesCacheService;
         }
 
         // GET api/v1/abilities
         // GET api/v1/abilities?skip=0&take=20
         [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0) 
-            => await GetAll(limit, offset, _context.Abilities, GetType());
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            var count          = await _abilitiesCacheService.Count();
+            var controllerType = typeof(AbilitiesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var abilities = await _abilitiesCacheService.GetAll(limit, offset);
+            if (abilities == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, abilities));
+        }
 
         // GET api/v1/abilities/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var ability = await _context
-                    .Abilities
-                    .AsNoTracking()
-                    .Include(x => x.Generation)
-                    .Include(x => x.AbilityNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.AbilityProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.AbilityChangelog).ThenInclude(x => x.AbilityChangelogProse)
-                    .Include(x => x.AbilityChangelog).ThenInclude(x => x.ChangedInVersionGroup)
-                    .Include(x => x.AbilityFlavorText).ThenInclude(x => x.Language)
-                    .Include(x => x.AbilityFlavorText).ThenInclude(x => x.VersionGroup)
-                    .Include(x=> x.PokemonAbilities).ThenInclude(x => x.Pokemon)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var ability = await _abilitiesCacheService.Get(id);
+            if (ability == null)
+                return NotFound(id);
 
-                var result = new Ability
-                {
-                    Id                = ability.Id,
-                    Name              = ability.Identifier,
-                    IsMainSeries      = ability.IsMainSeries,
-                    Generation        = GetGeneration(ability),
-                    Names             = GetNames(ability),
-                    EffectEntries     = GetEffectEntries(ability),
-                    EffectChanges     = GetEffectChanges(ability),
-                    FlavorTextEntries = GetFlavorTextEntries(ability),
-                    Pokemon           = GetPokemon(ability)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(ability);
         }
 
-        private static NamedAPIResource GetGeneration(EFAbilities ability)
+        // GET api/v1/abilities/stench
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return ability
-                .Generation?
-                .ToNamedApiResource();
-        }
+            var ability = await _abilitiesCacheService.Get(name);
+            if (ability == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFAbilities ability)
-        {
-            return ability
-                .AbilityNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<VerboseEffect> GetEffectEntries(EFAbilities ability)
-        {
-            return ability
-                .AbilityProse
-                .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<AbilityEffectChange> GetEffectChanges(EFAbilities ability)
-        {
-            return ability
-                .AbilityChangelog
-                .Select(x =>
-                {
-                    var effectEntries = x.AbilityChangelogProse
-                        .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
-                        .ToList();
-
-                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup.ToNamedApiResource());
-                })
-                .ToList();
-        }
-
-        private static List<AbilityFlavorText> GetFlavorTextEntries(EFAbilities ability)
-        {
-            return ability
-                .AbilityFlavorText
-                .Select(x => new AbilityFlavorText(x.FlavorText,
-                    x.Language.ToNamedApiResource(), x.VersionGroup.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<AbilityPokemon> GetPokemon(EFAbilities ability)
-        {
-            return ability
-                .PokemonAbilities
-                .Select(x => new AbilityPokemon(x.IsHidden, x.Slot, x.Pokemon.ToNamedApiResource()))
-                .ToList();
+            return Ok(ability);
         }
     }
 }

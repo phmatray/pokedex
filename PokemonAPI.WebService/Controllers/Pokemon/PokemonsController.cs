@@ -8,7 +8,6 @@ using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/pokemons")]
-    [ResponseCache(Duration = 30)]
     public class PokemonsController : ApiController
     {
         private readonly IPokemonsCacheService _pokemonsService;
@@ -28,29 +27,12 @@ namespace PokemonAPI.WebService.Controllers
             var previous       = controllerType.Previous(limit, offset);
             var next           = controllerType.Next(limit, offset, count);
 
-            var pokemons = await _pokemonsService.GetAll(limit, offset, controllerType);
+            var pokemons = await _pokemonsService.GetAll(limit, offset);
             if (pokemons == null)
                 return NotFound($"Not found with {limit} {offset}");
 
             return Ok(new NamedAPIResourceList(count, previous, next, pokemons));
         }
-
-        //// GET api/v1/pokemons/details
-        //// GET api/v1/pokemons/details?limit=0&offset=20
-        //[HttpGet("details")]
-        //public async Task<IActionResult> GetAllDetails(int limit = 20, int offset = 0)
-        //{
-        //    var count          = await _pokemonsService.Count();
-        //    var controllerType = typeof(PokemonsController);
-        //    var previous       = controllerType.Previous(limit, offset);
-        //    var next           = controllerType.Next(limit, offset, count);
-
-        //    var pokemons = await _pokemonsService.GetAllDetails(limit, offset, controllerType);
-        //    if (pokemons == null)
-        //        return NotFound($"Not found with {limit} {offset}");
-
-        //    return Ok(new ResourceList<Pokemon>(count, previous, next, pokemons));
-        //}
 
         // GET api/v1/pokemons/1
         [HttpGet("{id:int}")]
@@ -85,7 +67,7 @@ namespace PokemonAPI.WebService.Controllers
             return Ok(encounters);
         }
 
-        // GET api/v1/pokemons/1/encounters
+        // GET api/v1/pokemons/pikachu/encounters
         [HttpGet("{name}/encounters")]
         public async Task<IActionResult> GetEncounters(string name)
         {

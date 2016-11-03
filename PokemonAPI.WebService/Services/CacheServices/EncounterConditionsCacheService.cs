@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.CacheServices
 {
@@ -33,10 +31,10 @@ namespace PokemonAPI.WebService.Services.CacheServices
                 $"{_typeName}-Count",
                 entry => _encounterConditionsService.Count());
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-GetAll-{limit}-{offset}",
-                entry => _encounterConditionsService.GetAll(limit, offset, typeof(EncounterConditionsController)));
+                entry => _encounterConditionsService.GetAll(limit, offset));
 
         public async Task<EncounterCondition> Get(int id)
             => await _memoryCache.GetOrCreateAsync(

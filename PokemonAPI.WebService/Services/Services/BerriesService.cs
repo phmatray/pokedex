@@ -9,7 +9,6 @@ using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -27,13 +26,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.Berries.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFBerries, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFBerries, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;

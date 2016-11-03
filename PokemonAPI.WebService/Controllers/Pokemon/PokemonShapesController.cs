@@ -1,93 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/pokemon-shapes")]
     public class PokemonShapesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IPokemonShapesCacheService _pokemonShapesCacheService;
 
-        public PokemonShapesController(VeekunContext context)
+        public PokemonShapesController(IPokemonShapesCacheService pokemonShapesCacheService)
         {
-            _context = context;
+            _pokemonShapesCacheService = pokemonShapesCacheService;
         }
 
         // GET api/v1/pokemon-shapes
         // GET api/v1/pokemon-shapes?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.PokemonShapes, GetType());
+        {
+            var count          = await _pokemonShapesCacheService.Count();
+            var controllerType = typeof(PokemonShapesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var pokemonShapes = await _pokemonShapesCacheService.GetAll(limit, offset);
+            if (pokemonShapes == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, pokemonShapes));
+        }
 
         // GET api/v1/pokemon-shapes/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var pokemonShape = await _context
-                    .PokemonShapes
-                    .AsNoTracking()
-                    .Include(x => x.PokemonShapeProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.PokemonSpecies)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var pokemonShape = await _pokemonShapesCacheService.Get(id);
+            if (pokemonShape == null)
+                return NotFound(id);
 
-                var result = new PokemonShape
-                {
-                    Id             = pokemonShape.Id,
-                    Name           = pokemonShape.Identifier,
-                    AwesomeNames   = GetAwesomeNames(pokemonShape),
-                    Descriptions   = GetDescriptions(pokemonShape),
-                    Names          = GetNames(pokemonShape),
-                    PokemonSpecies = GetPokemonSpecies(pokemonShape)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(pokemonShape);
         }
 
-        private static List<AwesomeName> GetAwesomeNames(EFPokemonShapes pokemonShape)
+        // GET api/v1/pokemon-shapes/1
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return pokemonShape
-                .PokemonShapeProse
-                .Select(x => new AwesomeName(x.AwesomeName, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var pokemonShape = await _pokemonShapesCacheService.Get(name);
+            if (pokemonShape == null)
+                return NotFound(name);
 
-        private static List<Description> GetDescriptions(EFPokemonShapes pokemonShape)
-        {
-            return pokemonShape
-                .PokemonShapeProse
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<Name> GetNames(EFPokemonShapes pokemonShape)
-        {
-            return pokemonShape
-                .PokemonShapeProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetPokemonSpecies(EFPokemonShapes pokemonShape)
-        {
-            return pokemonShape
-                .PokemonSpecies
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(pokemonShape);
         }
     }
 }

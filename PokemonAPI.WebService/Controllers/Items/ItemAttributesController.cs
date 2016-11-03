@@ -1,85 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using Microsoft.EntityFrameworkCore;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/item-attributes")]
     public class ItemAttributesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IItemAttributesCacheService _itemAttributesCacheService;
 
-        public ItemAttributesController(VeekunContext context)
+        public ItemAttributesController(IItemAttributesCacheService itemAttributesCacheService)
         {
-            _context = context;
+            _itemAttributesCacheService = itemAttributesCacheService;
         }
 
         // GET api/v1/item-attributes
         // GET api/v1/item-attributes?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.ItemFlags, GetType());
+        {
+            var count          = await _itemAttributesCacheService.Count();
+            var controllerType = typeof(ItemAttributesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var itemAttributes = await _itemAttributesCacheService.GetAll(limit, offset);
+            if (itemAttributes == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, itemAttributes));
+        }
 
         // GET api/v1/item-attributes/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var itemAttribute = await _context.ItemFlags
-                    .AsNoTracking()
-                    .Include(x => x.ItemFlagMap).ThenInclude(x => x.Item)
-                    .Include(x => x.ItemFlagProse).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var itemAttribute = await _itemAttributesCacheService.Get(id);
+            if (itemAttribute == null)
+                return NotFound(id);
 
-                var result = new ItemAttribute
-                {
-                    Id           = itemAttribute.Id,
-                    Name         = itemAttribute.Identifier,
-                    Items        = GetItems(itemAttribute),
-                    Names        = GetNames(itemAttribute),
-                    Descriptions = GetDescriptions(itemAttribute)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(itemAttribute);
         }
 
-        private static List<NamedAPIResource> GetItems(EFItemFlags itemAttribute)
+        // GET api/v1/item-attributes/countable
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return itemAttribute
-                .ItemFlagMap
-                .Select(x => x.Item.ToNamedApiResource())
-                .ToList();
-        }
+            var itemAttribute = await _itemAttributesCacheService.Get(name);
+            if (itemAttribute == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFItemFlags itemAttribute)
-        {
-            return itemAttribute
-                .ItemFlagProse
-                .Where(x => x.Name != null)
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<Description> GetDescriptions(EFItemFlags itemAttribute)
-        {
-            return itemAttribute
-                .ItemFlagProse
-                .Where(x => x.Description != null)
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(itemAttribute);
         }
     }
 }

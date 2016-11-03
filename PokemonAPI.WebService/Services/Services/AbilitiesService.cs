@@ -8,7 +8,6 @@ using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -26,13 +25,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.Abilities.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFAbilities, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFAbilities, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -45,7 +43,7 @@ namespace PokemonAPI.WebService.Services.Services
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(controllerType))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
 
             return apiResults;
@@ -103,7 +101,7 @@ namespace PokemonAPI.WebService.Services.Services
         private static List<Name> GetNames(EFAbilities ability)
         {
             return ability
-                .AbilityNames
+                .AbilityNames?
                 .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
@@ -111,7 +109,7 @@ namespace PokemonAPI.WebService.Services.Services
         private static List<VerboseEffect> GetEffectEntries(EFAbilities ability)
         {
             return ability
-                .AbilityProse
+                .AbilityProse?
                 .Select(x => new VerboseEffect(x.Effect, x.ShortEffect, x.LocalLanguage.ToNamedApiResource()))
                 .ToList();
         }
@@ -122,7 +120,7 @@ namespace PokemonAPI.WebService.Services.Services
                 .AbilityChangelog
                 .Select(x =>
                 {
-                    var effectEntries = x.AbilityChangelogProse
+                    var effectEntries = x.AbilityChangelogProse?
                         .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
                         .ToList();
 
@@ -134,7 +132,7 @@ namespace PokemonAPI.WebService.Services.Services
         private static List<AbilityFlavorText> GetFlavorTextEntries(EFAbilities ability)
         {
             return ability
-                .AbilityFlavorText
+                .AbilityFlavorText?
                 .Select(x => new AbilityFlavorText(x.FlavorText,
                     x.Language.ToNamedApiResource(), x.VersionGroup.ToNamedApiResource()))
                 .ToList();
@@ -143,7 +141,7 @@ namespace PokemonAPI.WebService.Services.Services
         private static List<AbilityPokemon> GetPokemon(EFAbilities ability)
         {
             return ability
-                .PokemonAbilities
+                .PokemonAbilities?
                 .Select(x => new AbilityPokemon(x.IsHidden, x.Slot, x.Pokemon.ToNamedApiResource()))
                 .ToList();
         }

@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/super-contest-effects")]
     public class SuperContestEffectsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly ISuperContestEffectsCacheService _superContestEffectsCacheService;
 
-        public SuperContestEffectsController(VeekunContext context)
+        public SuperContestEffectsController(ISuperContestEffectsCacheService superContestEffectsCacheService)
         {
-            _context = context;
+            _superContestEffectsCacheService = superContestEffectsCacheService;
         }
 
         // GET api/v1/super-contest-effects
@@ -26,78 +22,27 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _superContestEffectsCacheService.Count();
+            var controllerType = typeof(SuperContestEffectsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.SuperContestEffects;
-                var controller = typeof(SuperContestEffectsController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var superContestEffects = await _superContestEffectsCacheService.GetAll(limit, offset);
+            if (superContestEffects == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .AsNoTracking()
-                        .OrderBy(x => x.Id)
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToApiResource(controller))
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new APIResourceList(count, previous, next, superContestEffects));
         }
 
         // GET api/v1/super-contest-effects/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var superContestEffect = await _context.SuperContestEffects
-                    .AsNoTracking()
-                    .Include(x => x.SuperContestEffectProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.Moves)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var superContestEffect = await _superContestEffectsCacheService.Get(id);
+            if (superContestEffect == null)
+                return NotFound(id);
 
-                var result = new SuperContestEffect
-                {
-                    Id                = superContestEffect.Id,
-                    Appeal            = superContestEffect.Appeal,
-                    FlavorTextEntries = GetFlavorTextEntries(superContestEffect),
-                    Moves             = GetMoves(superContestEffect)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        private static List<FlavorText> GetFlavorTextEntries(EFSuperContestEffects superContestEffect)
-        {
-            return superContestEffect
-                .SuperContestEffectProse
-                .Select(x => new FlavorText(x.FlavorText, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetMoves(EFSuperContestEffects superContestEffect)
-        {
-            return superContestEffect
-                .Moves
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(superContestEffect);
         }
     }
 }

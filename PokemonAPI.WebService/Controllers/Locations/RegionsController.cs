@@ -1,104 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/regions")]
     public class RegionsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IRegionsCacheService _regionsCacheService;
 
-        public RegionsController(VeekunContext context)
+        public RegionsController(IRegionsCacheService regionsCacheService)
         {
-            _context = context;
+            _regionsCacheService = regionsCacheService;
         }
 
         // GET api/v1/regions
         // GET api/v1/regions?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.Regions, GetType());
+        {
+            var count          = await _regionsCacheService.Count();
+            var controllerType = typeof(RegionsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var regions = await _regionsCacheService.GetAll(limit, offset);
+            if (regions == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, regions));
+        }
 
         // GET api/v1/regions/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var region = await _context.Regions
-                    .AsNoTracking()
-                    .Include(x => x.Locations)
-                    .Include(x => x.VersionGroupRegions).ThenInclude(x => x.VersionGroup)
-                    .Include(x => x.RegionNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.Generations)
-                    .Include(x => x.Pokedexes)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var region = await _regionsCacheService.Get(id);
+            if (region == null)
+                return NotFound(id);
 
-                var result = new Region
-                {
-                    Id             = region.Id,
-                    Name           = region.Identifier,
-                    Locations      = GetLocations(region),
-                    VersionGroups  = GetVersionGroups(region),
-                    Names          = GetNames(region),
-                    MainGeneration = GetMainGeneration(region),
-                    Pokedexes      = GetPokedexes(region)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(region);
         }
 
-        private static List<NamedAPIResource> GetLocations(EFRegions region)
+        // GET api/v1/regions/kanto
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return region
-                .Locations
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
+            var region = await _regionsCacheService.Get(name);
+            if (region == null)
+                return NotFound(name);
 
-        private static List<NamedAPIResource> GetVersionGroups(EFRegions region)
-        {
-            return region
-                .VersionGroupRegions
-                .Select(x => x.VersionGroup.ToNamedApiResource())
-                .ToList();
-        }
-
-        private static List<Name> GetNames(EFRegions region)
-        {
-            return region
-                .RegionNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static NamedAPIResource GetMainGeneration(EFRegions region)
-        {
-            return region
-                .Generations
-                .FirstOrDefault(x => x.MainRegionId == region.Id)?
-                .ToNamedApiResource();
-        }
-
-        private static List<NamedAPIResource> GetPokedexes(EFRegions region)
-        {
-            return region
-                .Pokedexes
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(region);
         }
     }
 }

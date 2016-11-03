@@ -3,7 +3,6 @@ using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Models.Interfaces;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Core
 {
@@ -11,22 +10,19 @@ namespace PokemonAPI.WebService.Core
     {
         #region ApiResources
 
-        //internal static NamedAPIResource ToNamedApiResource(this EFBerryFlavors src)
-        //    => src.ToNamedApiResource<BerryFlavorsController>();
-
         internal static APIResource ToApiResource(this EFCharacteristics src)
             => src.ToApiResource<CharacteristicsController>();
 
-        internal static APIResource ToNamedApiResource(this EFContestEffects src)
+        internal static APIResource ToApiResource(this EFContestEffects src)
             => src.ToApiResource<ContestEffectsController>();
 
-        internal static APIResource ToNamedApiResource(this EFEvolutionChains src)
+        internal static APIResource ToApiResource(this EFEvolutionChains src)
             => src.ToApiResource<EvolutionChainsController>();
 
         internal static APIResource ToApiResource(this EFMachines src)
             => new APIResource(typeof(MachinesController).RscUrl($"{src.MachineNumber}/{src.VersionGroupId}"));
 
-        internal static APIResource ToNamedApiResource(this EFSuperContestEffects src)
+        internal static APIResource ToApiResource(this EFSuperContestEffects src)
             => src.ToApiResource<SuperContestEffectsController>();
 
         #endregion
@@ -177,23 +173,13 @@ namespace PokemonAPI.WebService.Core
 
         #region PrivateMethods
 
-        internal static APIResource ToApiResource(this IEFId id, Type controllerType)
-            => new APIResource(controllerType.RscUrl(id.Id));
-
-        internal static APIResource ToApiResource<TController>(this IEFId id)
+        private static APIResource ToApiResource<TController>(this IEFId id)
             where TController: ApiController
             => new APIResource(typeof(TController).RscUrl(id.Id));
-
-        internal static NamedAPIResource ToNamedApiResource(this IEFIdentifier identifier, Type controllerType)
-            => new NamedAPIResource(identifier.Identifier, controllerType.RscUrl(identifier.Id));
 
         private static NamedAPIResource ToNamedApiResource<TController>(this IEFIdentifier identifier)
             where TController: ApiController
             => new NamedAPIResource(identifier.Identifier, typeof(TController).RscUrl(identifier.Id));
-
-        internal static NamedAPIResource ToNamedApiResource<TController>(this IEFIdentifier identifier, int id)
-            where TController: ApiController
-            => new NamedAPIResource(identifier.Identifier, typeof(TController).RscUrl(id));
 
         #endregion
     }

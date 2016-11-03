@@ -27,13 +27,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.Pokemon.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemon, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemon, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -46,7 +45,7 @@ namespace PokemonAPI.WebService.Services.Services
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(controllerType))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
 
             return apiResults;
@@ -54,7 +53,7 @@ namespace PokemonAPI.WebService.Services.Services
 
         public async Task<List<Pokemon>> GetAllDetails(int limit, int offset, Type controllerType)
         {
-            var collection = await GetAll(limit, offset, controllerType);
+            var collection = await GetAll(limit, offset);
 
             var results = new List<Pokemon>();
             foreach (var x in collection)

@@ -8,42 +8,42 @@ using PokemonAPI.WebService.Services.ServicesAbstractions;
 
 namespace PokemonAPI.WebService.Services.CacheServices
 {
-    public class PokedexesCacheService : IPokedexesCacheService
+    public class ItemAttributesCacheService : IItemAttributesCacheService
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly ILogger<PokedexesCacheService> _logger;
-        private readonly IPokedexesService _pokedexesService;
+        private readonly ILogger<ItemAttributesCacheService> _logger;
+        private readonly IItemAttributesService _itemAttributesService;
         private readonly string _typeName;
 
-        public PokedexesCacheService(
+        public ItemAttributesCacheService(
             IMemoryCache memoryCache,
-            ILogger<PokedexesCacheService> logger,
-            IPokedexesService pokedexesService)
+            ILogger<ItemAttributesCacheService> logger,
+            IItemAttributesService itemAttributesService)
         {
-            _memoryCache      = memoryCache;
-            _logger           = logger;
-            _pokedexesService = pokedexesService;
-            _typeName         = GetType().Name;
+            _memoryCache           = memoryCache;
+            _logger                = logger;
+            _itemAttributesService = itemAttributesService;
+            _typeName              = GetType().Name;
         }
 
         public async Task<int> Count()
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-Count",
-                entry => _pokedexesService.Count());
+                entry => _itemAttributesService.Count());
 
         public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-GetAll-{limit}-{offset}",
-                entry => _pokedexesService.GetAll(limit, offset));
+                entry => _itemAttributesService.GetAll(limit, offset));
 
-        public async Task<Pokedex> Get(int id)
+        public async Task<ItemAttribute> Get(int id)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-Get-{id}",
-                entry => _pokedexesService.Get(id));
+                entry => _itemAttributesService.Get(id));
 
-        public async Task<Pokedex> Get(string name)
+        public async Task<ItemAttribute> Get(string name)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-Get-{name}",
-                entry => _pokedexesService.Get(name));
+                entry => _itemAttributesService.Get(name));
     }
 }

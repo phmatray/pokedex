@@ -1,75 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/pokemon-habitats")]
     public class PokemonHabitatsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IPokemonHabitatsCacheService _pokemonHabitatsCacheService;
 
-        public PokemonHabitatsController(VeekunContext context)
+        public PokemonHabitatsController(IPokemonHabitatsCacheService pokemonHabitatsCacheService)
         {
-            _context = context;
+            _pokemonHabitatsCacheService = pokemonHabitatsCacheService;
         }
 
         // GET api/v1/pokemon-habitats
         // GET api/v1/pokemon-habitats?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.PokemonHabitats, GetType());
+        {
+            var count          = await _pokemonHabitatsCacheService.Count();
+            var controllerType = typeof(PokemonHabitatsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var pokemonHabitats = await _pokemonHabitatsCacheService.GetAll(limit, offset);
+            if (pokemonHabitats == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, pokemonHabitats));
+        }
 
         // GET api/v1/pokemon-habitats/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var pokemonHabitat = await _context
-                    .PokemonHabitats
-                    .AsNoTracking()
-                    .Include(x => x.PokemonHabitatNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.PokemonSpecies)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var pokemonHabitat = await _pokemonHabitatsCacheService.Get(id);
+            if (pokemonHabitat == null)
+                return NotFound(id);
 
-                var result = new PokemonHabitat
-                {
-                    Id             = pokemonHabitat.Id,
-                    Name           = pokemonHabitat.Identifier,
-                    Names          = GetNames(pokemonHabitat),
-                    PokemonSpecies = GetPokemonSpecies(pokemonHabitat)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(pokemonHabitat);
         }
 
-        private static List<Name> GetNames(EFPokemonHabitats pokemonHabitat)
+        // GET api/v1/pokemon-habitats/cave
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return pokemonHabitat
-                .PokemonHabitatNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var pokemonHabitat = await _pokemonHabitatsCacheService.Get(name);
+            if (pokemonHabitat == null)
+                return NotFound(name);
 
-        private static List<NamedAPIResource> GetPokemonSpecies(EFPokemonHabitats pokemonHabitat)
-        {
-            return pokemonHabitat
-                .PokemonSpecies
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(pokemonHabitat);
         }
     }
 }

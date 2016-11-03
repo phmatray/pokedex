@@ -1,31 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/generations")]
     public class GenerationsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IGenerationsCacheService _generationsCacheService;
 
-        public GenerationsController(VeekunContext context)
+        public GenerationsController(IGenerationsCacheService generationsCacheService)
         {
-            _context = context;
+            _generationsCacheService = generationsCacheService;
         }
 
         // GET api/v1/generations
         // GET api/v1/generations?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.Generations, GetType());
+        {
+            var count          = await _generationsCacheService.Count();
+            var controllerType = typeof(GenerationsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var generations = await _generationsCacheService.GetAll(limit, offset);
+            if (generations == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, generations));
+        }
 
         /// <summary>
         /// 
@@ -34,101 +41,27 @@ namespace PokemonAPI.WebService.Controllers
         /// <returns></returns>
         /// <response code="400">If the is is equals or lower than 0.</response>
         // GET api/v1/generations/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(int), 400)]
         public async Task<IActionResult> Get(int id)
         {
-            if (id <= 0) return BadRequest();
+            var generation = await _generationsCacheService.Get(id);
+            if (generation == null)
+                return NotFound(id);
 
-            try
-            {
-                var generation = await _context.Generations
-                    .AsNoTracking()
-                    .Include(x => x.MainRegion)
-                    .Include(x => x.GenerationNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.VersionGroups)
-                    .Include(x => x.PokemonSpecies)
-                    .Include(x => x.Moves)
-                    .Include(x => x.Types)
-                    .Include(x => x.Abilities)
-                    .FirstOrDefaultAsync(x => x.Id == id);
-
-                var results = new Generation
-                {
-                    Id             = generation.Id,
-                    Name           = generation.Identifier,
-                    Abilities      = GetAbilities(generation),
-                    VersionGroups  = GetVersionGroups(generation),
-                    Names          = GetNames(generation),
-                    PokemonSpecies = GetPokemonSpecies(generation),
-                    Moves          = GetMoves(generation),
-                    MainRegion     = GetMainRegion(generation),
-                    Types          = GetTypes(generation)
-                };
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(generation);
         }
 
-        private static List<NamedAPIResource> GetTypes(EFGenerations generation)
+        // GET api/v1/generations/generation-i
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return generation
-                .Types
-                .Where(x => x.Id < 10000)
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
+            var generation = await _generationsCacheService.Get(name);
+            if (generation == null)
+                return NotFound(name);
 
-        private static NamedAPIResource GetMainRegion(EFGenerations generation)
-        {
-            return generation
-                .MainRegion
-                .ToNamedApiResource();
+            return Ok(generation);
         }
-
-        private static List<NamedAPIResource> GetMoves(EFGenerations generation)
-        {
-            return generation
-                .Moves
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetPokemonSpecies(EFGenerations generation)
-        {
-            return generation
-                .PokemonSpecies
-                .OrderBy(x => x.Id)
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
-
-        private static List<Name> GetNames(EFGenerations generation)
-        {
-            return generation
-                .GenerationNames
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetVersionGroups(EFGenerations generation)
-        {
-            return generation
-                .VersionGroups
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetAbilities(EFGenerations generation)
-        {
-            return generation
-                .Abilities
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
-        }
+        
     }
 }

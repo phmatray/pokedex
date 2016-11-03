@@ -1,68 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/languages")]
     public class LanguagesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly ILanguagesCacheService _languagesCacheService;
 
-        public LanguagesController(VeekunContext context)
+        public LanguagesController(ILanguagesCacheService languagesCacheService)
         {
-            _context = context;
+            _languagesCacheService = languagesCacheService;
         }
 
         // GET api/v1/languages
         // GET api/v1/languages?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.Languages, GetType());
-
-        // GET api/v1/languages/1
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var language = await _context
-                    .Languages
-                    .AsNoTracking()
-                    .Include(x => x.LanguageNamesLanguage).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var count          = await _languagesCacheService.Count();
+            var controllerType = typeof(LanguagesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var result = new Language
-                {
-                    Id         = language.Id,
-                    Name       = language.Identifier,
-                    Iso639     = language.Iso639,
-                    Iso3166    = language.Iso3166,
-                    Official   = language.Official,
-                    Names      = GetNames(language)
-                };
+            var languages = await _languagesCacheService.GetAll(limit, offset);
+            if (languages == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new NamedAPIResourceList(count, previous, next, languages));
         }
 
-        private static List<Name> GetNames(EFLanguages language)
+        // GET api/v1/languages/1
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Get(int id)
         {
-            return language
-                .LanguageNamesLanguage
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            var language = await _languagesCacheService.Get(id);
+            if (language == null)
+                return NotFound(id);
+
+            return Ok(language);
+        }
+
+        // GET api/v1/languages/roomaji
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
+        {
+            var language = await _languagesCacheService.Get(name);
+            if (language == null)
+                return NotFound(name);
+
+            return Ok(language);
         }
     }
 }

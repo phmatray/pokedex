@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/item-fling-effects")]
     public class ItemFlingEffectsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IItemFlingEffectsCacheService _itemFlingEffectsCacheService;
 
-        public ItemFlingEffectsController(VeekunContext context)
+        public ItemFlingEffectsController(IItemFlingEffectsCacheService itemFlingEffectsCacheService)
         {
-            _context = context;
+            _itemFlingEffectsCacheService = itemFlingEffectsCacheService;
         }
 
         // GET api/v1/item-fling-effects
@@ -26,79 +22,38 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _itemFlingEffectsCacheService.Count();
+            var controllerType = typeof(ItemFlingEffectsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.ItemFlingEffects;
-                var controller = typeof(ItemFlingEffectsController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset );
-                var next       = controller.Next(limit, offset, count);
+            var itemFlingEffects = await _itemFlingEffectsCacheService.GetAll(limit, offset);
+            if (itemFlingEffects == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .AsNoTracking()
-                        .OrderBy(x => x.Id)
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => new NamedAPIResource(x.Identifier, typeof(ItemFlingEffectsController).RscUrl(x.Id)))
-                    .Cast<APIResource>()
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new NamedAPIResourceList(count, previous, next, itemFlingEffects));
         }
 
         // GET api/v1/item-fling-effects/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var itemFlingEffect = await _context.ItemFlingEffects
-                    .AsNoTracking()
-                    .Include(x => x.ItemFlingEffectProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.Items)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var itemFlingEffect = await _itemFlingEffectsCacheService.Get(id);
+            if (itemFlingEffect == null)
+                return NotFound(id);
 
-                var result = new ItemFlingEffect
-                {
-                    Id            = itemFlingEffect.Id,
-                    Name          = itemFlingEffect.Identifier,
-                    EffectEntries = GetEffectEntries(itemFlingEffect),
-                    Items         = GetItems(itemFlingEffect),
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(itemFlingEffect);
         }
 
-        private static List<Effect> GetEffectEntries(EFItemFlingEffects itemFlingEffect)
+        // GET api/v1/item-fling-effects/1
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return itemFlingEffect
-                .ItemFlingEffectProse
-                .Select(x => new Effect(x.Effect, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var itemFlingEffect = await _itemFlingEffectsCacheService.Get(name);
+            if (itemFlingEffect == null)
+                return NotFound(name);
 
-        private static List<NamedAPIResource> GetItems(EFItemFlingEffects itemFlingEffect)
-        {
-            return itemFlingEffect
-                .Items
-                .Select(x => x.ToNamedApiResource())
-                .ToList();
+            return Ok(itemFlingEffect);
         }
     }
 }

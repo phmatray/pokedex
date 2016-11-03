@@ -1,84 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/move-learn-methods")]
     public class MoveLearnMethodsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IMoveLearnMethodsCacheService _moveLearnMethodsCacheService;
 
-        public MoveLearnMethodsController(VeekunContext context)
+        public MoveLearnMethodsController(IMoveLearnMethodsCacheService moveLearnMethodsCacheService)
         {
-            _context = context;
+            _moveLearnMethodsCacheService = moveLearnMethodsCacheService;
         }
 
         // GET api/v1/move-learn-methods
         // GET api/v1/move-learn-methods?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.PokemonMoveMethods, GetType());
+        {
+            var count          = await _moveLearnMethodsCacheService.Count();
+            var controllerType = typeof(MoveLearnMethodsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var moveLearnMethods = await _moveLearnMethodsCacheService.GetAll(limit, offset);
+            if (moveLearnMethods == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, moveLearnMethods));
+        }
 
         // GET api/v1/move-learn-methods/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var moveMethod = await _context
-                    .PokemonMoveMethods
-                    .AsNoTracking()
-                    .Include(x => x.PokemonMoveMethodProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.VersionGroupPokemonMoveMethods).ThenInclude(x => x.VersionGroup)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var moveLearnMethod = await _moveLearnMethodsCacheService.Get(id);
+            if (moveLearnMethod == null)
+                return NotFound(id);
 
-                var result = new MoveLearnMethod
-                {
-                    Id            = moveMethod.Id,
-                    Name          = moveMethod.Identifier,
-                    Descriptions  = GetDescriptions(moveMethod),
-                    Names         = GetNames(moveMethod),
-                    VersionGroups = GetVersionGroups(moveMethod)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(moveLearnMethod);
         }
 
-        private static List<Description> GetDescriptions(EFPokemonMoveMethods moveMethod)
+        // GET api/v1/move-learn-methods/1
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return moveMethod
-                .PokemonMoveMethodProse
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var moveLearnMethod = await _moveLearnMethodsCacheService.Get(name);
+            if (moveLearnMethod == null)
+                return NotFound(name);
 
-        private static List<Name> GetNames(EFPokemonMoveMethods moveMethod)
-        {
-            return moveMethod
-                .PokemonMoveMethodProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<NamedAPIResource> GetVersionGroups(EFPokemonMoveMethods moveMethod)
-        {
-            return moveMethod
-                .VersionGroupPokemonMoveMethods
-                .Select(x => x.VersionGroup.ToNamedApiResource())
-                .ToList();
+            return Ok(moveLearnMethod);
         }
     }
 }

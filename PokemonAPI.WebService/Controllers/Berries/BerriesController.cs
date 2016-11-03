@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/berries")]
     public class BerriesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IBerriesCacheService _berriesService;
 
-        public BerriesController(VeekunContext context)
+        public BerriesController(IBerriesCacheService berriesService)
         {
-            _context = context;
+            _berriesService = berriesService;
         }
 
         // GET api/v1/berries
@@ -26,110 +22,38 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _berriesService.Count();
+            var controllerType = typeof(BerriesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.Berries;
-                var controller = typeof(BerriesController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var berries = await _berriesService.GetAll(limit, offset);
+            if (berries == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .AsNoTracking()
-                        .Include(x => x.Item)
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToNamedApiResource())
-                    .Cast<APIResource>()
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new NamedAPIResourceList(count, previous, next, berries));
         }
 
         // GET api/v1/berries/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var berry = await _context.Berries
-                    .AsNoTracking()
-                    .Include(x => x.Firmness)
-                    .Include(x => x.BerryFlavors).ThenInclude(x => x.ContestType).ThenInclude(x => x.ContestTypeNames)
-                    .Include(x => x.Item)
-                    .Include(x => x.NaturalGiftType)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var berry = await _berriesService.Get(id);
+            if (berry == null)
+                return NotFound(id);
 
-                var result = new Berry
-                {
-                    Id               = berry.Id,
-                    Name             = berry.Item.Identifier.Replace("-berry", ""),
-                    GrowthTime       = berry.GrowthTime,
-                    MaxHarvest       = berry.MaxHarvest,
-                    NaturalGiftPower = berry.NaturalGiftPower,
-                    Size             = berry.Size,
-                    Smoothness       = berry.Smoothness,
-                    SoilDryness      = berry.SoilDryness,
-                    Firmness         = GetFirmness(berry),
-                    Flavors          = GetFlavors(berry),
-                    Item             = GetItem(berry),
-                    NaturalGiftType  = GetNaturalGiftType(berry)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(berry);
         }
 
-        private static NamedAPIResource GetFirmness(EFBerries berry)
+        // GET api/v1/berries/oran
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return berry
-                .Firmness?
-                .ToNamedApiResource();
-        }
+            var berry = await _berriesService.Get(name);
+            if (berry == null)
+                return NotFound(name);
 
-        private static List<BerryFlavorMap> GetFlavors(EFBerries berry)
-        {
-            return berry
-                .BerryFlavors
-                .Select(x => new BerryFlavorMap
-                {
-                    Potency = x.Flavor,
-                    Flavor = new NamedAPIResource
-                    (
-                        x.ContestType.ContestTypeNames.Single(y => y.LocalLanguageId == 9).Flavor.ToLower(),
-                        typeof(BerryFlavorsController).RscUrl(x.ContestTypeId)
-                    )
-                })
-                .ToList();
-        }
-
-        private static NamedAPIResource GetItem(EFBerries berry)
-        {
-            return berry
-                .Item?
-                .ToNamedApiResource();
-        }
-
-        private static NamedAPIResource GetNaturalGiftType(EFBerries berry)
-        {
-            return berry
-                .NaturalGiftType?
-                .ToNamedApiResource();
+            return Ok(berry);
         }
     }
 }

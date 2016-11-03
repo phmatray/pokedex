@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.WebService.Core;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/characteristics")]
     public class CharacteristicsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly ICharacteristicsCacheService _characteristicsCacheService;
 
-        public CharacteristicsController(VeekunContext context)
+        public CharacteristicsController(ICharacteristicsCacheService characteristicsCacheService)
         {
-            _context = context;
+            _characteristicsCacheService = characteristicsCacheService;
         }
 
         // GET api/v1/characteristics
@@ -26,89 +22,27 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 30, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _characteristicsCacheService.Count();
+            var controllerType = typeof(CharacteristicsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbSet      = _context.Characteristics;
-                var controller = typeof(CharacteristicsController);
-                var count      = await dbSet.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var characteristics = await _characteristicsCacheService.GetAll(limit, offset);
+            if (characteristics == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbSet
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToApiResource(controller))
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new APIResourceList(count, previous, next, characteristics));
         }
 
         // GET api/v1/characteristics/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var characteristic = await _context
-                    .Characteristics
-                    .AsNoTracking()
-                    .Include(x => x.Stat)
-                    .Include(x => x.CharacteristicText).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var characteristic = await _characteristicsCacheService.Get(id);
+            if (characteristic == null)
+                return NotFound(id);
 
-                var result = new Characteristic
-                {
-                    Id             = characteristic.Id,
-                    GeneModulo     = characteristic.GeneMod5,
-                    HighestStat    = GetHighestStat(characteristic),
-                    PossibleValues = GetPossibleValues(characteristic),
-                    Descriptions   = GetDescriptions(characteristic)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        private static NamedAPIResource GetHighestStat(EFCharacteristics characteristic)
-        {
-            return characteristic.Stat?.ToNamedApiResource();
-        }
-
-        private static List<int> GetPossibleValues(EFCharacteristics characteristic)
-        {
-            switch (characteristic.GeneMod5)
-            {
-                case 0: return new List<int> {0, 5, 10, 15, 20, 25, 30};
-                case 1: return new List<int> {1, 6, 11, 16, 21, 26, 31};
-                case 2: return new List<int> {2, 7, 12, 17, 22, 27};
-                case 3: return new List<int> {3, 8, 13, 18, 23, 28};
-                case 4: return new List<int> {4, 9, 14, 19, 24, 29};
-                default:
-                    return null;
-            }
-        }
-
-        private static List<Description> GetDescriptions(EFCharacteristics characteristic)
-        {
-            return characteristic
-                .CharacteristicText
-                .Select(x => new Description(x.Message, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(characteristic);
         }
     }
 }

@@ -1,75 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/contest-types")]
     public class ContestTypesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IContestTypesCacheService _contestTypesCacheService;
 
-        public ContestTypesController(VeekunContext context)
+        public ContestTypesController(IContestTypesCacheService contestTypesCacheService)
         {
-            _context = context;
+            _contestTypesCacheService = contestTypesCacheService;
         }
 
         // GET api/v1/contest-types
         // GET api/v1/contest-types?skip=0&take=20
         [HttpGet]
-        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0) 
-            => await GetAll(limit, offset, _context.ContestTypes, GetType());
+        public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
+        {
+            var count          = await _contestTypesCacheService.Count();
+            var controllerType = typeof(ContestTypesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var contestTypes = await _contestTypesCacheService.GetAll(limit, offset);
+            if (contestTypes == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, contestTypes));
+        }
 
         // GET api/v1/contest-types/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var contestType = await _context.ContestTypes
-                    .AsNoTracking()
-                    .Include(x => x.ContestTypeNames).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.BerryFlavors)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var contestType = await _contestTypesCacheService.Get(id);
+            if (contestType == null)
+                return NotFound(id);
 
-                var result = new ContestType
-                {
-                    Id          = contestType.Id,
-                    Name        = contestType.Identifier,
-                    BerryFlavor = GetBerryFlavor(contestType),
-                    Names       = GetNames(contestType)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        private static NamedAPIResource GetBerryFlavor(EFContestTypes contestType)
-        {
-            return contestType
-                .ContestTypeNames
-                .SingleOrDefault(x => x.LocalLanguageId == 9)
-                .ToNamedApiResource();
-        }
-
-        private static List<ContestName> GetNames(EFContestTypes contestType)
-        {
-            return contestType
-                .ContestTypeNames
-                .Where(x => x.Color != null)
-                .Select(x => new ContestName(x.Name, x.Color, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(contestType);
         }
     }
 }

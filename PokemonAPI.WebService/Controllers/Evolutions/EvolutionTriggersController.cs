@@ -1,74 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/evolution-triggers")]
     public class EvolutionTriggersController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IEvolutionTriggersCacheService _evolutionTriggersCacheService;
 
-        public EvolutionTriggersController(VeekunContext context)
+        public EvolutionTriggersController(IEvolutionTriggersCacheService evolutionTriggersCacheService)
         {
-            _context = context;
+            _evolutionTriggersCacheService = evolutionTriggersCacheService;
         }
 
         // GET api/v1/evolution-triggers
         // GET api/v1/evolution-triggers?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.EvolutionTriggers, GetType());
+        {
+            var count          = await _evolutionTriggersCacheService.Count();
+            var controllerType = typeof(EvolutionTriggersController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var evolutionTriggers = await _evolutionTriggersCacheService.GetAll(limit, offset);
+            if (evolutionTriggers == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, evolutionTriggers));
+        }
 
         // GET api/v1/evolution-triggers/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var evolutionTrigger = await _context.EvolutionTriggers
-                    .AsNoTracking()
-                    .Include(x => x.EvolutionTriggerProse).ThenInclude(x => x.LocalLanguage)
-                    .Include(x => x.PokemonEvolution).ThenInclude(x => x.EvolvedSpecies)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var evolutionTrigger = await _evolutionTriggersCacheService.Get(id);
+            if (evolutionTrigger == null)
+                return NotFound(id);
 
-                var result = new EvolutionTrigger
-                {
-                    Id             = evolutionTrigger.Id,
-                    Name           = evolutionTrigger.Identifier,
-                    Names          = GetNames(evolutionTrigger),
-                    PokemonSpecies = GetPokemonSpecies(evolutionTrigger)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(evolutionTrigger);
         }
 
-        private static List<Name> GetNames(EFEvolutionTriggers evolutionTrigger)
+        // GET api/v1/evolution-triggers/trade
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return evolutionTrigger
-                .EvolutionTriggerProse
-                .Select(x => new Name(x.Name, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
+            var evolutionTrigger = await _evolutionTriggersCacheService.Get(name);
+            if (evolutionTrigger == null)
+                return NotFound(name);
 
-        private static List<NamedAPIResource> GetPokemonSpecies(EFEvolutionTriggers evolutionTrigger)
-        {
-            return evolutionTrigger
-                .PokemonEvolution
-                .Select(x => x.EvolvedSpecies.ToNamedApiResource())
-                .ToList();
+            return Ok(evolutionTrigger);
         }
     }
 }

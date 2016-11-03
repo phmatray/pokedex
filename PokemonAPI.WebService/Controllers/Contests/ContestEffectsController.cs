@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/contest-effects")]
     public class ContestEffectsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IContestEffectsCacheService _contestEffectsCacheService;
 
-        public ContestEffectsController(VeekunContext context)
+        public ContestEffectsController(IContestEffectsCacheService contestEffectsCacheService)
         {
-            _context = context;
+            _contestEffectsCacheService = contestEffectsCacheService;
         }
 
         // GET api/v1/contest-effects
@@ -26,78 +22,27 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _contestEffectsCacheService.Count();
+            var controllerType = typeof(ContestEffectsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.ContestEffects;
-                var controller = typeof(ContestEffectsController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var contestEffects = await _contestEffectsCacheService.GetAll(limit, offset);
+            if (contestEffects == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .AsNoTracking()
-                        .OrderBy(x => x.Id)
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToApiResource(controller))
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new APIResourceList(count, previous, next, contestEffects));
         }
 
         // GET api/v1/contest-effects/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var contestEffect = await _context.ContestEffects
-                    .AsNoTracking()
-                    .Include(x => x.ContestEffectProse).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var contestEffect = await _contestEffectsCacheService.Get(id);
+            if (contestEffect == null)
+                return NotFound(id);
 
-                var result = new ContestEffect
-                {
-                    Id                = contestEffect.Id,
-                    Appeal            = contestEffect.Appeal,
-                    Jam               = contestEffect.Jam,
-                    EffectEntries     = GetEffectEntries(contestEffect),
-                    FlavorTextEntries = GetFlavorTextEntries(contestEffect)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        private static List<Effect> GetEffectEntries(EFContestEffects contestEffect)
-        {
-            return contestEffect
-                .ContestEffectProse
-                .Select(x => new Effect(x.Effect, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
-        }
-
-        private static List<FlavorText> GetFlavorTextEntries(EFContestEffects contestEffect)
-        {
-            return contestEffect
-                .ContestEffectProse
-                .Select(x => new FlavorText(x.FlavorText, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(contestEffect);
         }
     }
 }

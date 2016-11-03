@@ -1,22 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using PokemonAPI.WebService.Controllers._Base;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/machines")]
     public class MachinesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IMachinesCacheService _machinesCacheService;
 
-        public MachinesController(VeekunContext context)
+        public MachinesController(IMachinesCacheService machinesCacheService)
         {
-            _context = context;
+            _machinesCacheService = machinesCacheService;
         }
 
         // GET api/v1/machines
@@ -24,63 +22,27 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _machinesCacheService.Count();
+            var controllerType = typeof(MachinesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.Machines;
-                var controller = typeof(MachinesController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var berries = await _machinesCacheService.GetAll(limit, offset);
+            if (berries == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .AsNoTracking()
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToApiResource())
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new APIResourceList(count, previous, next, berries));
         }
 
         // GET api/v1/machines?machineNumber=1&versionGroupId=1
-        [HttpGet("{machineNumber}/{versionGroupId}")]
+        [HttpGet("{machineNumber:int}/{versionGroupId:int}")]
         public async Task<IActionResult> Get(int machineNumber, int versionGroupId)
         {
-            try
-            {
-                var machine = await _context.Machines
-                    .AsNoTracking()
-                    .Include(x => x.Item)
-                    .Include(x => x.Move)
-                    .Include(x => x.VersionGroup)
-                    .FirstOrDefaultAsync(x => x.MachineNumber == machineNumber &&
-                    x.VersionGroupId == versionGroupId);
+            var berry = await _machinesCacheService.Get(machineNumber, versionGroupId);
+            if (berry == null)
+                return NotFound($"{machineNumber}/{versionGroupId}");
 
-                var result = new Machine
-                {
-                    Id           = $"{machineNumber}/{versionGroupId}",
-                    Item         = machine.Item?.ToNamedApiResource(),
-                    Move         = machine.Move?.ToNamedApiResource(),
-                    VersionGroup = machine.VersionGroup?.ToNamedApiResource()
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(berry);
         }
     }
 }

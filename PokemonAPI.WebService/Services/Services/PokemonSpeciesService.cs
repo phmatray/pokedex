@@ -9,7 +9,6 @@ using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -27,13 +26,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.PokemonSpecies.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemonSpecies, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemonSpecies, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -46,7 +44,7 @@ namespace PokemonAPI.WebService.Services.Services
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(controllerType))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
 
             return apiResults;
@@ -171,7 +169,7 @@ namespace PokemonAPI.WebService.Services.Services
         {
             return species
                 .EvolutionChain?
-                .ToApiResource(typeof(EvolutionChainsController));
+                .ToApiResource();
         }
 
         private static NamedAPIResource GetHabitat(EFPokemonSpecies species)

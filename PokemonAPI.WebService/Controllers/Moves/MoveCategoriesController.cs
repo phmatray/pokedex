@@ -1,75 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/move-categories")]
     public class MoveCategoriesController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IMoveCategoriesCacheService _moveCategoriesCacheService;
 
-        public MoveCategoriesController(VeekunContext context)
+        public MoveCategoriesController(IMoveCategoriesCacheService moveCategoriesCacheService)
         {
-            _context = context;
+            _moveCategoriesCacheService = moveCategoriesCacheService;
         }
 
         // GET api/v1/move-categories
         // GET api/v1/move-categories?skip=0&take=20
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
-            => await GetAll(limit, offset, _context.MoveMetaCategories, GetType());
+        {
+            var count          = await _moveCategoriesCacheService.Count();
+            var controllerType = typeof(MoveCategoriesController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
+
+            var moveCategories = await _moveCategoriesCacheService.GetAll(limit, offset);
+            if (moveCategories == null)
+                return NotFound($"Not found with {limit} {offset}");
+
+            return Ok(new NamedAPIResourceList(count, previous, next, moveCategories));
+        }
 
         // GET api/v1/move-categories/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var category = await _context
-                    .MoveMetaCategories
-                    .AsNoTracking()
-                    .Include(x => x.MoveMeta).ThenInclude(x => x.Move)
-                    .Include(x => x.MoveMetaCategoryProse).ThenInclude(x => x.LocalLanguage)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var moveCategory = await _moveCategoriesCacheService.Get(id);
+            if (moveCategory == null)
+                return NotFound(id);
 
-                var result = new MoveCategory
-                {
-                    Id           = category.Id,
-                    Name         = category.Identifier,
-                    Moves        = GetMoves(category),
-                    Descriptions = GetDescriptions(category)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(moveCategory);
         }
 
-        private static List<NamedAPIResource> GetMoves(EFMoveMetaCategories category)
+        // GET api/v1/move-categories/heal
+        [HttpGet("{name}")]
+        public async Task<IActionResult> Get(string name)
         {
-            return category
-                .MoveMeta
-                .Select(x => x.Move.ToNamedApiResource())
-                .ToList();
-        }
+            var moveCategory = await _moveCategoriesCacheService.Get(name);
+            if (moveCategory == null)
+                return NotFound(name);
 
-        private static List<Description> GetDescriptions(EFMoveMetaCategories category)
-        {
-            return category
-                .MoveMetaCategoryProse
-                .Select(x => new Description(x.Description, x.LocalLanguage.ToNamedApiResource()))
-                .ToList();
+            return Ok(moveCategory);
         }
     }
 }

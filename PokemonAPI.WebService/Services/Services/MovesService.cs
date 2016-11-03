@@ -5,11 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -27,13 +25,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.Moves.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFMoves, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFMoves, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -46,7 +43,7 @@ namespace PokemonAPI.WebService.Services.Services
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(controllerType))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
 
             return apiResults;
@@ -72,10 +69,7 @@ namespace PokemonAPI.WebService.Services.Services
                 .Include(x => x.SuperContestCombosFirstMove).ThenInclude(x => x.SecondMove)
                 .Include(x => x.SuperContestCombosSecondMove).ThenInclude(x => x.FirstMove)
                 .Include(x => x.Effect).ThenInclude(x => x.MoveEffectProse).ThenInclude(x => x.LocalLanguage)
-                .Include(x => x.Effect)
-                .ThenInclude(x => x.MoveEffectChangelog)
-                .ThenInclude(x => x.MoveEffectChangelogProse)
-                .ThenInclude(x => x.LocalLanguage)
+                .Include(x => x.Effect).ThenInclude(x => x.MoveEffectChangelog).ThenInclude(x => x.MoveEffectChangelogProse).ThenInclude(x => x.LocalLanguage)
                 .Include(x => x.Effect).ThenInclude(x => x.MoveEffectChangelog).ThenInclude(x => x.ChangedInVersionGroup)
                 .Include(x => x.MoveFlavorText).ThenInclude(x => x.Language)
                 .Include(x => x.MoveFlavorText).ThenInclude(x => x.VersionGroup)
@@ -181,7 +175,7 @@ namespace PokemonAPI.WebService.Services.Services
         {
             return move
                 .ContestEffect?
-                .ToApiResource<ContestEffectsController>();
+                .ToApiResource();
         }
 
         private static NamedAPIResource GetDamageClass(EFMoves move)
@@ -277,8 +271,8 @@ namespace PokemonAPI.WebService.Services.Services
                 .Select(moveChangelog =>
                 {
                     var effectEntries = moveChangelog
-                        .Effect
-                        .MoveEffectProse
+                        .Effect?
+                        .MoveEffectProse?
                         .Where(m => m.ShortEffect != null && moveChangelog.Effect != null)
                         .Select(m => new VerboseEffect(m.Effect /*TODO: Parse this result*/,
                             m.ShortEffect, m.LocalLanguage.ToNamedApiResource()))
@@ -310,7 +304,7 @@ namespace PokemonAPI.WebService.Services.Services
         {
             return move
                 .SuperContestEffect?
-                .ToApiResource<SuperContestEffectsController>();
+                .ToApiResource();
         }
 
         private static NamedAPIResource GetTarget(EFMoves move)

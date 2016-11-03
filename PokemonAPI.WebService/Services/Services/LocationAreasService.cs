@@ -8,7 +8,6 @@ using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -26,13 +25,12 @@ namespace PokemonAPI.WebService.Services.Services
             return await _context.LocationAreas.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset, controllerType);
+            return await GetAll(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFLocationAreas, bool>> predicate,
-            int limit, int offset, Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFLocationAreas, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -40,12 +38,13 @@ namespace PokemonAPI.WebService.Services.Services
             var apiResults = (await _context
                     .LocationAreas
                     .AsNoTracking()
+                    .Include(x => x.Location)
                     .Where(predicate)
                     .OrderBy(x => x.Id)
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync())
-                .Select(x => x.ToNamedApiResource(controllerType))
+                .Select(x => x.ToNamedApiResource())
                 .ToList();
 
             return apiResults;
@@ -58,7 +57,9 @@ namespace PokemonAPI.WebService.Services.Services
 
         public async Task<LocationArea> Get(string name)
         {
-            return await Get(x => x.Identifier == name);
+            return await Get(x => (x.Identifier == null
+                                      ? $"{x.Location.Identifier}-area"
+                                      : $"{x.Location.Identifier}-{x.Identifier}") == name);
         }
 
         public async Task<LocationArea> Get(Expression<Func<EFLocationAreas, bool>> predicate)

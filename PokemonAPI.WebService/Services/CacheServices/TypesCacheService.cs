@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
 
@@ -32,10 +31,10 @@ namespace PokemonAPI.WebService.Services.CacheServices
                 $"{_typeName}-Count",
                 entry => _typesService.Count());
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset, System.Type controllerType)
+        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
             => await _memoryCache.GetOrCreateAsync(
                 $"{_typeName}-GetAll-{limit}-{offset}",
-                entry => _typesService.GetAll(limit, offset, typeof(TypesController)));
+                entry => _typesService.GetAll(limit, offset));
 
         public async Task<Type> Get(int id)
             => await _memoryCache.GetOrCreateAsync(

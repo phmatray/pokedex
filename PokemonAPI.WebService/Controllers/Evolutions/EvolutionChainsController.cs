@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
-using PokemonAPI.WebService.Models;
+using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers
 {
     [Route("api/v1/evolution-chains")]
     public class EvolutionChainsController : ApiController
     {
-        private readonly VeekunContext _context;
+        private readonly IEvolutionChainsCacheService _evolutionChainsCacheService;
 
-        public EvolutionChainsController(VeekunContext context)
+        public EvolutionChainsController(IEvolutionChainsCacheService evolutionChainsCacheService)
         {
-            _context = context;
+            _evolutionChainsCacheService = evolutionChainsCacheService;
         }
 
         // GET api/v1/evolution-chains
@@ -26,132 +22,27 @@ namespace PokemonAPI.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
         {
-            try
-            {
-                if (limit <= 0) throw new ArgumentOutOfRangeException(nameof(limit));
-                if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            var count          = await _evolutionChainsCacheService.Count();
+            var controllerType = typeof(EvolutionChainsController);
+            var previous       = controllerType.Previous(limit, offset);
+            var next           = controllerType.Next(limit, offset, count);
 
-                var dbset      = _context.EvolutionChains;
-                var controller = typeof(EvolutionChainsController);
-                var count      = await dbset.CountAsync();
-                var previous   = controller.Previous(limit, offset);
-                var next       = controller.Next(limit, offset, count);
+            var evolutionChains = await _evolutionChainsCacheService.GetAll(limit, offset);
+            if (evolutionChains == null)
+                return NotFound($"Not found with {limit} {offset}");
 
-                var apiResults = (await dbset
-                        .OrderBy(x => x.Id)
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToListAsync())
-                    .Select(x => x.ToApiResource(controller))
-                    .ToList();
-
-                var results = new APIResourceList(count, previous, next, apiResults);
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(new APIResourceList(count, previous, next, evolutionChains));
         }
 
         // GET api/v1/evolution-chains/1
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var evolutionChain = await _context.EvolutionChains
-                    .AsNoTracking()
-                    .Include(x => x.BabyTriggerItem)
-                    .Include(x => x.PokemonSpecies)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var evolutionChain = await _evolutionChainsCacheService.Get(id);
+            if (evolutionChain == null)
+                return NotFound(id);
 
-                var firstStadeSpecies = evolutionChain
-                    .PokemonSpecies
-                    .Single(x => x.EvolvesFromSpeciesId == null);
-
-                var result = new EvolutionChain
-                {
-                    Id              = evolutionChain.Id,
-                    BabyTriggerItem = GetBabyTriggerItem(evolutionChain),
-                    Chain           = GetChain(firstStadeSpecies)
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        private static NamedAPIResource GetBabyTriggerItem(EFEvolutionChains evolutionChain)
-        {
-            return evolutionChain
-                .BabyTriggerItem?
-                .ToNamedApiResource();
-        }
-
-        private ChainLink GetChain(EFPokemonSpecies firstStadeSpecies)
-        {
-            return new ChainLink
-            {
-                IsBaby           = firstStadeSpecies.IsBaby,
-                Species          = firstStadeSpecies.ToNamedApiResource(),
-                EvolutionDetails = new List<EvolutionDetail>(), // We MUST return an empty list for the first node
-                EvolvesTo        = GetEvolvesToChainLinks(firstStadeSpecies)
-            };
-        }
-
-        private List<ChainLink> GetEvolvesToChainLinks(EFPokemonSpecies species)
-        {
-            var evolutionsFromSpecies = _context
-                .PokemonSpecies
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.TriggerItem)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.EvolutionTrigger)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.HeldItem)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.KnownMove)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.KnownMoveType)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.Location)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.PartySpecies)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.PartyType)
-                .Include(x => x.InverseEvolvesFromSpecies).ThenInclude(x => x.PokemonEvolutionEvolvedSpecies).ThenInclude(x => x.TradeSpecies)
-                .Single(x => x.Id == species.Id)
-                .InverseEvolvesFromSpecies
-                .ToList();
-
-            return evolutionsFromSpecies
-                .Select(evolution => new ChainLink
-                {
-                    IsBaby = evolution.IsBaby,
-                    Species = evolution.ToNamedApiResource(),
-                    EvolutionDetails = evolution
-                        .PokemonEvolutionEvolvedSpecies
-                        .Select(x => new EvolutionDetail
-                        {
-                            Item                  = x.TriggerItem?.ToNamedApiResource(),
-                            Trigger               = x.EvolutionTrigger?.ToNamedApiResource(),
-                            Gender                = x.GenderId,
-                            HeldItem              = x.HeldItem?.ToNamedApiResource(),
-                            KnownMove             = x.KnownMove?.ToNamedApiResource(),
-                            KnownMoveType         = x.KnownMoveType?.ToNamedApiResource(),
-                            Location              = x.Location?.ToNamedApiResource(),
-                            MinLevel              = x.MinimumLevel,
-                            MinHappiness          = x.MinimumHappiness,
-                            MinBeauty             = x.MinimumBeauty,
-                            MinAffection          = x.MinimumAffection,
-                            NeedsOverworldRain    = x.NeedsOverworldRain,
-                            PartySpecies          = x.PartySpecies?.ToNamedApiResource(),
-                            PartyType             = x.PartyType?.ToNamedApiResource(),
-                            RelativePhysicalStats = x.RelativePhysicalStats,
-                            TimeOfDay             = x.TimeOfDay,
-                            TradeSpecies          = x.TradeSpecies?.ToNamedApiResource(),
-                            TurnUpsideDown        = x.TurnUpsideDown
-                        }).ToList(),
-                    EvolvesTo = GetEvolvesToChainLinks(evolution)
-                })
-                .ToList();
+            return Ok(evolutionChain);
         }
     }
 }
