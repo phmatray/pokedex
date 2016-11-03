@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
 namespace PokemonAPI.WebService.Controllers

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 

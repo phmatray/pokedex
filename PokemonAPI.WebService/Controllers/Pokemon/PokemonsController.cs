@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.Models.Rsc;
-using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Services.CacheServicesAbstractions;
 
@@ -61,7 +60,7 @@ namespace PokemonAPI.WebService.Controllers
         public async Task<IActionResult> GetEncounters(int id)
         {
             var encounters = await _pokemonsService.GetEncounters(id);
-            if (encounters == null || encounters.Count == 0)
+            if (encounters == null)
                 return NotFound(id);
 
             return Ok(encounters);
@@ -72,7 +71,7 @@ namespace PokemonAPI.WebService.Controllers
         public async Task<IActionResult> GetEncounters(string name)
         {
             var encounters = await _pokemonsService.GetEncounters(name);
-            if (encounters == null || encounters.Count == 0)
+            if (encounters == null)
                 return NotFound(name);
 
             return Ok(encounters);

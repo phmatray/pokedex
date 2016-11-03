@@ -1,6 +1,5 @@
 ﻿using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers;
-using PokemonAPI.WebService.Controllers._Base;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Models.Interfaces;
 
