@@ -141,21 +141,21 @@ namespace PokemonAPI.WebService.Services.Services
             return efEncounterses
                 .GroupBy(x => x.LocationAreaId, (locationAreaId, encountersG1) =>
                 {
-                    var locationArea = encountersG1.First().LocationArea.ToNamedApiResource();
-                    var versionDetails = encountersG1
+                    var locationArea = encountersG1.FirstOrDefault()?.LocationArea?.ToNamedApiResource();
+                    var versionDetails = encountersG1?
                         .GroupBy(x => x.VersionId, (versionId, encountersG2) =>
                         {
-                            var version = encountersG2.First().Version.ToNamedApiResource();
-                            var maxChance = encountersG2.Sum(enc => enc.EncounterSlot.Rarity ?? 0);
-                            var encounterDetails = encountersG2
+                            var version = encountersG2?.FirstOrDefault().Version.ToNamedApiResource();
+                            var maxChance = encountersG2?.Sum(enc => enc.EncounterSlot.Rarity ?? 0) ?? 0;
+                            var encounterDetails = encountersG2?
                                 .Select(enc => new Encounter(
                                     enc.MinLevel,
                                     enc.MaxLevel,
-                                    enc.EncounterConditionValueMap
-                                        .Select(ecvm => ecvm.EncounterConditionValue.ToNamedApiResource())
+                                    enc.EncounterConditionValueMap?
+                                        .Select(ecvm => ecvm.EncounterConditionValue?.ToNamedApiResource())
                                         .ToList(),
-                                    enc.EncounterSlot.Rarity,
-                                    enc.EncounterSlot.EncounterMethod.ToNamedApiResource()))
+                                    enc.EncounterSlot?.Rarity,
+                                    enc.EncounterSlot?.EncounterMethod?.ToNamedApiResource()))
                                 .ToList();
 
                             return new VersionEncounterDetail(version, maxChance, encounterDetails);

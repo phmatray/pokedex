@@ -117,14 +117,14 @@ namespace PokemonAPI.WebService.Services.Services
         private static List<AbilityEffectChange> GetEffectChanges(EFAbilities ability)
         {
             return ability
-                .AbilityChangelog
+                .AbilityChangelog?
                 .Select(x =>
                 {
-                    var effectEntries = x.AbilityChangelogProse?
-                        .Select(y => new Effect(y.Effect, y.LocalLanguage.ToNamedApiResource()))
+                    var effectEntries1 = x.AbilityChangelogProse?
+                        .Select(y => new Effect(y.Effect, y.LocalLanguage?.ToNamedApiResource()))
                         .ToList();
 
-                    return new AbilityEffectChange(effectEntries, x.ChangedInVersionGroup.ToNamedApiResource());
+                    return new AbilityEffectChange(effectEntries1, x.ChangedInVersionGroup?.ToNamedApiResource());
                 })
                 .ToList();
         }
