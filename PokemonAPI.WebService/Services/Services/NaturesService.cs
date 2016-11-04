@@ -36,16 +36,15 @@ namespace PokemonAPI.WebService.Services.Services
             if (limit <= 0 || offset < 0)
                 return null;
 
-            var apiResults = (await _context
-                    .Natures
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .OrderBy(x => x.Id)
-                    .Skip(offset)
-                    .Take(limit)
-                    .ToListAsync())
+            var apiResults = await _context
+                .Natures
+                .AsNoTracking()
+                .Where(predicate)
+                .OrderBy(x => x.Id)
+                .Skip(offset)
+                .Take(limit)
                 .Select(x => x.ToNamedApiResource())
-                .ToList();
+                .ToListAsync();
 
             return apiResults;
         }

@@ -4,13 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.v3;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
 using PokemonAPI.WebService.Models;
 using PokemonAPI.WebService.Services.ServicesAbstractions;
-using Type = System.Type;
 
 namespace PokemonAPI.WebService.Services.Services
 {
@@ -38,16 +36,15 @@ namespace PokemonAPI.WebService.Services.Services
             if (limit <= 0 || offset < 0)
                 return null;
 
-            var apiResults = (await _context
-                    .Pokemon
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .OrderBy(x => x.Id)
-                    .Skip(offset)
-                    .Take(limit)
-                    .ToListAsync())
+            var apiResults = await _context
+                .Pokemon
+                .AsNoTracking()
+                .Where(predicate)
+                .OrderBy(x => x.Id)
+                .Skip(offset)
+                .Take(limit)
                 .Select(x => x.ToNamedApiResource())
-                .ToList();
+                .ToListAsync();
 
             return apiResults;
         }
