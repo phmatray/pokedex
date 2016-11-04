@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.v3;
 using PokemonAPI.Models.Rsc;
 using PokemonAPI.WebService.Controllers;
 using PokemonAPI.WebService.Core;
@@ -51,16 +52,25 @@ namespace PokemonAPI.WebService.Services.Services
             return apiResults;
         }
 
-        public async Task<List<Pokemon>> GetAllDetails(int limit, int offset, Type controllerType)
-        {
-            var collection = await GetAll(limit, offset);
+        //public async Task<string> GetAllDetails()
+        //{
+        //    var pokemons = await _context
+        //        .Pokemon
+        //        .AsNoTracking()
+        //        .Include(x => x.Species).ThenInclude(x => x.PokemonEggGroups)
+        //        .Include(x => x.PokemonStats).ThenInclude(x => x.Stat)
+        //        .Select(x => new
+        //        {
+        //            Name      = x.Identifier,
+        //            Gender    = x.Species.GenderRate,
+        //            EggGroups = x.Species.PokemonEggGroups,
+        //            Types     = x.PokemonTypes,
+        //            Stats     = GetStats(x)
+        //        })
+        //        .ToListAsync();
 
-            var results = new List<Pokemon>();
-            foreach (var x in collection)
-                results.Add(await Get(x.Name));
-
-            return results;
-        }
+        //    return pokemons.ToJson();
+        //}
 
         public async Task<Pokemon> Get(int id)
         {
@@ -208,7 +218,7 @@ namespace PokemonAPI.WebService.Services.Services
 
         private static string GetLocationAreaEncounters(EFPokemon pokemon)
         {
-            return typeof(PokemonsController).RscUrl($"{pokemon.Id}/encounters/");
+            return typeof(PokemonsController).RscUrl($"{pokemon.Id}/encounters");
         }
 
         private static List<PokemonMove> GetMoves(EFPokemon pokemon)
