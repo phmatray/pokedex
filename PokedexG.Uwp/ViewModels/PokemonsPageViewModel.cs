@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
+using PokedexG.Uwp.Data;
 using PokedexG.Uwp.Models.Filtering;
 using PokedexG.Uwp.Services.SettingsServices;
 using PokedexG.Uwp.Services.VeekunServices;

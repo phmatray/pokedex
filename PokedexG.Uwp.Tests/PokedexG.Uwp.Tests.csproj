@@ -130,10 +130,6 @@
       <Project>{26f297ce-3c92-4af6-ba20-70e4fc5a9d2b}</Project>
       <Name>PokemonAPI.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PokemonAPI\PokemonAPI.csproj">
-      <Project>{712c4a68-089d-45d3-bae4-d46d1026374c}</Project>
-      <Name>PokemonAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

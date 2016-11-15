@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
+using PokedexG.Uwp.Data;
+using PokedexG.Uwp.Data.Services;
 using PokedexG.Uwp.Models;
 using PokedexG.Uwp.Services.VeekunServices;
 using PokedexG.Uwp.Services.VeekunServices.Business;
 using PokedexG.Uwp.Views;
+using PokemonAPI;
+using PokemonAPI.Models.Rsc;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Move = PokedexG.Uwp.Models.Move;
+using Pokemon = PokemonAPI.Models.Rsc.Pokemon;
+using PokemonAbility = PokedexG.Uwp.Models.PokemonAbility;
 
 namespace PokedexG.Uwp.ViewModels
 {
@@ -52,6 +60,18 @@ namespace PokedexG.Uwp.ViewModels
         }
 
         public List<PokemonLite> PokemonsByEgggroup { get; private set; }
+
+
+
+
+        public Pokemon Pokemon { get; set; }
+        public PokemonSpecies PokemonSpecies { get; set; }
+        string NameDefault { get; set; }
+        string FlavorTextX { get; set; }
+        string FlavorTextY { get; set; }
+        string FlavorTextOR { get; set; }
+        string FlavorTextAS { get;set; }
+
 
         #endregion
 
@@ -109,6 +129,34 @@ namespace PokedexG.Uwp.ViewModels
                     ? (int) suspensionState[nameof(CurrentFormId)]
                     : (int) parameter;
 
+                var context = new VeekunContext();
+                var pokemonsService = new PokemonsService(context);
+                var pokemonSpeciesService = new PokemonSpeciesService(context);
+
+                Pokemon = await pokemonsService.Get(CurrentFormId);
+                PokemonSpecies = await pokemonSpeciesService.Get(Pokemon.Species.Id);
+
+                NameDefault = PokemonSpecies.Names
+                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)
+                    .NameValue;
+                FlavorTextX = PokemonSpecies.FlavorTextEntries
+                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 23)
+                    .FlavorTextValue;
+                FlavorTextY = PokemonSpecies.FlavorTextEntries
+                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 24)
+                    .FlavorTextValue;
+                FlavorTextOR = PokemonSpecies.FlavorTextEntries
+                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 25)
+                    .FlavorTextValue;
+                FlavorTextAS = PokemonSpecies.FlavorTextEntries
+                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 26)
+                    .FlavorTextValue;
+
+
+                //var pokemon = await DataFetcher.GetPokemon(CurrentFormId);
+                //var pokemonSpecies = await DataFetcher.GetPokemonSpecies(pokemon.Species.Name);
+
+
                 CurrentPokemonDetails = await Veekun.GetPokemon(CurrentFormId);
                 CurrentFlavorText = CurrentPokemonDetails.FlavorTextX;
 
@@ -154,8 +202,9 @@ namespace PokedexG.Uwp.ViewModels
 
                 await Task.CompletedTask;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 NavigationService.Navigate(typeof(PokemonsPage));
             }
 

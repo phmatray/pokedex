@@ -2,15 +2,14 @@ namespace PokemonAPI.Models.Rsc
 {
     public class APIResource
     {
-        public APIResource(string url)
+        public APIResource(int id)
         {
-            Url = url;
+            Id = id;
         }
 
         /// <summary>
-        /// The URL of the referenced resource
+        /// The ID of the referenced resource
         /// </summary>
-        public string Url { get; set; }
-
+        public int Id { get; set; }
     }
 }

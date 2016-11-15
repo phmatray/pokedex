@@ -41,21 +41,29 @@ namespace PokemonAPI
 
     public static class DataFetcher
     {
-        private static IDataFetcherConfig _config;
-        private static HttpClient _client;
+        //private static IDataFetcherConfig _config;
+        private static readonly HttpClient Client;
 
-        public static IDataFetcherConfig Config
+        static DataFetcher()
         {
-            get { return _config; }
-            set
+            Client = new HttpClient
             {
-                _config = value;
-                _client = new HttpClient
-                {
-                    BaseAddress = new Uri($"{_config.SiteUrl}{_config.BaseUrl}")
-                };
-            }
+                BaseAddress = new Uri("http://localhost:50357/api/v1/")
+            };
         }
+
+        //public static IDataFetcherConfig Config
+        //{
+        //    get { return _config; }
+        //    set
+        //    {
+        //        _config = value;
+        //        _client = new HttpClient
+        //        {
+        //            BaseAddress = new Uri($"{_config.SiteUrl}{_config.BaseUrl}")
+        //        };
+        //    }
+        //}
 
         public static async Task<NamedAPIResourceList> GetGenerations()
         {
@@ -82,14 +90,19 @@ namespace PokemonAPI
             return await GetResource<Pokemon>($"pokemons/{id}");
         }
 
+        public static async Task<NamedAPIResourceList> GetPokemonSpecies()
+            => await GetResource<NamedAPIResourceList>("pokemon-species");
 
+        public static async Task<PokemonSpecies> GetPokemonSpecies(int id)
+            => await GetResource<PokemonSpecies>($"pokemon-species/{id}");
 
-
+        public static async Task<PokemonSpecies> GetPokemonSpecies(string name)
+            => await GetResource<PokemonSpecies>($"pokemon-species/{name}");
 
 
         public static async Task<T> GetResource<T>(string requestUri)
         {
-            var response = await _client.GetAsync(requestUri);
+            var response = await Client.GetAsync(requestUri);
             var json = await response.Content.ReadAsStringAsync();
 
             var serializerSettings = JsonConvert.DefaultSettings();
@@ -105,7 +118,7 @@ namespace PokemonAPI
 
         public static async Task<T> GetResourceEmpty<T>(string requestUri)
         {
-            var response = await _client.GetAsync(requestUri);
+            var response = await Client.GetAsync(requestUri);
             return default(T);
         }
 

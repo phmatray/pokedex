@@ -1,0 +1,13 @@
+﻿using PokedexG.Uwp.Data.Models.Interfaces;
+
+namespace PokedexG.Uwp.Data.Models
+{
+    public class EFPokemonEggGroups : IEFModel
+    {
+        public int SpeciesId { get; set; }
+        public int EggGroupId { get; set; }
+
+        public virtual EFEggGroups EggGroup { get; set; }
+        public virtual EFPokemonSpecies Species { get; set; }
+    }
+}

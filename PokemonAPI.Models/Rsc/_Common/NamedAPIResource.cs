@@ -2,8 +2,8 @@ namespace PokemonAPI.Models.Rsc
 {
     public class NamedAPIResource : APIResource
     {
-        public NamedAPIResource(string name, string url)
-            : base(url)
+        public NamedAPIResource(int id, string name)
+            : base(id)
         {
             Name = name;
         }
