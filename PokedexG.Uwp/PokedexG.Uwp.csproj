@@ -3049,6 +3049,7 @@
     <Compile Include="Data\Models\VersionGroups.cs" />
     <Compile Include="Data\Models\VersionNames.cs" />
     <Compile Include="Data\Models\Versions.cs" />
+    <Compile Include="Data\Enum\Referencial.cs" />
     <Compile Include="Data\ServicesAbstractions\IAbilitiesService.cs" />
     <Compile Include="Data\ServicesAbstractions\IBerriesService.cs" />
     <Compile Include="Data\ServicesAbstractions\IBerryFirmnessesService.cs" />
@@ -3165,6 +3166,7 @@
     <Compile Include="Models\PokemonFamilyStade.cs" />
     <Compile Include="Models\PokemonLite.cs" />
     <Compile Include="Models\PokemonLocation.cs" />
+    <Compile Include="Models\PokemonUIModel.cs" />
     <Compile Include="Models\TypeLite.cs" />
     <Compile Include="Models\TypeRelation.cs" />
     <Compile Include="Models\TypeRelationGroup.cs" />
@@ -3247,6 +3249,9 @@
     </Compile>
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\UserControlType2.xaml.cs">
+      <DependentUpon>UserControlType2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\UserControlWeaknessNew.xaml.cs">
       <DependentUpon>UserControlWeaknessNew.xaml</DependentUpon>
@@ -3347,6 +3352,10 @@
     <Page Include="Views\Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\UserControlType2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UserControls\UserControlWeaknessNew.xaml">
       <Generator>MSBuild:Compile</Generator>

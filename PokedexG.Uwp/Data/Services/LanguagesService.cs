@@ -48,6 +48,37 @@ namespace PokedexG.Uwp.Data.Services
             return apiResults;
         }
 
+        public async Task<List<Language>> GetAllDetails(int limit, int offset)
+        {
+            return await GetAllDetails(x => true, limit, offset);
+        }
+
+        public async Task<List<Language>> GetAllDetails(Expression<Func<EFLanguages, bool>> predicate, int limit, int offset)
+        {
+            if (limit <= 0 || offset < 0)
+                return null;
+
+            var apiResults = await _context
+                .Languages
+                .AsNoTracking()
+                .Where(predicate)
+                .OrderBy(x => x.Id)
+                .Skip(offset)
+                .Take(limit)
+                .Select(x => new Language
+                {
+                    Id       = x.Id,
+                    Name     = x.Identifier,
+                    Iso639   = x.Iso639,
+                    Iso3166  = x.Iso3166,
+                    Official = x.Official,
+                    Names    = GetNames(x)
+                })
+                .ToListAsync();
+
+            return apiResults;
+        }
+
         public async Task<Language> Get(int id)
         {
             return await Get(x => x.Id == id);

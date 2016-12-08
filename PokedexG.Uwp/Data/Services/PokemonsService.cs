@@ -20,17 +20,17 @@ namespace PokedexG.Uwp.Data.Services
             _context = context;
         }
 
-        public async Task<int> Count()
+        public async Task<int> CountAsync()
         {
             return await _context.Pokemon.CountAsync();
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(int limit, int offset)
+        public async Task<List<NamedAPIResource>> GetAllAsync(int limit, int offset)
         {
-            return await GetAll(x => true, limit, offset);
+            return await GetAllAsync(x => true, limit, offset);
         }
 
-        public async Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemon, bool>> predicate, int limit, int offset)
+        public async Task<List<NamedAPIResource>> GetAllAsync(Expression<Func<EFPokemon, bool>> predicate, int limit, int offset)
         {
             if (limit <= 0 || offset < 0)
                 return null;
@@ -68,17 +68,17 @@ namespace PokedexG.Uwp.Data.Services
         //    return pokemons.ToJson();
         //}
 
-        public async Task<Pokemon> Get(int id)
+        public async Task<Pokemon> GetAsync(int id)
         {
-            return await Get(x => x.Id == id);
+            return await GetAsync(x => x.Id == id);
         }
 
-        public async Task<Pokemon> Get(string name)
+        public async Task<Pokemon> GetAsync(string name)
         {
-            return await Get(x => x.Identifier == name);
+            return await GetAsync(x => x.Identifier == name);
         }
 
-        public async Task<Pokemon> Get(Expression<Func<EFPokemon, bool>> predicate)
+        public async Task<Pokemon> GetAsync(Expression<Func<EFPokemon, bool>> predicate)
         {
             var pokemon = await _context
                 .Pokemon
@@ -121,17 +121,17 @@ namespace PokedexG.Uwp.Data.Services
             };
         }
 
-        public async Task<List<LocationAreaEncounter>> GetEncounters(int pokemonId)
+        public async Task<List<LocationAreaEncounter>> GetEncountersAsync(int pokemonId)
         {
-            return await GetEncounters(x => x.PokemonId == pokemonId);
+            return await GetEncountersAsync(x => x.PokemonId == pokemonId);
         }
 
-        public async Task<List<LocationAreaEncounter>> GetEncounters(string pokemonName)
+        public async Task<List<LocationAreaEncounter>> GetEncountersAsync(string pokemonName)
         {
-            return await GetEncounters(x => x.Pokemon.Identifier == pokemonName);
+            return await GetEncountersAsync(x => x.Pokemon.Identifier == pokemonName);
         }
 
-        public async Task<List<LocationAreaEncounter>> GetEncounters(Expression<Func<EFEncounters, bool>> predicate)
+        public async Task<List<LocationAreaEncounter>> GetEncountersAsync(Expression<Func<EFEncounters, bool>> predicate)
         {
             var efEncounterses = await _context
                 .Encounters
@@ -178,6 +178,7 @@ namespace PokedexG.Uwp.Data.Services
             return pokemon
                 .PokemonAbilities
                 .Select(x => new PokemonAbility(x.IsHidden, x.Slot, x.Ability.ToNamedApiResource()))
+                .OrderBy(x => x.Slot)
                 .ToList();
         }
 

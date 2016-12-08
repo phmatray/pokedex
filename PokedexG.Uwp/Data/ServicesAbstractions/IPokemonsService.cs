@@ -9,14 +9,14 @@ namespace PokedexG.Uwp.Data.ServicesAbstractions
 {
     public interface IPokemonsService
     {
-        Task<int> Count();
-        Task<List<NamedAPIResource>> GetAll(int limit, int offset);
-        Task<List<NamedAPIResource>> GetAll(Expression<Func<EFPokemon, bool>> predicate, int limit, int offset);
-        Task<Pokemon> Get(int id);
-        Task<Pokemon> Get(string name);
-        Task<Pokemon> Get(Expression<Func<EFPokemon, bool>> predicate);
-        Task<List<LocationAreaEncounter>> GetEncounters(int pokemonId);
-        Task<List<LocationAreaEncounter>> GetEncounters(string pokemonName);
-        Task<List<LocationAreaEncounter>> GetEncounters(Expression<Func<EFEncounters, bool>> predicate);
+        Task<int> CountAsync();
+        Task<List<NamedAPIResource>> GetAllAsync(int limit, int offset);
+        Task<List<NamedAPIResource>> GetAllAsync(Expression<Func<EFPokemon, bool>> predicate, int limit, int offset);
+        Task<Pokemon> GetAsync(int id);
+        Task<Pokemon> GetAsync(string name);
+        Task<Pokemon> GetAsync(Expression<Func<EFPokemon, bool>> predicate);
+        Task<List<LocationAreaEncounter>> GetEncountersAsync(int pokemonId);
+        Task<List<LocationAreaEncounter>> GetEncountersAsync(string pokemonName);
+        Task<List<LocationAreaEncounter>> GetEncountersAsync(Expression<Func<EFEncounters, bool>> predicate);
     }
 }

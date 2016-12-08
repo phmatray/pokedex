@@ -8,6 +8,7 @@
       xmlns:viewModels="using:PokedexG.Uwp.ViewModels"
       xmlns:userControls="using:PokedexG.Uwp.Views.UserControls"
       xmlns:models="using:PokedexG.Uwp.Models"
+      xmlns:rsc="using:PokemonAPI.Models.Rsc"
       mc:Ignorable="d">
 
     <Page.DataContext>
@@ -110,22 +111,22 @@
             <StackPanel Orientation="Horizontal">
                 <Border VerticalAlignment="Stretch" Width="48">
                     <Image
-                        Source="{x:Bind ViewModel.CurrentPokemonDetails.FormKey, Converter={StaticResource FormKeyToIconPathConverter}}"
+                        Source="{x:Bind ViewModel.Pokemon.FormKey, Converter={StaticResource FormKeyToIconPathConverter}}"
                         Width="40" Height="30" />
                 </Border>
                 <TextBlock
-                    Text="{x:Bind ViewModel.CurrentPokemonDetails.PokedexNumberNationalFormatedWithSuffix, FallbackValue=#001}"
+                    Text="{x:Bind ViewModel.Pokemon.PokedexNumberNationalFormatedWithSuffix, FallbackValue=#000}"
                     Style="{StaticResource TitleTextBlockStyle}"
                     VerticalAlignment="Center" Margin="10,4,10,0" FontFamily="Segoe UI Semibold" FontSize="18" />
                 <TextBlock
-                    Text="{x:Bind ViewModel.CurrentPokemonDetails.NameFr, FallbackValue=PokemonNameFr, Mode=OneWay}"
+                    Text="{x:Bind ViewModel.Pokemon.NameFr, FallbackValue=PokemonNameFr, Mode=OneWay}"
                     Style="{StaticResource TitleTextBlockStyle}"
                     VerticalAlignment="Center" FontWeight="Bold" FontFamily="Segoe UI Semibold" FontSize="18"
                     Margin="10,4,0,0" />
                 <TextBlock Text="(fr)" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top"
                            Margin="2,10,0,0" />
                 <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                           Text="{x:Bind ViewModel.CurrentPokemonDetails.NameEn, FallbackValue=PokemonNameEn, Mode=OneWay}"
+                           Text="{x:Bind ViewModel.Pokemon.NameEn, FallbackValue=PokemonNameEn, Mode=OneWay}"
                            Margin="20,4,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="18" />
                 <TextBlock Text="(en)" FontSize="14" FontFamily="Segoe UI Semibold" VerticalAlignment="Top"
                            Margin="2,10,0,0" />
@@ -149,7 +150,7 @@
             <Grid BorderThickness="0,0,2,0" BorderBrush="Bisque">
                 <StackPanel Margin="10,0,10,10">
                     <controls1:ImageEx
-                        Source="{x:Bind ViewModel.CurrentPokemonDetails.FormKey, Converter={StaticResource SpecieIdToIllustrationPathConverter}}"
+                        Source="{x:Bind ViewModel.Pokemon.FormKey, Converter={StaticResource SpecieIdToIllustrationPathConverter}}"
                         Width="300" Height="300" HorizontalAlignment="Left" Margin="0,20,0,0" />
 
                     <Grid HorizontalAlignment="Left" Margin="0,20,0,0">
@@ -171,56 +172,51 @@
 
                         <TextBlock Text="Type principal" Grid.Row="0" Grid.Column="0" FontWeight="Bold"
                                    Margin="0,7,0,0" VerticalAlignment="Top" />
-                        <userControls:UserControlType Grid.Row="0" Grid.Column="1"
+                        <userControls:UserControlType2 Grid.Row="0" Grid.Column="1"
                                                       VerticalAlignment="Top" Margin="16,7,0,0"
                                                       HorizontalAlignment="Left"
-                                                      TypeId="{x:Bind ViewModel.CurrentPokemonDetails.Type1Id}"
-                                                      Text="{x:Bind ViewModel.CurrentPokemonDetails.Type1Name}"
+                                                      PokemonType="{x:Bind ViewModel.Pokemon.Type1}"
                                                       Tapped="Type1_OnTapped" />
                         <TextBlock Text="Type secondaire" Grid.Row="1" Grid.Column="0" FontWeight="Bold"
                                    Margin="0,7,0,0" VerticalAlignment="Top"
-                                   Visibility="{x:Bind ViewModel.CurrentPokemonDetails.Type2Id, Converter={StaticResource NullToVisibilityConverter}}" />
-                        <userControls:UserControlType Grid.Row="1" Grid.Column="1"
+                                   Visibility="{x:Bind ViewModel.Pokemon.Type2.Id, Converter={StaticResource NullToVisibilityConverter}}" />
+                        <userControls:UserControlType2 Grid.Row="1" Grid.Column="1"
                                                       VerticalAlignment="Top" Margin="16,7,0,0"
                                                       HorizontalAlignment="Left"
-                                                      TypeId="{x:Bind ViewModel.CurrentPokemonDetails.Type2Id}"
-                                                      Text="{x:Bind ViewModel.CurrentPokemonDetails.Type2Name}"
+                                                      PokemonType="{x:Bind ViewModel.Pokemon.Type2}"
                                                       Tapped="Type2_OnTapped"
-                                                      Visibility="{x:Bind ViewModel.CurrentPokemonDetails.Type2Id, Converter={StaticResource NullToVisibilityConverter}}" />
+                                                      Visibility="{x:Bind ViewModel.Pokemon.Type2.Id, Converter={StaticResource NullToVisibilityConverter}}" />
                         <TextBlock Text="Taux de capture" Grid.Row="2" Grid.Column="0" FontWeight="Bold"
                                    Margin="0,7,0,0" VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.CaptureRate}" Grid.Row="2"
+                        <TextBlock Text="{x:Bind ViewModel.Pokemon.CaptureRate}" Grid.Row="2"
                                    Grid.Column="1" Margin="16,7,0,0" VerticalAlignment="Center" />
                         <TextBlock Text="Ratio de genre" Grid.Row="3" Grid.Column="0" FontWeight="Bold"
                                    Margin="0,7,0,0" VerticalAlignment="Center" />
                         <userControls:UserControlGender Grid.Row="3" Grid.Column="1" Margin="16,7,0,0"
                                                         VerticalAlignment="Stretch"
-                                                        GenderCode="{x:Bind ViewModel.CurrentPokemonDetails.GenderRate}"
+                                                        GenderCode="{x:Bind ViewModel.Pokemon.GenderRate}"
                                                         HorizontalAlignment="Left" />
                         <TextBlock Text="Couleur" Grid.Row="4" Grid.Column="0" FontWeight="Bold" Margin="0,7,0,0"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.ColorName}" Grid.Row="4"
+                        <TextBlock Text="{x:Bind ViewModel.Pokemon.Color}" Grid.Row="4"
                                    Grid.Column="1" Margin="16,7,0,0" VerticalAlignment="Center" />
                         <TextBlock Text="Taille" Grid.Row="5" Grid.Column="0" FontWeight="Bold" Margin="0,7,0,0"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.HeightFormated}" Grid.Row="5"
+                        <TextBlock Text="{x:Bind ViewModel.Pokemon.HeightFormated}" Grid.Row="5"
                                    Grid.Column="1" Margin="16,7,0,0" VerticalAlignment="Center" />
                         <TextBlock Text="Poids" Grid.Row="6" Grid.Column="0" FontWeight="Bold" Margin="0,7,0,0"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.WeightFormated}" Grid.Row="6"
+                        <TextBlock Text="{x:Bind ViewModel.Pokemon.WeightFormated}" Grid.Row="6"
                                    Grid.Column="1" Margin="16,7,0,0" VerticalAlignment="Center" />
                         <TextBlock Text="Espèces" Grid.Row="7" Grid.Column="0" FontWeight="Bold" Margin="0,7,0,0"
                                    VerticalAlignment="Top" />
                         <StackPanel Grid.Row="7" Grid.Column="1" Margin="16,7,0,0">
-                            <TextBlock>
-                                <Run Text="Pokémon" />
-                                <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.Genus}" />
-                            </TextBlock>
-                            <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.ShapeName}" />
+                            <TextBlock Text="{x:Bind ViewModel.Pokemon.Genus}" />
+                            <TextBlock Text="{x:Bind ViewModel.Pokemon.ShapeName}" />
                         </StackPanel>
                         <TextBlock Text="Génération" Grid.Row="8" Grid.Column="0" FontWeight="Bold" Margin="0,7,0,0"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.GenerationName}" Grid.Row="8"
+                        <TextBlock Text="{x:Bind ViewModel.Pokemon.GenerationName}" Grid.Row="8"
                                    Grid.Column="1" Margin="16,7,0,0" VerticalAlignment="Center" />
                     </Grid>
 
@@ -265,17 +261,16 @@
                                 <StackPanel x:Name="SectionAbilities">
                                     <userControls:UserControlTitle Title="Talents" />
 
-                                    <ListView ItemsSource="{x:Bind ViewModel.Abilities}" SelectionMode="None">
+                                    <ListView ItemsSource="{x:Bind ViewModel.Pokemon.Abilities}" SelectionMode="None">
                                         <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:PokemonAbility">
+                                            <DataTemplate x:DataType="models:PokemonAbilityUiModel">
                                                 <StackPanel Margin="0,0,0,10">
                                                     <TextBlock TextWrapping="Wrap">
-                                                        <Run Text="{x:Bind AbilityName}" FontWeight="Bold" />
-                                                        <Run
-                                                            Text="{x:Bind IsHidden, Converter={StaticResource IsHiddenToTextConverter}}" />
+                                                        <Run Text="{x:Bind Name}" FontWeight="Bold" />
+                                                        <Run Text="{x:Bind IsHidden, Converter={StaticResource IsHiddenToTextConverter}}" />
                                                     </TextBlock>
                                                     <TextBlock TextWrapping="Wrap"
-                                                               Text="{x:Bind FlavorText, Converter={StaticResource StringToRemoveBreakConverter}}" />
+                                                               Text="{x:Bind ShortEffect, Converter={StaticResource StringToRemoveBreakConverter}}" />
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
@@ -284,10 +279,10 @@
                                 <StackPanel x:Name="SectionWeaknesses">
                                     <userControls:UserControlTitle Title="Faiblesses" />
 
-                                    <GridView ItemsSource="{x:Bind ViewModel.Weaknesses}" SelectionMode="None"
+                                    <GridView ItemsSource="{x:Bind ViewModel.Pokemon.Weaknesses}" SelectionMode="None"
                                               HorizontalAlignment="Left" MaxWidth="520">
                                         <GridView.ItemTemplate>
-                                            <DataTemplate x:DataType="models:DamageType">
+                                            <DataTemplate x:DataType="models:DamageTypeUiModel">
                                                 <StackPanel Orientation="Horizontal">
                                                     <userControls:UserControlWeakness Damage="{x:Bind}" Margin="5"
                                                                                       Tapped="WeaknessType_OnTapped" />
@@ -379,93 +374,93 @@
                                     <TextBlock Text="P.V." Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="2" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatHp}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatHp}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatHp}" Grid.Row="2"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatHp}" Grid.Row="2"
                                                Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatHp}" Grid.Row="2"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatHp}" Grid.Row="2"
                                                Grid.Column="2"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatHp}" Grid.Row="2"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatHp}" Grid.Row="2"
                                                Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatHp}" Grid.Row="2"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatHp}" Grid.Row="2"
                                                Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
                                     <TextBlock Text="Attaque" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="3" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatAtk}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatAtk}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatAtk}" Grid.Row="3"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatAtk}" Grid.Row="3"
                                                Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatAtk}" Grid.Row="3"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatAtk}" Grid.Row="3"
                                                Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatAtk}" Grid.Row="3"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatAtk}" Grid.Row="3"
                                                Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
                                     <TextBlock Text="Défense" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="4" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatDef}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatDef}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatDef}" Grid.Row="4"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatDef}" Grid.Row="4"
                                                Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatDef}" Grid.Row="4"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatDef}" Grid.Row="4"
                                                Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatDef}" Grid.Row="4"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatDef}" Grid.Row="4"
                                                Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
                                     <TextBlock Text="Attaque Spéciale" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="5" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatAtkSpe}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatAtkSpe}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatAtkSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatAtkSpe}"
                                                Grid.Row="5" Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatAtkSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatAtkSpe}"
                                                Grid.Row="5" Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatAtkSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatAtkSpe}"
                                                Grid.Row="5" Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
                                     <TextBlock Text="Défense Spéciale" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="6" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatDefSpe}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatDefSpe}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatDefSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatDefSpe}"
                                                Grid.Row="6" Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatDefSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatDefSpe}"
                                                Grid.Row="6" Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatDefSpe}"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatDefSpe}"
                                                Grid.Row="6" Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
                                     <TextBlock Text="Vitesse" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="7" Grid.Column="1" Maximum="200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatSpd}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatSpd}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatSpd}" Grid.Row="7"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatSpd}" Grid.Row="7"
                                                Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MinStatSpd}" Grid.Row="7"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MinStatSpd}" Grid.Row="7"
                                                Grid.Column="4"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.MaxStatSpd}" Grid.Row="7"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.MaxStatSpd}" Grid.Row="7"
                                                Grid.Column="5"
                                                VerticalAlignment="Center" Margin="4,0" HorizontalAlignment="Center" />
 
@@ -474,9 +469,9 @@
                                     <TextBlock Text="Total" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center"
                                                FontWeight="Bold" Margin="0,0,4,0" />
                                     <ProgressBar Grid.Row="9" Grid.Column="1" Maximum="1200"
-                                                 Value="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatsTotal}"
+                                                 Value="{x:Bind ViewModel.Pokemon.BaseStatsTotal}"
                                                  Width="200" Height="40" Margin="4" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{x:Bind ViewModel.CurrentPokemonDetails.BaseStatsTotal}" Grid.Row="9"
+                                    <TextBlock Text="{x:Bind ViewModel.Pokemon.BaseStatsTotal}" Grid.Row="9"
                                                Grid.Column="1"
                                                VerticalAlignment="Center" Margin="10,4,4,4" Foreground="White" />
                                 </Grid>
@@ -499,14 +494,14 @@
                                                Text="Courbe de progression" FontWeight="Bold"
                                                Margin="0,0,0,0" VerticalAlignment="Center" />
                                     <TextBlock Grid.Row="0" Grid.Column="1"
-                                               Text="{x:Bind ViewModel.CurrentPokemonDetails.GrowthRateName}"
+                                               Text="{x:Bind ViewModel.Pokemon.GrowthRate}"
                                                Margin="16,0,0,0" VerticalAlignment="Center" />
                                     <TextBlock Grid.Row="1" Grid.Column="0"
                                                Text="Expérience au niveau 50" FontWeight="Bold"
                                                Margin="0,7,0,0" VerticalAlignment="Center" />
                                     <TextBlock Grid.Row="1" Grid.Column="1"
                                                Margin="16,7,0,0" VerticalAlignment="Center">
-                                        <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.Exp50}" />
+                                        <Run Text="{x:Bind ViewModel.Pokemon.Exp50}" />
                                         <Run Text="points" />
                                     </TextBlock>
                                     <TextBlock Grid.Row="2" Grid.Column="0"
@@ -514,7 +509,7 @@
                                                Margin="0,7,0,0" VerticalAlignment="Center" />
                                     <TextBlock Grid.Row="2" Grid.Column="1"
                                                Margin="16,7,0,0" VerticalAlignment="Center">
-                                        <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.Exp100}" />
+                                        <Run Text="{x:Bind ViewModel.Pokemon.Exp100}" />
                                         <Run Text="points" />
                                     </TextBlock>
                                 </Grid>
@@ -549,14 +544,14 @@
 
                                 <TextBlock TextWrapping="Wrap" Margin="10,0,0,10">
                                     <Run Text="Théoriquement, son éclosion nécéssite" />
-                                    <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.HatchSteps}"
+                                    <Run Text="{x:Bind ViewModel.Pokemon.HatchSteps}"
                                          FontWeight="Bold" />
                                     <Run Text="pas." />
                                 </TextBlock>
 
                                 <TextBlock TextWrapping="Wrap" Margin="10,0,0,10"
                                            Visibility="{Binding IsFromNoEggsGroup, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.NameFr}" FontWeight="Bold" />
+                                    <Run Text="{x:Bind ViewModel.Pokemon.NameFr}" FontWeight="Bold" />
                                     <Run Text="fait partie du groupe" />
                                     <Run Text="{x:Bind ViewModel.EgggroupNames}" FontWeight="Bold" />
                                     <Run Text="et ne peut pas se reproduire." />
@@ -564,7 +559,7 @@
 
                                 <TextBlock TextWrapping="Wrap" Margin="10,0,0,10"
                                            Visibility="{Binding IsFromNoEggsGroup, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Run Text="{x:Bind ViewModel.CurrentPokemonDetails.NameFr}" FontWeight="Bold" />
+                                    <Run Text="{x:Bind ViewModel.Pokemon.NameFr}" FontWeight="Bold" />
                                     <Run Text="fait partie du groupe" />
                                     <Run Text="{x:Bind ViewModel.EgggroupNames}" FontWeight="Bold" />
                                     <Run Text="et est compatible à la reproduction avec les" />

@@ -19,11 +19,11 @@ namespace PokedexG.Uwp.Views.UserControls
         }
 
         public static readonly DependencyProperty DamageProperty = DependencyProperty.Register(
-            "Damage", typeof(DamageType), typeof(UserControlWeakness), new PropertyMetadata(default(DamageType)));
+            "Damage", typeof(DamageTypeUiModel), typeof(UserControlWeakness), new PropertyMetadata(default(DamageTypeUiModel)));
 
-        public DamageType Damage
+        public DamageTypeUiModel Damage
         {
-            get { return (DamageType) GetValue(DamageProperty); }
+            get { return (DamageTypeUiModel) GetValue(DamageProperty); }
             set
             {
                 if (value != null)

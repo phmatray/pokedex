@@ -22,13 +22,13 @@ namespace PokedexG.Uwp.Views
 
         private void Type1_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            var type1 = ((PokemonDetailsPageViewModel)((FrameworkElement)sender).DataContext).CurrentPokemonDetails.Type1Id;
+            var type1 = ((PokemonDetailsPageViewModel)((FrameworkElement)sender).DataContext).Pokemon.Type1.Id;
             ((PokemonDetailsPageViewModel)DataContext).GotoTypeDetailsPage(type1);
         }
 
         private void Type2_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            var type2 = ((PokemonDetailsPageViewModel)((FrameworkElement)sender).DataContext).CurrentPokemonDetails.Type2Id;
+            var type2 = ((PokemonDetailsPageViewModel)((FrameworkElement)sender).DataContext).Pokemon.Type2.Id;
             ((PokemonDetailsPageViewModel)DataContext).GotoTypeDetailsPage(type2);
         }
 

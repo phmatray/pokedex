@@ -49,6 +49,48 @@ namespace PokedexG.Uwp.Data.Services
             return apiResults;
         }
 
+        public async Task<List<Type>> GetAllDetails(int limit = 50, int offset = 0)
+        {
+            return await GetAllDetails(x => true, limit, offset);
+        }
+
+        public async Task<List<Type>> GetAllDetails(Expression<Func<EFTypes, bool>> predicate, int limit = 50, int offset = 0)
+        {
+            if (limit <= 0 || offset < 0)
+                return null;
+
+            var apiResults = await _context
+                .Types
+                .AsNoTracking()
+                .Include(x => x.TypeEfficacyDamageType).ThenInclude(x => x.TargetType)
+                .Include(x => x.TypeEfficacyTargetType).ThenInclude(x => x.DamageType)
+                .Include(x => x.TypeGameIndices).ThenInclude(x => x.Generation)
+                .Include(x => x.Generation)
+                .Include(x => x.DamageClass)
+                .Include(x => x.TypeNames).ThenInclude(x => x.LocalLanguage)
+                .Include(x => x.PokemonTypes).ThenInclude(x => x.Pokemon)
+                .Include(x => x.Moves)
+                .Where(predicate)
+                .OrderBy(x => x.Id)
+                .Skip(offset)
+                .Take(limit)
+                .Select(x => new Type
+                {
+                    Id              = x.Id,
+                    Name            = x.Identifier,
+                    DamageRelations = GetDamageRelations(x),
+                    GameIndices     = GetGameIndices(x),
+                    Generation      = GetGeneration(x),
+                    MoveDamageClass = GetMoveDamageClass(x),
+                    Names           = GetNames(x),
+                    Pokemon         = GetPokemon(x),
+                    Moves           = GetMoves(x)
+                })
+                .ToListAsync();
+
+            return apiResults;
+        }
+
         public async Task<Type> Get(int id)
         {
             return await Get(x => x.Id == id);
@@ -135,14 +177,14 @@ namespace PokedexG.Uwp.Data.Services
         private static NamedAPIResource GetGeneration(EFTypes type)
         {
             return type
-                .Generation
+                .Generation?
                 .ToNamedApiResource();
         }
 
         private static NamedAPIResource GetMoveDamageClass(EFTypes type)
         {
             return type
-                .DamageClass
+                .DamageClass?
                 .ToNamedApiResource();
         }
 

@@ -6,6 +6,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Microsoft.HockeyApp;
+using PokedexG.Uwp.Data;
 using PokedexG.Uwp.Services.SettingsServices;
 using PokedexG.Uwp.Views;
 using Template10.Common;
@@ -81,6 +82,7 @@ namespace PokedexG.Uwp
             else
             {
                 // long-running startup tasks go here
+                await Referential.Load();
                 //await Task.Delay(5000);
 
                 NavigationService.Navigate(typeof(PokemonsPage));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PokedexG.Uwp.Models;
 using PokedexG.Uwp.Utils;
@@ -9,7 +10,61 @@ namespace PokedexG.Uwp.Services.VeekunServices.Business
 {
     public static class PokemonBusiness
     {
-        public static async Task<List<DamageType>> GetWeaknesses(int type1Id, int type2Id, bool excludeNeutral = false)
+        public static string CleanMarkdown(this string s)
+        {
+            const string pattern = @"\[[\w- ]*\]{[\w:-]*}";
+            var matches = Regex.Matches(s, pattern);
+            foreach (Match match in matches)
+            {
+                var matchValue = match.Value;
+                var replacementValue = Regex.Match(match.Value, @"\[[\w- ]*\]").Value.Trim('[', ']');
+
+                if (replacementValue == "")
+                    replacementValue = matchValue.Split(':').Last().TrimEnd('}');
+
+                s = s.Replace(matchValue, replacementValue);
+            }
+
+            return s;
+        }
+
+
+
+        public static List<DamageTypeUiModel> GetWeaknesses(
+            List<DamageTypeUiModel> type1DamageFrom, List<DamageTypeUiModel> type2DamageFrom, bool excludeNeutral = false)
+        {
+            var types = new List<DamageTypeUiModel>()
+                .Concat(type1DamageFrom)
+                .Concat(type2DamageFrom)
+                .ToList();
+
+            var weaknesses = types
+                .GroupBy(x => x.DamageTypeId)
+                .Select(g =>
+                {
+                    var damageType = g.First();
+                    var damageTypeUiModels = g.ToList();
+
+                    damageType.DamageFactor = damageTypeUiModels.Count == 2
+                        ? (int) ((double) (damageTypeUiModels[0].DamageFactor*damageTypeUiModels[1].DamageFactor)/100)
+                        : -1;
+
+                    return damageType;
+                })
+                .OrderByDescending(x => x.DamageFactor)
+                .ToList();
+
+            if (excludeNeutral)
+            {
+                weaknesses = weaknesses
+                    .Where(x => x.DamageFactor != 100)
+                    .ToList();
+            }
+
+            return weaknesses;
+        }
+
+        public static async Task<List<DamageType>> GetWeaknessesAsync(int type1Id, int type2Id, bool excludeNeutral = false)
         {
             if (type1Id <= 0) throw new ArgumentOutOfRangeException(nameof(type1Id));
             if (type2Id < 0) throw new ArgumentOutOfRangeException(nameof(type2Id));
@@ -55,6 +110,85 @@ namespace PokedexG.Uwp.Services.VeekunServices.Business
         public static string GetPokedexNumberNationalFormated(this Pokemon p, bool withSuffix = true)
         {
             var suffix = String.Empty;
+
+            if (withSuffix)
+            {
+                if (p.IsMega)
+                {
+                    suffix = "M";
+                    if (p.IsMegaX)
+                        suffix += "X";
+                    else if (p.IsMegaY)
+                        suffix += "Y";
+                }
+                else
+                {
+                    switch (p.SpecieId)
+                    {
+                        case 351: // Castform (Morphéo)
+                        case 382: // Kyogre
+                        case 383: // Groudon
+                        case 386: // Deoxys
+                        case 421: // Cherrim (Ceriflor)
+                        case 422: // Shellos (Sankoki)
+                        case 423: // Gastrodon (Tritosor)
+                        case 487: // Giratina
+                        case 492: // Shaymin
+                        case 550: // Basculin (Bargantua)
+                        case 555: // Darmanitan (Darumacho)
+                        case 641: // Tornadus
+                        case 642: // Thundurus
+                        case 645: // Landorus (Demeteros)
+                        case 646: // Kyurem
+                        case 647: // Keldeo
+                        case 648: // Meloetta
+                        case 649: // Genesect
+                        case 669: // Flabebe
+                        case 670: // Floette
+                        case 671: // Florges
+                        case 678: // Meowstic (Mistigrix)
+                        case 681: // Aegislash (Exagide)
+                        case 716: // Xerneas
+                        case 720: // Hoopa
+                            suffix = p.FormIdentifier.Take();
+                            break;
+                        case 412: // Burmy (Cheniti)
+                        case 413: // Wormadam (Cheniselle)
+                        case 479: // Rotom (Motisma)
+                        case 585: // Deerling (Vivaldaim)
+                        case 586: // Sawsbuck (Haydaim)
+                        case 676: // Furfrou (Couafarel)
+                        case 710: // Pumpkaboo (Pitrouille)
+                        case 711: // Gourgeist (Banshitrouye)
+                            suffix = p.FormIdentifier.Take(2);
+                            break;
+                        case 666: // Vivillon (Prismillon)
+                            suffix = p.FormIdentifier.Take(3);
+                            break;
+                        case 201: // Unown (Zarbi)
+                            switch (p.FormIdentifier)
+                            {
+                                case "exclamation":
+                                    suffix = "!";
+                                    break;
+                                case "question":
+                                    suffix = "?";
+                                    break;
+                                default:
+                                    suffix = p.FormIdentifier.Take();
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
+
+            return $"#{p.SpecieId:000}{suffix}";
+        }
+
+        public static string GetPokedexNumberNationalFormated(this PokemonUiModel p, bool withSuffix = true)
+        {
+            var suffix = string.Empty;
 
             if (withSuffix)
             {
@@ -181,6 +315,22 @@ namespace PokedexG.Uwp.Services.VeekunServices.Business
         }
 
         public static string CalculatePercentileAtk(this Pokemon pokemon, List<Pokemon> comparisonList)
+        {
+            double countTotal = comparisonList.Count;
+            double count = comparisonList.Count(x => x.BaseStatAtk <= pokemon.BaseStatAtk);
+            double percentile = count * 100 / countTotal;
+            return $"{percentile:F2}";
+        }
+
+        public static string CalculatePercentileHp(this PokemonUiModel pokemon, List<PokemonUiModel> comparisonList)
+        {
+            double countTotal = comparisonList.Count;
+            double count = comparisonList.Count(x => x.BaseStatHp <= pokemon.BaseStatHp);
+            double percentile = count * 100 / countTotal;
+            return $"{percentile:F2}";
+        }
+
+        public static string CalculatePercentileAtk(this PokemonUiModel pokemon, List<PokemonUiModel> comparisonList)
         {
             double countTotal = comparisonList.Count;
             double count = comparisonList.Count(x => x.BaseStatAtk <= pokemon.BaseStatAtk);

@@ -5,18 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using PokedexG.Uwp.Data;
-using PokedexG.Uwp.Data.Services;
 using PokedexG.Uwp.Models;
 using PokedexG.Uwp.Services.VeekunServices;
 using PokedexG.Uwp.Services.VeekunServices.Business;
 using PokedexG.Uwp.Views;
-using PokemonAPI;
-using PokemonAPI.Models.Rsc;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Move = PokedexG.Uwp.Models.Move;
-using Pokemon = PokemonAPI.Models.Rsc.Pokemon;
-using PokemonAbility = PokedexG.Uwp.Models.PokemonAbility;
 
 namespace PokedexG.Uwp.ViewModels
 {
@@ -36,10 +31,10 @@ namespace PokedexG.Uwp.ViewModels
         #region Properties
 
         public int CurrentFormId { get; private set; }
-        public PokemonDetails CurrentPokemonDetails { get; private set; }
+        //public PokemonDetails CurrentPokemonDetails { get; private set; }
         public PokemonFamily Family { get; private set; }
         public List<Move> Moves { get; private set; }
-        public List<PokemonAbility> Abilities { get; private set; }
+        //public List<PokemonAbility> Abilities { get; private set; }
         public List<PokemonLocation> Locations { get; private set; }
         public List<DamageType> Weaknesses { get; set; }
         public List<PokemonEgggroup> Egggroups { get; private set; }
@@ -52,25 +47,23 @@ namespace PokedexG.Uwp.ViewModels
             private set { Set(ref _isFromNoEggsGroup, value); }
         }
 
-        private string _currentFlavorText;
-        public string CurrentFlavorText
-        {
-            get { return _currentFlavorText; }
-            private set { Set(ref _currentFlavorText, value); }
-        }
 
         public List<PokemonLite> PokemonsByEgggroup { get; private set; }
 
 
 
 
-        public Pokemon Pokemon { get; set; }
-        public PokemonSpecies PokemonSpecies { get; set; }
-        string NameDefault { get; set; }
-        string FlavorTextX { get; set; }
-        string FlavorTextY { get; set; }
-        string FlavorTextOR { get; set; }
-        string FlavorTextAS { get;set; }
+        public PokemonUiModel Pokemon { get; set; }
+
+
+
+
+        private string _currentFlavorText;
+        public string CurrentFlavorText
+        {
+            get { return _currentFlavorText; }
+            private set { Set(ref _currentFlavorText, value); }
+        }
 
 
         #endregion
@@ -97,22 +90,22 @@ namespace PokedexG.Uwp.ViewModels
         private DelegateCommand _selectFlavorTextXCommand;
         public DelegateCommand SelectFlavorTextXCommand
             => _selectFlavorTextXCommand ?? (_selectFlavorTextXCommand =
-                   new DelegateCommand(() => CurrentFlavorText = CurrentPokemonDetails.FlavorTextX));
+                   new DelegateCommand(() => CurrentFlavorText = Pokemon.FlavorTextX));
         
         private DelegateCommand _selectFlavorTextYCommand;
         public DelegateCommand SelectFlavorTextYCommand
             => _selectFlavorTextYCommand ?? (_selectFlavorTextYCommand = 
-                   new DelegateCommand(() => CurrentFlavorText = CurrentPokemonDetails.FlavorTextY));
+                   new DelegateCommand(() => CurrentFlavorText = Pokemon.FlavorTextY));
         
         private DelegateCommand _selectFlavorTextOmegaRubyCommand;
         public DelegateCommand SelectFlavorTextOmegaRubyCommand
             => _selectFlavorTextOmegaRubyCommand ?? (_selectFlavorTextOmegaRubyCommand =
-                   new DelegateCommand(() => CurrentFlavorText = CurrentPokemonDetails.FlavorTextOmegaRuby));
+                   new DelegateCommand(() => CurrentFlavorText = Pokemon.FlavorTextOR));
         
         private DelegateCommand _selectFlavorTextAlphaSapphireCommand;
         public DelegateCommand SelectFlavorTextAlphaSapphireCommand
             => _selectFlavorTextAlphaSapphireCommand ?? (_selectFlavorTextAlphaSapphireCommand =
-                   new DelegateCommand(() => CurrentFlavorText = CurrentPokemonDetails.FlavorTextAlphaSapphire));
+                   new DelegateCommand(() => CurrentFlavorText = Pokemon.FlavorTextAS));
 
         #endregion
 
@@ -130,44 +123,23 @@ namespace PokedexG.Uwp.ViewModels
                     : (int) parameter;
 
                 var context = new VeekunContext();
-                var pokemonsService = new PokemonsService(context);
-                var pokemonSpeciesService = new PokemonSpeciesService(context);
+                Pokemon = await PokemonUiModel.CreateAsync(context, CurrentFormId, LanguagesEnum.English, VersionGroupsEnum.OmegaRubyAlphaSapphire);
 
-                Pokemon = await pokemonsService.Get(CurrentFormId);
-                PokemonSpecies = await pokemonSpeciesService.Get(Pokemon.Species.Id);
-
-                NameDefault = PokemonSpecies.Names
-                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId)
-                    .NameValue;
-                FlavorTextX = PokemonSpecies.FlavorTextEntries
-                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 23)
-                    .FlavorTextValue;
-                FlavorTextY = PokemonSpecies.FlavorTextEntries
-                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 24)
-                    .FlavorTextValue;
-                FlavorTextOR = PokemonSpecies.FlavorTextEntries
-                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 25)
-                    .FlavorTextValue;
-                FlavorTextAS = PokemonSpecies.FlavorTextEntries
-                    .FirstOrDefault(x => x.Language.Id == Constants.DefaultLanguageId && x.Version.Id == 26)
-                    .FlavorTextValue;
+                CurrentFlavorText = Pokemon.FlavorTextX;
 
 
-                //var pokemon = await DataFetcher.GetPokemon(CurrentFormId);
-                //var pokemonSpecies = await DataFetcher.GetPokemonSpecies(pokemon.Species.Name);
 
 
-                CurrentPokemonDetails = await Veekun.GetPokemon(CurrentFormId);
-                CurrentFlavorText = CurrentPokemonDetails.FlavorTextX;
 
-                var pokemonId = CurrentPokemonDetails.PokemonId;
-                var specieId = CurrentPokemonDetails.SpecieId;
+
+
+                var pokemonId = Pokemon.PokemonId;
+                var specieId = Pokemon.SpecieId;
 
                 var evolutions = await Veekun.GetPokemonEvolutions(specieId);
                 Family = evolutions.GetStade();
 
                 Moves = await Veekun.GetMoves(pokemonId);
-                Abilities = await Veekun.GetPokemonAbilities(pokemonId);
                 Locations = await Veekun.GetPokemonLocations(pokemonId);
 
                 Egggroups = await Veekun.GetPokemonEgggroups(specieId);
@@ -197,8 +169,9 @@ namespace PokedexG.Uwp.ViewModels
                     PokemonsByEgggroup = new List<PokemonLite>();
                 }
 
-                Weaknesses = await PokemonBusiness
-                    .GetWeaknesses(CurrentPokemonDetails.Type1Id, CurrentPokemonDetails.Type2Id, true);
+                //Weaknesses = new List<DamageType>();
+                //Weaknesses = await PokemonBusiness
+                //    .GetWeaknesses(Pokemon.Type1.Id, Pokemon.Type2.Id, true);
 
                 await Task.CompletedTask;
             }
@@ -240,10 +213,11 @@ namespace PokedexG.Uwp.ViewModels
         #region Percentiles
 
         private string _percentileHp;
-        public async Task<string> GetPercentileHp()
+        public async Task<string> GetPercentileHpAsync()
         {
-            return _percentileHp ??
-                   (_percentileHp = CurrentPokemonDetails.CalculatePercentileHp(await Veekun.GetPokemons()));
+            return "-1";
+            //return _percentileHp ??
+            //       (_percentileHp = CurrentPokemonDetails.CalculatePercentileHp(await Veekun.GetPokemons()));
         }
 
         #endregion
