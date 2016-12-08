@@ -8,9 +8,6 @@ namespace PokedexG.Uwp.Data.Models
         public EFTypes()
         {
             Berries = new HashSet<EFBerries>();
-            ConquestKingdoms = new HashSet<EFConquestKingdoms>();
-            ConquestWarriorSpecialties = new HashSet<EFConquestWarriorSpecialties>();
-            ConquestWarriorTransformation = new HashSet<EFConquestWarriorTransformation>();
             MoveChangelog = new HashSet<EFMoveChangelog>();
             Moves = new HashSet<EFMoves>();
             PokemonEvolutionKnownMoveType = new HashSet<EFPokemonEvolution>();
@@ -28,9 +25,6 @@ namespace PokedexG.Uwp.Data.Models
         public int? DamageClassId { get; set; }
 
         public ICollection<EFBerries> Berries { get; set; }
-        public ICollection<EFConquestKingdoms> ConquestKingdoms { get; set; }
-        public ICollection<EFConquestWarriorSpecialties> ConquestWarriorSpecialties { get; set; }
-        public ICollection<EFConquestWarriorTransformation> ConquestWarriorTransformation { get; set; }
         public ICollection<EFMoveChangelog> MoveChangelog { get; set; }
         public ICollection<EFMoves> Moves { get; set; }
         public ICollection<EFPokemonEvolution> PokemonEvolutionKnownMoveType { get; set; }

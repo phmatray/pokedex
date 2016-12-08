@@ -76,7 +76,7 @@ namespace PokedexG.Uwp.ViewModels
         private async void LoadData()
         {
             Busy.SetBusy(true, "Chargement...");
-            var machines = await Veekun.GetMachines();
+            var machines = await Veekun.GetMachinesAsync();
             Machines = new ObservableCollection<Machine>(machines);
             Busy.SetBusy(false);
         }

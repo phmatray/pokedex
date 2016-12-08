@@ -14,7 +14,7 @@ namespace PokedexG.Uwp.Models.Filtering
     {
         public static async Task<PokemonStore> Load()
         {
-            var pokemons = await Veekun.GetPokemons();
+            var pokemons = await Veekun.GetPokemonsAsync();
             return new PokemonStore(pokemons);
         }
 

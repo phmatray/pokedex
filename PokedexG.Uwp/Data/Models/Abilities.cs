@@ -11,7 +11,6 @@ namespace PokedexG.Uwp.Data.Models
             AbilityFlavorText = new HashSet<EFAbilityFlavorText>();
             AbilityNames = new HashSet<EFAbilityNames>();
             AbilityProse = new HashSet<EFAbilityProse>();
-            ConquestPokemonAbilities = new HashSet<EFConquestPokemonAbilities>();
             PokemonAbilities = new HashSet<EFPokemonAbilities>();
         }
 
@@ -24,7 +23,6 @@ namespace PokedexG.Uwp.Data.Models
         public ICollection<EFAbilityFlavorText> AbilityFlavorText { get; set; }
         public ICollection<EFAbilityNames> AbilityNames { get; set; }
         public ICollection<EFAbilityProse> AbilityProse { get; set; }
-        public ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
         public ICollection<EFPokemonAbilities> PokemonAbilities { get; set; }
         public EFGenerations Generation { get; set; }
     }

@@ -81,7 +81,7 @@ namespace PokedexG.Uwp.ViewModels
             Pokemons.Filter = NameFilter;
             Pokemons.RefreshView();
 
-            var pokedexes = await Veekun.GetPokedexes();
+            var pokedexes = await Veekun.GetPokedexesAsync();
             PokedexName = pokedexes?.First()?.Description ?? "Pokédex";
 
             Busy.SetBusy(false);

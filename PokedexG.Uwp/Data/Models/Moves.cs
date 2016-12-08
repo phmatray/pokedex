@@ -7,7 +7,6 @@ namespace PokedexG.Uwp.Data.Models
     {
         public EFMoves()
         {
-            ConquestPokemonMoves = new HashSet<EFConquestPokemonMoves>();
             ContestCombosFirstMove = new HashSet<EFContestCombos>();
             ContestCombosSecondMove = new HashSet<EFContestCombos>();
             Machines = new HashSet<EFMachines>();
@@ -39,8 +38,6 @@ namespace PokedexG.Uwp.Data.Models
         public int? ContestEffectId { get; set; }
         public int? SuperContestEffectId { get; set; }
 
-        public EFConquestMoveData ConquestMoveData { get; set; }
-        public ICollection<EFConquestPokemonMoves> ConquestPokemonMoves { get; set; }
         public ICollection<EFContestCombos> ContestCombosFirstMove { get; set; }
         public ICollection<EFContestCombos> ContestCombosSecondMove { get; set; }
         public ICollection<EFMachines> Machines { get; set; }

@@ -8,7 +8,6 @@ namespace PokedexG.Uwp.Data.Models
         public EFItems()
         {
             Berries = new HashSet<EFBerries>();
-            ConquestPokemonEvolution = new HashSet<EFConquestPokemonEvolution>();
             EvolutionChains = new HashSet<EFEvolutionChains>();
             ItemFlagMap = new HashSet<EFItemFlagMap>();
             ItemFlavorSummaries = new HashSet<EFItemFlavorSummaries>();
@@ -30,7 +29,6 @@ namespace PokedexG.Uwp.Data.Models
         public int? FlingEffectId { get; set; }
 
         public ICollection<EFBerries> Berries { get; set; }
-        public ICollection<EFConquestPokemonEvolution> ConquestPokemonEvolution { get; set; }
         public ICollection<EFEvolutionChains> EvolutionChains { get; set; }
         public ICollection<EFItemFlagMap> ItemFlagMap { get; set; }
         public ICollection<EFItemFlavorSummaries> ItemFlavorSummaries { get; set; }

@@ -136,13 +136,13 @@ namespace PokedexG.Uwp.ViewModels
                 var pokemonId = Pokemon.PokemonId;
                 var specieId = Pokemon.SpecieId;
 
-                var evolutions = await Veekun.GetPokemonEvolutions(specieId);
+                var evolutions = await Veekun.GetPokemonEvolutionsAsync(specieId);
                 Family = evolutions.GetStade();
 
-                Moves = await Veekun.GetMoves(pokemonId);
-                Locations = await Veekun.GetPokemonLocations(pokemonId);
+                Moves = await Veekun.GetMovesAsync(pokemonId);
+                Locations = await Veekun.GetPokemonLocationsAsync(pokemonId);
 
-                Egggroups = await Veekun.GetPokemonEgggroups(specieId);
+                Egggroups = await Veekun.GetPokemonEgggroupsAsync(specieId);
                 EgggroupNames = Egggroups
                     .Select(x => x.EggGroupName)
                     .Aggregate((current, next) => current + ", " + next);
@@ -154,7 +154,7 @@ namespace PokedexG.Uwp.ViewModels
                     var pokemonIds = new List<PokemonLite>();
                     foreach (var egggroup in Egggroups)
                     {
-                        var list = await Veekun.GetPokemonsByEgggroup(egggroup.EggGroupId);
+                        var list = await Veekun.GetPokemonsByEgggroupAsync(egggroup.EggGroupId);
                         pokemonIds.AddRange(list);
                     }
 

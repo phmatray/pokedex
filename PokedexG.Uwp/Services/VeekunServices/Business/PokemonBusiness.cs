@@ -69,7 +69,7 @@ namespace PokedexG.Uwp.Services.VeekunServices.Business
             if (type1Id <= 0) throw new ArgumentOutOfRangeException(nameof(type1Id));
             if (type2Id < 0) throw new ArgumentOutOfRangeException(nameof(type2Id));
 
-            var typeRelations = await Veekun.GetTypeRelations();
+            var typeRelations = await Veekun.GetTypeRelationsAsync();
             var weaknesses = typeRelations
                 .Where(x => x.TargetTypeId == type1Id || x.TargetTypeId == type2Id)
                 .GroupBy(x => x.DamageTypeId)

@@ -46,8 +46,8 @@ namespace PokedexG.Uwp.ViewModels
             //    ? (int)suspensionState[nameof(CurrentTypeId)]
             //    : (int)parameter;
 
-            TypeRelations = await Veekun.GetTypeRelations();
-            Types = await Veekun.GetTypeLites();
+            TypeRelations = await Veekun.GetTypeRelationsAsync();
+            Types = await Veekun.GetTypeLitesAsync();
             //var typesX = types.Select(x => x.)
 
             TypeRelationsGroups = TypeRelations

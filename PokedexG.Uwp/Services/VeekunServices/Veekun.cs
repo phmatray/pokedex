@@ -8,7 +8,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
 {
     public static class Veekun
     {
-        public static async Task<List<Move>> GetMoves(int pokemonId,
+        public static async Task<List<Move>> GetMovesAsync(int pokemonId,
             int moveMethodId = Constants.DefaultMoveMethodId,
             int versionGroupId = Constants.DefaultVersionGroupsId,
             int languageId = Constants.DefaultLanguageId)
@@ -21,21 +21,21 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<Pokedex>> GetPokedexes(int languageId = Constants.DefaultLanguageId)
+        public static async Task<List<Pokedex>> GetPokedexesAsync(int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
                 .QueryWithParameters<Pokedex>(await SqlLocator.GetPokedexesQuery(),
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<GameVersion>> GetVersions(int languageId = Constants.DefaultLanguageId)
+        public static async Task<List<GameVersion>> GetVersionsAsync(int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
                 .QueryWithParameters<GameVersion>(await SqlLocator.GetVersionsQuery(),
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<Pokemon>> GetPokemons(
+        public static async Task<List<Pokemon>> GetPokemonsAsync(
             int versionId = Constants.DefaultVersionId,
             int languageId = Constants.DefaultLanguageId)
         {
@@ -45,7 +45,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<PokemonDetails> GetPokemon(int formId,
+        public static async Task<PokemonDetails> GetPokemonAsync(int formId,
             int versionId = Constants.DefaultVersionId,
             int languageId = Constants.DefaultLanguageId)
         {
@@ -57,7 +57,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                 .FirstOrDefault();
         }
 
-        public static async Task<List<PokemonAbility>> GetPokemonAbilities(int pokemonId,
+        public static async Task<List<PokemonAbility>> GetPokemonAbilitiesAsync(int pokemonId,
             int versionId = Constants.DefaultVersionId,
             int languageId = Constants.DefaultLanguageId)
         {
@@ -68,7 +68,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<PokemonLocation>> GetPokemonLocations(int pokemonId,
+        public static async Task<List<PokemonLocation>> GetPokemonLocationsAsync(int pokemonId,
             int versionId = Constants.DefaultVersionId,
             int languageId = Constants.DefaultLanguageId)
         {
@@ -79,7 +79,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<PokemonEgggroup>> GetPokemonEgggroups(int pokemonId,
+        public static async Task<List<PokemonEgggroup>> GetPokemonEgggroupsAsync(int pokemonId,
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
@@ -88,7 +88,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<PokemonLite>> GetPokemonsByEgggroup(int egggroupId,
+        public static async Task<List<PokemonLite>> GetPokemonsByEgggroupAsync(int egggroupId,
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
@@ -97,7 +97,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter { Name = "@languageId", Value = languageId });
         }
 
-        public static async Task<List<PokemonLite>> GetPokemonsByType(int typeId,
+        public static async Task<List<PokemonLite>> GetPokemonsByTypeAsync(int typeId,
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
@@ -106,7 +106,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter { Name = "@languageId", Value = languageId });
         }
 
-        public static async Task<List<PokemonEvolution>> GetPokemonEvolutions(int specieId,
+        public static async Task<List<PokemonEvolution>> GetPokemonEvolutionsAsync(int specieId,
             int languageId = Constants.DefaultLanguageId,
             int generationId = Constants.DefaultGenerationId)
         {
@@ -117,7 +117,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@generation", Value = generationId});
         }
 
-        public static async Task<List<Machine>> GetMachines(
+        public static async Task<List<Machine>> GetMachinesAsync(
             int versionGroupId = Constants.VersionGroupsIdXy,
             int languageId = Constants.DefaultLanguageId)
         {
@@ -127,7 +127,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter {Name = "@languageId", Value = languageId});
         }
 
-        public static async Task<List<TypeLite>> GetTypeLites(
+        public static async Task<List<TypeLite>> GetTypeLitesAsync(
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
@@ -135,7 +135,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                     new SQLiteCommandParameter { Name = "@languageId", Value = languageId });
         }
 
-        public static async Task<TypeLite> GetType(int typeId,
+        public static async Task<TypeLite> GetTypeAsync(int typeId,
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection
@@ -145,7 +145,7 @@ namespace PokedexG.Uwp.Services.VeekunServices
                 .FirstOrDefault();
         }
 
-        public static async Task<List<TypeRelation>> GetTypeRelations(
+        public static async Task<List<TypeRelation>> GetTypeRelationsAsync(
             int languageId = Constants.DefaultLanguageId)
         {
             return PokemonDbConnection.DbConnection

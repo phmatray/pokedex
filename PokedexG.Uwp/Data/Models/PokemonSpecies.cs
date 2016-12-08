@@ -7,10 +7,6 @@ namespace PokedexG.Uwp.Data.Models
     {
         public EFPokemonSpecies()
         {
-            ConquestMaxLinks = new HashSet<EFConquestMaxLinks>();
-            ConquestPokemonAbilities = new HashSet<EFConquestPokemonAbilities>();
-            ConquestPokemonStats = new HashSet<EFConquestPokemonStats>();
-            ConquestTransformationPokemon = new HashSet<EFConquestTransformationPokemon>();
             Pokemon = new HashSet<EFPokemon>();
             PokemonDexNumbers = new HashSet<EFPokemonDexNumbers>();
             PokemonEggGroups = new HashSet<EFPokemonEggGroups>();
@@ -42,12 +38,6 @@ namespace PokedexG.Uwp.Data.Models
         public int Order { get; set; }
         public int? ConquestOrder { get; set; }
 
-        public ICollection<EFConquestMaxLinks> ConquestMaxLinks { get; set; }
-        public ICollection<EFConquestPokemonAbilities> ConquestPokemonAbilities { get; set; }
-        public EFConquestPokemonEvolution ConquestPokemonEvolution { get; set; }
-        public EFConquestPokemonMoves ConquestPokemonMoves { get; set; }
-        public ICollection<EFConquestPokemonStats> ConquestPokemonStats { get; set; }
-        public ICollection<EFConquestTransformationPokemon> ConquestTransformationPokemon { get; set; }
         public EFPalPark PalPark { get; set; }
         public ICollection<EFPokemon> Pokemon { get; set; }
         public ICollection<EFPokemonDexNumbers> PokemonDexNumbers { get; set; }

@@ -84,8 +84,8 @@ namespace PokedexG.Uwp.ViewModels
             //Generation = await dataFetcher.GetGeneration(Type.Generation.Id);
             //GenerationName = Generation.Names.FirstOrDefault(x => x.Language.Identifier == "fr")?.Name;
 
-            CurrentType = await Veekun.GetType(CurrentTypeId);
-            PokemonsByType = await Veekun.GetPokemonsByType(CurrentTypeId);
+            CurrentType = await Veekun.GetTypeAsync(CurrentTypeId);
+            PokemonsByType = await Veekun.GetPokemonsByTypeAsync(CurrentTypeId);
 
             await Task.CompletedTask;
 

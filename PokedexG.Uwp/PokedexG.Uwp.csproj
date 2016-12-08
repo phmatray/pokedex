@@ -12,7 +12,7 @@
     <DefaultLanguage>fr-FR</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
@@ -2888,38 +2888,6 @@
     <Compile Include="Data\Models\BerryFlavors.cs" />
     <Compile Include="Data\Models\Characteristics.cs" />
     <Compile Include="Data\Models\CharacteristicText.cs" />
-    <Compile Include="Data\Models\ConquestEpisodeNames.cs" />
-    <Compile Include="Data\Models\ConquestEpisodes.cs" />
-    <Compile Include="Data\Models\ConquestEpisodeWarriors.cs" />
-    <Compile Include="Data\Models\ConquestKingdomNames.cs" />
-    <Compile Include="Data\Models\ConquestKingdoms.cs" />
-    <Compile Include="Data\Models\ConquestMaxLinks.cs" />
-    <Compile Include="Data\Models\ConquestMoveData.cs" />
-    <Compile Include="Data\Models\ConquestMoveDisplacementProse.cs" />
-    <Compile Include="Data\Models\ConquestMoveDisplacements.cs" />
-    <Compile Include="Data\Models\ConquestMoveEffectProse.cs" />
-    <Compile Include="Data\Models\ConquestMoveEffects.cs" />
-    <Compile Include="Data\Models\ConquestMoveRangeProse.cs" />
-    <Compile Include="Data\Models\ConquestMoveRanges.cs" />
-    <Compile Include="Data\Models\ConquestPokemonAbilities.cs" />
-    <Compile Include="Data\Models\ConquestPokemonEvolution.cs" />
-    <Compile Include="Data\Models\ConquestPokemonMoves.cs" />
-    <Compile Include="Data\Models\ConquestPokemonStats.cs" />
-    <Compile Include="Data\Models\ConquestStatNames.cs" />
-    <Compile Include="Data\Models\ConquestStats.cs" />
-    <Compile Include="Data\Models\ConquestTransformationPokemon.cs" />
-    <Compile Include="Data\Models\ConquestTransformationWarriors.cs" />
-    <Compile Include="Data\Models\ConquestWarriorArchetypes.cs" />
-    <Compile Include="Data\Models\ConquestWarriorNames.cs" />
-    <Compile Include="Data\Models\ConquestWarriorRanks.cs" />
-    <Compile Include="Data\Models\ConquestWarriorRankStatMap.cs" />
-    <Compile Include="Data\Models\ConquestWarriors.cs" />
-    <Compile Include="Data\Models\ConquestWarriorSkillNames.cs" />
-    <Compile Include="Data\Models\ConquestWarriorSkills.cs" />
-    <Compile Include="Data\Models\ConquestWarriorSpecialties.cs" />
-    <Compile Include="Data\Models\ConquestWarriorStatNames.cs" />
-    <Compile Include="Data\Models\ConquestWarriorStats.cs" />
-    <Compile Include="Data\Models\ConquestWarriorTransformation.cs" />
     <Compile Include="Data\Models\ContestCombos.cs" />
     <Compile Include="Data\Models\ContestEffectProse.cs" />
     <Compile Include="Data\Models\ContestEffects.cs" />

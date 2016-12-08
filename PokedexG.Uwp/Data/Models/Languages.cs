@@ -13,15 +13,6 @@ namespace PokedexG.Uwp.Data.Models
             AbilityProse = new HashSet<EFAbilityProse>();
             BerryFirmnessNames = new HashSet<EFBerryFirmnessNames>();
             CharacteristicText = new HashSet<EFCharacteristicText>();
-            ConquestEpisodeNames = new HashSet<EFConquestEpisodeNames>();
-            ConquestKingdomNames = new HashSet<EFConquestKingdomNames>();
-            ConquestMoveDisplacementProse = new HashSet<EFConquestMoveDisplacementProse>();
-            ConquestMoveEffectProse = new HashSet<EFConquestMoveEffectProse>();
-            ConquestMoveRangeProse = new HashSet<EFConquestMoveRangeProse>();
-            ConquestStatNames = new HashSet<EFConquestStatNames>();
-            ConquestWarriorNames = new HashSet<EFConquestWarriorNames>();
-            ConquestWarriorSkillNames = new HashSet<EFConquestWarriorSkillNames>();
-            ConquestWarriorStatNames = new HashSet<EFConquestWarriorStatNames>();
             ContestEffectProse = new HashSet<EFContestEffectProse>();
             ContestTypeNames = new HashSet<EFContestTypeNames>();
             EggGroupProse = new HashSet<EFEggGroupProse>();
@@ -87,15 +78,6 @@ namespace PokedexG.Uwp.Data.Models
         public ICollection<EFAbilityProse> AbilityProse { get; set; }
         public ICollection<EFBerryFirmnessNames> BerryFirmnessNames { get; set; }
         public ICollection<EFCharacteristicText> CharacteristicText { get; set; }
-        public ICollection<EFConquestEpisodeNames> ConquestEpisodeNames { get; set; }
-        public ICollection<EFConquestKingdomNames> ConquestKingdomNames { get; set; }
-        public ICollection<EFConquestMoveDisplacementProse> ConquestMoveDisplacementProse { get; set; }
-        public ICollection<EFConquestMoveEffectProse> ConquestMoveEffectProse { get; set; }
-        public ICollection<EFConquestMoveRangeProse> ConquestMoveRangeProse { get; set; }
-        public ICollection<EFConquestStatNames> ConquestStatNames { get; set; }
-        public ICollection<EFConquestWarriorNames> ConquestWarriorNames { get; set; }
-        public ICollection<EFConquestWarriorSkillNames> ConquestWarriorSkillNames { get; set; }
-        public ICollection<EFConquestWarriorStatNames> ConquestWarriorStatNames { get; set; }
         public ICollection<EFContestEffectProse> ContestEffectProse { get; set; }
         public ICollection<EFContestTypeNames> ContestTypeNames { get; set; }
         public ICollection<EFEggGroupProse> EggGroupProse { get; set; }
