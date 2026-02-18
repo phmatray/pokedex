@@ -1,35 +1,22 @@
-# POKEDEX #
+# pokedexg
 
-### Authors ###
+> A UWP Pokédex application with a web service backend and unit tests.
 
-* Philippe Matray
+## Description
+pokedexg is a Universal Windows Platform (UWP) Pokédex application backed by a .NET web service. It provides a rich Pokémon browsing experience on Windows 10 devices, complete with a dedicated web service for Pokémon data and a unit test project.
 
-### API ###
+## Features
+- UWP native Pokédex interface for Windows 10
+- .NET web service backend for Pokémon data
+- Unit test coverage
+- Pokémon search, details, and type information
 
-* http://git.veekun.com/pokedex.git
+## Getting Started
+```bash
+git clone https://github.com/phmatray/pokedexg
+# Open PokedexG.sln in Visual Studio
+# Run PokedexG.WebService, then deploy PokedexG.Uwp
+```
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## License
+MIT
