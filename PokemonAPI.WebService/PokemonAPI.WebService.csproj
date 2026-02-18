@@ -77,7 +77,7 @@
       <Version>1.1.6</Version>
     </PackageReference>
     <PackageReference Include="Swashbuckle">
-      <Version>6.0.0-beta902</Version>
+      <Version>6.0.0-rc1-final</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml">
       <Version>1.1.0</Version>
