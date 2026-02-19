@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet">
-      <Version>1.0.0-msbuild1-final</Version>
+      <Version>1.1.6</Version>
     </DotNetCliToolReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
