@@ -1,16 +1,49 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@inherits LayoutComponentBase
+@inject SettingsService Reglages
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+@* Le bandeau rouge sombre de 2016, mot-symbole dans la police Pokémon embarquée d'origine. *@
+<div class="min-h-dvh flex flex-col">
+    <header class="bg-(--accent) text-(--accent-encre) sticky top-0 z-40 shadow">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
+            <a href="" class="marque text-xl sm:text-2xl no-underline text-(--accent-encre)">Pokédex G</a>
+            <button type="button"
+                    class="text-sm border border-white/40 rounded px-3 py-1.5 hover:bg-white/10 cursor-pointer"
+                    @onclick="BasculerTheme">
+                @(_theme == "rubis" ? "Thème Saphir" : "Thème Rubis")
+            </button>
         </div>
+        <nav class="max-w-6xl mx-auto px-4 flex gap-1 overflow-x-auto" aria-label="Navigation principale">
+            <NavLink href="" Match="NavLinkMatch.All" class="onglet" ActiveClass="onglet-actif">Pokédex</NavLink>
+            <NavLink href="galerie" class="onglet" ActiveClass="onglet-actif">Galerie</NavLink>
+            <NavLink href="types" class="onglet" ActiveClass="onglet-actif">Types</NavLink>
+            <NavLink href="machines" class="onglet" ActiveClass="onglet-actif">Capsules Techniques</NavLink>
+            <NavLink href="options" class="onglet" ActiveClass="onglet-actif">Options</NavLink>
+        </nav>
+    </header>
 
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="flex-1 w-full max-w-6xl mx-auto px-4 pb-12">
+        @Body
     </main>
+
+    <footer class="border-t border-(--filet) text-(--encre-2) text-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap gap-x-6 gap-y-1 justify-between">
+            <span>Pokédex G — les 721 Pokémon des générations 1 à 6, en français.</span>
+            <span>Données : <a href="https://veekun.com/">veekun</a> · Pokémon est une marque de Nintendo Co., Ltd.</span>
+        </div>
+    </footer>
 </div>
+
+@code {
+    private string _theme = "rubis";
+
+    protected override void OnInitialized()
+    {
+        _theme = Reglages.AppTheme;
+    }
+
+    private void BasculerTheme()
+    {
+        _theme = _theme == "rubis" ? "saphir" : "rubis";
+        Reglages.AppTheme = _theme;
+    }
+}

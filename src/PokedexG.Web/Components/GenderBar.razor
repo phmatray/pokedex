@@ -1,0 +1,19 @@
+@* Ratio de genre (UserControlGender de 2016) : part femelle en rose sur fond bleu mâle ;
+   gris si asexué (gender_rate = -1). Sur 8 parts, comme la donnée veekun. *@
+@if (GenderRate < 0)
+{
+    <div class="h-5 w-28 rounded border border-(--filet) bg-[#888888]"
+         role="img" aria-label="Asexué"></div>
+}
+else
+{
+    <div class="h-5 w-28 rounded border border-(--filet) overflow-hidden flex" role="img"
+         aria-label="@($"{GenderRate}/8 femelle, {8 - GenderRate}/8 mâle")">
+        <div class="bg-[#FF9CF6] h-full" style="width:@(GenderRate * 12.5)%"></div>
+        <div class="bg-[#2FA0FF] h-full flex-1"></div>
+    </div>
+}
+
+@code {
+    [Parameter] public int GenderRate { get; set; }
+}

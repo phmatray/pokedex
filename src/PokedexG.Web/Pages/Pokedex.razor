@@ -1,0 +1,115 @@
+@page "/"
+@inject VeekunClient Veekun
+@inject SettingsService Reglages
+@inject NavigationManager Nav
+
+<PageTitle>Pokédex G — @_titre</PageTitle>
+
+@if (_vue is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture du Pokédex…</p>
+}
+else
+{
+    <div class="flex flex-wrap items-center justify-between gap-3 py-4">
+        <h1 class="text-xl font-bold">@_titre</h1>
+        <div class="flex items-center gap-2">
+            <label class="sr-only" for="recherche">Recherche</label>
+            <input id="recherche" type="search" placeholder="Recherche" autocomplete="off"
+                   class="w-56 rounded border border-(--filet) bg-(--surface) px-3 py-1.5 text-sm"
+                   value="@_filtre" @oninput="e => Filtrer((string?)e.Value)" />
+            <button type="button" title="Ouvrir un Pokémon au hasard"
+                    class="rounded border border-(--filet) bg-(--surface) px-3 py-1.5 text-sm cursor-pointer hover:border-(--lien)"
+                    @onclick="Hasardex">Hasardex</button>
+        </div>
+    </div>
+    <p class="sr-only" role="status">@_vue.Count Pokémon affichés</p>
+
+    <div class="carte overflow-x-auto">
+        <table class="w-full text-sm tabulaire border-collapse min-w-[840px]">
+            <thead>
+                <tr class="bg-(--bandeau) text-left">
+                    <th class="px-3 py-2 font-bold">#</th>
+                    <th class="px-2 py-2" aria-label="Icône"></th>
+                    <th class="px-3 py-2 font-bold">Nom</th>
+                    <th class="px-3 py-2 font-bold">Type 1</th>
+                    <th class="px-3 py-2 font-bold">Type 2</th>
+                    <th class="px-2 py-2 text-right font-bold">PV</th>
+                    <th class="px-2 py-2 text-right font-bold">Atq</th>
+                    <th class="px-2 py-2 text-right font-bold">Déf</th>
+                    <th class="px-2 py-2 text-right font-bold">AtqSp</th>
+                    <th class="px-2 py-2 text-right font-bold">DéfSp</th>
+                    <th class="px-2 py-2 text-right font-bold">Vit</th>
+                    <th class="px-3 py-2 text-right font-bold">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <Virtualize Items="_vue" Context="p" ItemSize="44">
+                    <tr @key="p.FormId"
+                        class="border-t border-(--filet) hover:bg-(--bandeau) cursor-pointer"
+                        @onclick="() => Ouvrir(p.FormId)">
+                        <td class="px-3 py-1.5 font-bold" title="@p.Identifier">@p.PokedexNumberNationalFormatedWithSuffix</td>
+                        <td class="px-2 py-1"><IconePokemon Cle="@p.FormKey" Alt="" /></td>
+                        <td class="px-3 py-1.5"><a class="font-medium no-underline text-(--encre) hover:text-(--lien)" href="pokemon/@p.FormId">@p.Name</a></td>
+                        <td class="px-3 py-1.5"><TypePill TypeId="p.Type1Id" Nom="@p.Type1Name" /></td>
+                        <td class="px-3 py-1.5"><TypePill TypeId="p.Type2Id == 0 ? null : p.Type2Id" Nom="@p.Type2Name" /></td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatHp</td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatAtk</td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatDef</td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatAtkSpe</td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatDefSpe</td>
+                        <td class="px-2 py-1.5 text-right">@p.BaseStatSpd</td>
+                        <td class="px-3 py-1.5 text-right font-bold">@p.BaseStatsTotal</td>
+                    </tr>
+                </Virtualize>
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private FilteredPokemonStore? _store;
+    private List<Pokemon>? _vue;
+    private string _filtre = "";
+    private string _titre = "Pokédex";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var pokemons = await Veekun.GetPokemonsAsync();
+        _store = new FilteredPokemonStore(new PokemonStore(pokemons))
+        {
+            // Réglages appliqués comme à chaque navigation dans l'app d'origine.
+            IncludeMegaEvolutions = Reglages.UsePokedexMegaEvolutions,
+            IncludeAlternatives = Reglages.UsePokedexAlternatives,
+            SortMethod = Reglages.UsePokedexEvolutionFamilies
+                ? PokemonSorting.ByEvolution
+                : PokemonSorting.ByNumber
+        };
+        Rafraichir();
+
+        var pokedexes = await Veekun.GetPokedexesAsync();
+        _titre = pokedexes.FirstOrDefault()?.Description ?? "Pokédex";
+    }
+
+    // La recherche ne tourne qu'au changement de saisie, jamais dans le rendu.
+    private void Filtrer(string? valeur)
+    {
+        _filtre = valeur ?? "";
+        _store!.Filter = _filtre;
+        Rafraichir();
+    }
+
+    private void Rafraichir()
+    {
+        _store!.RefreshView();
+        _vue = _store.Cast<Pokemon>().ToList();
+    }
+
+    private void Hasardex()
+    {
+        if (_vue is { Count: > 0 })
+            Ouvrir(_store!.PickRandom().FormId);
+    }
+
+    private void Ouvrir(int formId) => Nav.NavigateTo($"pokemon/{formId}");
+}

@@ -24,7 +24,7 @@ public class PokemonBusinessTests
     [InlineData(6, "mega-y", true, "#006MY")]
     [InlineData(150, "mega", true, "#150M")]
     public void Numero_national_formate_avec_suffixe_de_forme(
-        int specieId, string formIdentifier, bool isMega, string attendu)
+        int specieId, string? formIdentifier, bool isMega, string attendu)
     {
         var pokemon = new Pokemon { SpecieId = specieId, FormIdentifier = formIdentifier, IsMega = isMega };
         Assert.Equal(attendu, pokemon.GetPokedexNumberNationalFormated());
@@ -104,8 +104,8 @@ public class PokemonBusinessTests
     [InlineData("mega-x", 1, "M")]
     [InlineData("attack", 2, "At")]
     [InlineData("archipelago", 3, "Arc")]
-    [InlineData((string)null, 1, "")]
-    public void StringHelper_Take_majuscule_puis_minuscules(string source, int longueur, string attendu)
+    [InlineData(null, 1, "")]
+    public void StringHelper_Take_majuscule_puis_minuscules(string? source, int longueur, string attendu)
     {
         Assert.Equal(attendu, source.Take(longueur));
     }

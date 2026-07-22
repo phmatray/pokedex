@@ -1,0 +1,324 @@
+@page "/pokemon/{FormId:int}"
+@inject VeekunClient Veekun
+@inject SettingsService Reglages
+
+<PageTitle>Pokédex G — @(_d?.NameFr ?? "Fiche")</PageTitle>
+
+@if (_erreur)
+{
+    <p class="py-10 text-center text-(--encre-2)">
+        Cette fiche n'existe pas. <a href="">Retour au Pokédex</a>.
+    </p>
+}
+else if (_d is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture de la fiche…</p>
+}
+else
+{
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-4">
+        <IconePokemon Cle="@_d.FormKey" Alt="" />
+        <span class="font-bold tabulaire text-lg">@_d.PokedexNumberNationalFormatedWithSuffix</span>
+        <h1 class="text-2xl font-bold">@_d.NameFr</h1>
+        <span class="text-(--encre-2)">@_d.NameEn (en)</span>
+    </div>
+
+    <div class="grid md:grid-cols-[320px_1fr] gap-6">
+        @* ——— Panneau gauche : portrait et carte d'identité (2016 : colonne au filet bisque) ——— *@
+        <div class="md:border-r md:border-(--filet) md:pr-6">
+            <img src="@Reglages.IllustrationPath(_d.FormKey)" alt="@_d.NameFr" width="300" height="300"
+                 class="object-contain mx-auto" onerror="this.style.visibility='hidden'" />
+            <dl class="mt-4 grid grid-cols-[130px_1fr] gap-y-2 text-sm items-center">
+                <dt class="text-(--encre-2)">Type principal</dt>
+                <dd><TypePill TypeId="_d.Type1Id" Nom="@_d.Type1Name" Lien="true" /></dd>
+                @if (_d.Type2Id != 0)
+                {
+                    <dt class="text-(--encre-2)">Type secondaire</dt>
+                    <dd><TypePill TypeId="_d.Type2Id" Nom="@_d.Type2Name" Lien="true" /></dd>
+                }
+                <dt class="text-(--encre-2)">Taux de capture</dt>
+                <dd class="tabulaire">@_d.CaptureRate</dd>
+                <dt class="text-(--encre-2)">Ratio de genre</dt>
+                <dd><GenderBar GenderRate="_d.GenderRate" /></dd>
+                <dt class="text-(--encre-2)">Couleur</dt>
+                <dd>@_d.ColorName</dd>
+                <dt class="text-(--encre-2)">Taille</dt>
+                <dd>@_d.HeightFormated</dd>
+                <dt class="text-(--encre-2)">Poids</dt>
+                <dd>@_d.WeightFormated</dd>
+                <dt class="text-(--encre-2)">Espèces</dt>
+                <dd>Pokémon @_d.Genus · @_d.ShapeName</dd>
+                <dt class="text-(--encre-2)">Génération</dt>
+                <dd>@_d.GenerationName</dd>
+            </dl>
+        </div>
+
+        @* ——— Colonne droite : les quatre volets du Pivot de 2016 ——— *@
+        <div>
+            <div role="tablist" aria-label="Sections de la fiche" class="flex gap-1 border-b border-(--filet) overflow-x-auto">
+                @foreach (var onglet in _onglets)
+                {
+                    <button type="button" role="tab" aria-selected="@(onglet == _onglet)"
+                            class="px-4 py-2 text-sm cursor-pointer whitespace-nowrap border-b-3 -mb-px @(onglet == _onglet ? "border-(--lien) font-bold text-(--lien)" : "border-transparent text-(--encre-2) hover:text-(--encre)")"
+                            @onclick="() => _onglet = onglet">@onglet</button>
+                }
+            </div>
+
+            @if (_onglet == "Informations")
+            {
+                <SectionTitle Titre="Description du Pokédex" />
+                <fieldset class="flex items-center gap-3 text-sm">
+                    <legend class="sr-only">Version du jeu</legend>
+                    <span class="text-(--encre-2)">Version :</span>
+                    @foreach (var (libelle, texte) in _versionsFlavor)
+                    {
+                        <label class="inline-flex items-center gap-1 cursor-pointer">
+                            <input type="radio" name="version" checked="@(_flavor == texte)"
+                                   @onchange="() => _flavor = texte" />
+                            @libelle
+                        </label>
+                    }
+                </fieldset>
+                <p class="mt-3 max-w-prose">@SansSauts(_flavor)</p>
+
+                <SectionTitle Titre="Talents" />
+                <ul class="space-y-2 max-w-prose">
+                    @foreach (var talent in _bundle!.Abilities)
+                    {
+                        <li>
+                            <span class="font-bold">@talent.AbilityName</span>
+                            @if (talent.IsHidden)
+                            {
+                                <span class="text-(--encre-2)"> (Caché)</span>
+                            }
+                            <span class="block text-sm text-(--encre-2)">@SansSauts(talent.FlavorText)</span>
+                        </li>
+                    }
+                </ul>
+
+                <SectionTitle Titre="Faiblesses" />
+                <div class="flex flex-wrap gap-2 max-w-xl">
+                    @foreach (var f in _faiblesses)
+                    {
+                        <WeaknessPill Faiblesse="f" />
+                    }
+                </div>
+
+                <SectionTitle Titre="Chaîne d'évolution" />
+                <div class="flex flex-wrap gap-6">
+                    @foreach (var stade in _famille!.EvolutionStades)
+                    {
+                        <div class="min-w-[150px]">
+                            <h3 class="font-bold mb-2">@stade.Name</h3>
+                            <ul class="space-y-2">
+                                @foreach (var evolution in stade.Evolutions.DistinctBy(x => x.PokemonId))
+                                {
+                                    <li>
+                                        <a href="pokemon/@evolution.PokemonId"
+                                           class="flex items-center gap-2 no-underline text-(--encre) hover:text-(--lien)">
+                                            <IconePokemon Cle="@evolution.PokemonId" Alt="" />
+                                            @evolution.NameFr
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            }
+            else if (_onglet == "Statistiques")
+            {
+                <SectionTitle Titre="Stats de base" />
+                <div class="overflow-x-auto">
+                    <table class="w-full max-w-2xl text-sm tabulaire">
+                        <thead>
+                            <tr class="text-(--encre-2) text-left">
+                                <th class="py-1 pr-3 font-normal"></th>
+                                <th class="py-1 font-normal" style="width:45%"></th>
+                                <th class="py-1 px-2 text-right font-normal">Min&nbsp;IVs</th>
+                                <th class="py-1 px-2 text-right font-normal">Max&nbsp;IVs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var (nom, valeur, min, max) in _stats)
+                            {
+                                <tr class="border-t border-(--filet)">
+                                    <td class="py-1.5 pr-3 whitespace-nowrap">@nom</td>
+                                    <td class="py-1.5">
+                                        <div class="h-4 rounded bg-(--barre-fond) overflow-hidden" role="img"
+                                             aria-label="@($"{nom} : {valeur}")">
+                                            <div class="h-full bg-(--barre)" style="width:@(Math.Min(valeur, 200) / 2.0)%"></div>
+                                        </div>
+                                        <span class="sr-only">@valeur</span>
+                                    </td>
+                                    <td class="py-1.5 px-2 text-right">@min</td>
+                                    <td class="py-1.5 px-2 text-right font-bold">@max</td>
+                                </tr>
+                            }
+                            <tr class="border-t-2 border-(--filet) font-bold">
+                                <td class="py-1.5 pr-3">Total</td>
+                                <td class="py-1.5">
+                                    <div class="h-4 rounded bg-(--barre-fond) overflow-hidden" role="img"
+                                         aria-label="@($"Total : {_d.BaseStatsTotal}")">
+                                        <div class="h-full bg-(--barre)" style="width:@(Math.Min(_d.BaseStatsTotal, 1200) / 12.0)%"></div>
+                                    </div>
+                                </td>
+                                <td class="py-1.5 px-2 text-right" colspan="2">@_d.BaseStatsTotal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <SectionTitle Titre="Expérience" />
+                <dl class="grid grid-cols-[220px_1fr] gap-y-2 text-sm max-w-xl">
+                    <dt class="text-(--encre-2)">Courbe de progression</dt>
+                    <dd>@_d.GrowthRateName</dd>
+                    <dt class="text-(--encre-2)">Expérience au niveau 50</dt>
+                    <dd class="tabulaire">@_d.Exp50.ToString("N0") points</dd>
+                    <dt class="text-(--encre-2)">Expérience au niveau 100</dt>
+                    <dd class="tabulaire">@_d.Exp100.ToString("N0") points</dd>
+                </dl>
+            }
+            else if (_onglet == "Attaques")
+            {
+                <SectionTitle Titre="Attaques en 6ème génération" />
+                <ul class="space-y-3">
+                    @foreach (var attaque in _bundle!.Moves)
+                    {
+                        <li class="carte p-3 grid grid-cols-[3rem_1fr] gap-x-3">
+                            <span class="text-2xl font-bold tabulaire self-start" title="Niveau">@attaque.Level</span>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-bold">@attaque.Name</span>
+                                    <span class="text-(--encre-2) text-sm">(@attaque.NameEn)</span>
+                                    <TypePill TypeId="attaque.TypeId" Nom="@attaque.Type" />
+                                    <DamagePill Identifier="@attaque.DamageClass" />
+                                </div>
+                                <div class="flex gap-4 text-sm tabulaire text-(--encre-2) mt-1">
+                                    <span>@Placeholder(attaque.Pp, "{0} PP")</span>
+                                    <span title="Puissance">@Placeholder(attaque.Power, "{0}")</span>
+                                    <span title="Précision">@Placeholder(attaque.Accuracy, "{0}%")</span>
+                                </div>
+                                <p class="text-sm mt-1 max-w-prose">@SansSauts(attaque.FlavorText)</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <SectionTitle Titre="Reproduction" />
+                <p class="max-w-prose">
+                    Théoriquement, son éclosion nécessite <strong class="tabulaire">@_d.HatchSteps.ToString("N0")</strong> pas.
+                </p>
+                @if (_sansOeufs)
+                {
+                    <p class="max-w-prose mt-2">
+                        <strong>@_d.NameFr</strong> fait partie du groupe <strong>@_nomsGroupes</strong>
+                        et ne peut pas se reproduire.
+                    </p>
+                }
+                else
+                {
+                    <p class="max-w-prose mt-2">
+                        <strong>@_d.NameFr</strong> fait partie du groupe <strong>@_nomsGroupes</strong>
+                        et est compatible à la reproduction avec les
+                        <strong class="tabulaire">@_compatibles.Count</strong> pokémons suivants.
+                    </p>
+                    <div class="flex flex-wrap gap-1 mt-3">
+                        @foreach (var compatible in _compatibles)
+                        {
+                            <a href="pokemon/@compatible.SpecieId" title="@compatible.Name">
+                                <IconePokemon Cle="@compatible.SpecieId" Alt="@compatible.Name" />
+                            </a>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int FormId { get; set; }
+
+    private static readonly string[] _onglets = { "Informations", "Statistiques", "Attaques", "Autres" };
+
+    private PokemonDetailsBundle? _bundle;
+    private PokemonDetails? _d;
+    private PokemonFamily? _famille;
+    private List<DamageType> _faiblesses = new();
+    private List<PokemonLite> _compatibles = new();
+    private (string, string)[] _versionsFlavor = Array.Empty<(string, string)>();
+    private List<(string Nom, int Valeur, int Min, int Max)> _stats = new();
+    private string _nomsGroupes = "";
+    private string _flavor = "";
+    private string _onglet = "Informations";
+    private bool _sansOeufs;
+    private bool _erreur;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _bundle = null; _d = null; _erreur = false; _onglet = "Informations";
+        try
+        {
+            _bundle = await Veekun.GetBundleAsync(FormId);
+        }
+        catch (Exception)
+        {
+            // Comportement 2016 : fiche introuvable → retour à la liste.
+            _erreur = true;
+            return;
+        }
+
+        _d = _bundle.Details;
+        _flavor = _d.FlavorTextX ?? "";
+        _versionsFlavor = new[]
+        {
+            ("X", _d.FlavorTextX ?? ""),
+            ("Y", _d.FlavorTextY ?? ""),
+            ("RΩ", _d.FlavorTextOmegaRuby ?? ""),
+            ("Sα", _d.FlavorTextAlphaSapphire ?? "")
+        };
+
+        _stats = new()
+        {
+            ("P.V.", _d.BaseStatHp, _d.MinStatHp, _d.MaxStatHp),
+            ("Attaque", _d.BaseStatAtk, _d.MinStatAtk, _d.MaxStatAtk),
+            ("Défense", _d.BaseStatDef, _d.MinStatDef, _d.MaxStatDef),
+            ("Attaque Spéciale", _d.BaseStatAtkSpe, _d.MinStatAtkSpe, _d.MaxStatAtkSpe),
+            ("Défense Spéciale", _d.BaseStatDefSpe, _d.MinStatDefSpe, _d.MaxStatDefSpe),
+            ("Vitesse", _d.BaseStatSpd, _d.MinStatSpd, _d.MaxStatSpd),
+        };
+
+        var relations = await Veekun.GetTypeRelationsAsync();
+        _faiblesses = PokemonBusiness
+            .GetWeaknesses(relations, _d.Type1Id, _d.Type2Id, excludeNeutral: true)
+            .OrderByDescending(x => x.DamageFactor)
+            .ToList();
+
+        _famille = _bundle.Evolutions.GetStade();
+
+        _nomsGroupes = string.Join(", ", _bundle.Egggroups.Select(x => x.EggGroupName));
+        _sansOeufs = _bundle.Egggroups.Any(x => x.EggGroupIdentifier == "no-eggs");
+        if (!_sansOeufs && _bundle.Egggroups.Count > 0)
+        {
+            var membres = new List<PokemonLite>();
+            foreach (var groupe in _bundle.Egggroups)
+                membres.AddRange(await Veekun.GetPokemonsByEgggroupAsync(groupe.EggGroupId));
+            _compatibles = membres
+                .DistinctBy(x => x.SpecieId)
+                .OrderBy(x => x.SpecieId)
+                .ToList();
+        }
+        else
+        {
+            _compatibles = new();
+        }
+    }
+
+    private static string SansSauts(string? texte) => texte?.Replace('\n', ' ') ?? "";
+
+    private static string Placeholder(string? valeur, string format)
+        => string.IsNullOrWhiteSpace(valeur) ? "--" : string.Format(format, valeur);
+}

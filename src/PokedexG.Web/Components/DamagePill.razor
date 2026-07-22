@@ -1,0 +1,13 @@
+@* Pastille de classe de dégâts (UserControlDamage de 2016). *@
+@if (!string.IsNullOrEmpty(_label))
+{
+    <span class="pastille" style="@TypeStyle.ClasseStyle(Identifier)">@_label</span>
+}
+
+@code {
+    [Parameter] public string? Identifier { get; set; }
+
+    private string _label = "";
+
+    protected override void OnParametersSet() => _label = TypeStyle.ClasseLabel(Identifier);
+}

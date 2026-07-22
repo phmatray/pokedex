@@ -5,11 +5,41 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <!-- L'app d'origine tournait en fr-FR ; les formats (taille, poids) en dépendent. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.9" PrivateAssets="all" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PokedexG.Core\PokedexG.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Assets 2016 copiés octet pour octet depuis le projet UWP dans wwwroot (gitignoré) :
+       les Content liés hors projet sont servis vides par le serveur de dev. -->
+  <Target Name="CopierAssetsLegacy" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <LegacySugimori Include="..\..\PokedexG.Uwp\Assets\sugimori\**\*.jpg" />
+      <LegacyGloballink Include="..\..\PokedexG.Uwp\Assets\globallink\**\*.jpg" />
+      <LegacyIcons Include="..\..\PokedexG.Uwp\Assets\icons\**\*.png" />
+      <LegacySprites Include="..\..\PokedexG.Uwp\Assets\sprites\**\*.gif" />
+      <LegacyInterface Include="..\..\PokedexG.Uwp\Assets\interface\pokeball.png;..\..\PokedexG.Uwp\Assets\interface\me.jpg" />
+      <LegacyFont Include="..\..\PokedexG.Uwp\Assets\fonts\PokemonSolid.ttf" />
+    </ItemGroup>
+    <Copy SourceFiles="@(LegacySugimori)" DestinationFolder="wwwroot\img\sugimori" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LegacyGloballink)" DestinationFolder="wwwroot\img\globallink" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LegacyIcons)" DestinationFolder="wwwroot\img\icons" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LegacySprites)" DestinationFolder="wwwroot\img\sprites" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LegacyInterface)" DestinationFolder="wwwroot\img\interface" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LegacyFont)" DestinationFolder="wwwroot\fonts" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="..\..\PokedexG.Uwp\Assets\Square150x150Logo.scale-200.png"
+          DestinationFolder="wwwroot\img\interface" SkipUnchangedFiles="true" />
+    <Move SourceFiles="wwwroot\img\interface\Square150x150Logo.scale-200.png"
+          DestinationFiles="wwwroot\img\interface\logo.png"
+          Condition="Exists('wwwroot\img\interface\Square150x150Logo.scale-200.png')" />
+  </Target>
 
 </Project>

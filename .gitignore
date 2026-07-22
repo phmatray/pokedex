@@ -26,3 +26,6 @@ PokemonAPI/bin/Debug/Newtonsoft.Json.xml
 **/obj/
 # API statique générée par PokedexG.DataGen
 src/PokedexG.Web/wwwroot/data/
+node_modules/
+src/PokedexG.Web/wwwroot/img/
+src/PokedexG.Web/wwwroot/fonts/
