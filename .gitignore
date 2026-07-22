@@ -20,3 +20,9 @@ PokemonAPI.Models/obj/
 PokedexG.Uwp/obj/x64/Release/PackageUploadLayout/Assets/globallink/404.jpg
 PokedexG.Uwp/_pkginfo.txt
 PokemonAPI/bin/Debug/Newtonsoft.Json.xml
+
+# .NET moderne (migration Blazor)
+**/bin/
+**/obj/
+# API statique générée par PokedexG.DataGen
+src/PokedexG.Web/wwwroot/data/
