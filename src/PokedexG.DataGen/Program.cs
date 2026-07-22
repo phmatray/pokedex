@@ -86,8 +86,25 @@ foreach (var eggGroupId in eggGroupIds)
     Write(Path.Combine("egggroup", $"{eggGroupId}.json"),
         await Veekun.GetPokemonsByEgggroupAsync(eggGroupId));
 
+// Manifeste de précache du service worker : l'app 2016 était installée avec tout son
+// contenu local — même contrat hors-ligne ici (données + icônes ; les illustrations
+// se mettent en cache à la visite).
+var precache = new List<string>
+{
+    "data/pokemons.json", "data/pokedexes.json", "data/versions.json",
+    "data/types.json", "data/type-relations.json", "data/machines.json"
+};
+precache.AddRange(types.Select(t => $"data/type/{t.Id}.json"));
+precache.AddRange(eggGroupIds.Select(id => $"data/egggroup/{id}.json"));
+precache.AddRange(pokemons.Where(p => !skipped.Contains(p.FormId))
+    .Select(p => $"data/pokemon/{p.FormId}.json"));
+var iconsDir = Path.Combine(FindRepoRoot(), "PokedexG.Uwp", "Assets", "icons");
+precache.AddRange(Directory.EnumerateFiles(iconsDir, "*.png")
+    .Select(f => $"img/icons/{Path.GetFileName(f)}").OrderBy(x => x, StringComparer.Ordinal));
+Write("precache.json", precache);
+
 Console.WriteLine($"OK — {pokemons.Count} pokémon, {types.Count} types, " +
-                  $"{eggGroupIds.Count} groupes d'œufs → {output}");
+                  $"{eggGroupIds.Count} groupes d'œufs, précache {precache.Count} entrées → {output}");
 if (skipped.Count > 0)
     Console.WriteLine($"Sans fiche (comme l'app d'origine : formes non par défaut) : " +
                       $"{skipped.Count} → {string.Join(", ", skipped)}");

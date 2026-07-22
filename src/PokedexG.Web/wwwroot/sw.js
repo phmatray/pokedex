@@ -1,5 +1,18 @@
-// Service worker minimal : réseau d'abord, cache en secours (utilisable hors-ligne après une visite).
+// Service worker : réseau d'abord, cache en secours. À l'installation, précharge les données
+// et les icônes (l'app de 2016 était installée avec tout son contenu local — même contrat) ;
+// les illustrations se mettent en cache à la visite.
 const CACHE = 'pkdx-v1';
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE).then(cache =>
+      fetch('data/precache.json')
+        .then(reponse => reponse.json())
+        .then(entrees => Promise.allSettled(entrees.map(u => cache.add(u))))
+        .catch(() => {})
+    )
+  );
+});
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
