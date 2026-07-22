@@ -1,0 +1,12 @@
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.AssemblyInfoInputs.cache
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.AssemblyInfo.cs
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.csproj.CoreCompileInputs.cache
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.sourcelink.json
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/bin/Debug/net10.0/PokedexG.Core.deps.json
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/bin/Debug/net10.0/PokedexG.Core.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/bin/Debug/net10.0/PokedexG.Core.pdb
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/refint/PokedexG.Core.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/PokedexG.Core.pdb
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Core/obj/Debug/net10.0/ref/PokedexG.Core.dll

@@ -1,0 +1,16 @@
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/bin/Debug/net10.0/PokedexG.Data.deps.json
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/bin/Debug/net10.0/PokedexG.Data.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/bin/Debug/net10.0/PokedexG.Data.pdb
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/bin/Debug/net10.0/PokedexG.Core.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/bin/Debug/net10.0/PokedexG.Core.pdb
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.csproj.AssemblyReference.cache
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.GeneratedMSBuildEditorConfig.editorconfig
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.AssemblyInfoInputs.cache
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.AssemblyInfo.cs
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.csproj.CoreCompileInputs.cache
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.sourcelink.json
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.F8BBF8A7.Up2Date
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/refint/PokedexG.Data.dll
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/PokedexG.Data.pdb
+/Users/phmatray/Repositories/dotnet/pokedexg/src/PokedexG.Data/obj/Debug/net10.0/ref/PokedexG.Data.dll
