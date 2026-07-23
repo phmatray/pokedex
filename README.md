@@ -59,6 +59,22 @@ L'application d'origine (2016) est une app UWP distribuée par le Windows Store,
 dans `PokedexG.Uwp/`. Le rapport de modernisation — méthode, portes franchies, quirks figés,
 preuves — est dans [`migration/report.md`](migration/report.md).
 
+<!-- portfolio-techstack:start -->
+
+## Tech Stack
+
+- **.NET 10 · netcoreapp1.0**
+- Microsoft.NET.Sdk
+- Microsoft.NETCore.App
+- System.Runtime.Serialization.Primitives
+- Microsoft.NET.Sdk.Web
+- Microsoft.AspNetCore.Mvc
+- Microsoft.AspNetCore.Routing
+- Microsoft.AspNetCore.Server.IISIntegration
+- Microsoft.AspNetCore.Server.Kestrel
+
+<!-- portfolio-techstack:end -->
+
 ## License
 
 MIT
