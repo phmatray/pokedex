@@ -1,3 +1,5 @@
+![pokedexg banner](.github/banner.png)
+
 # Pokédex G
 
 > Les 721 Pokémon des générations 1 à 6, en français — fiches complètes, méga-évolutions,
