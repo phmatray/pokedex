@@ -34,6 +34,16 @@
 > Les 721 Pokémon des générations 1 à 6, en français — fiches complètes, méga-évolutions,
 > formes alternatives, table des types et capsules techniques. Consultable hors ligne (PWA).
 
+## Features
+
+- **Pokédex complet** — les 721 Pokémon des générations 1 à 6 (`/`), triable par numéro ou par famille d'évolution, avec recherche instantanée et un bouton « Hasardex » pour ouvrir une fiche au hasard.
+- **Fiches détaillées** — chaque Pokémon (`/pokemon/{id}`) affiche ses statistiques, ses types, ses évolutions, méga-évolutions et formes alternatives.
+- **Galerie d'illustrations** — vue en grille (`/galerie`) de tous les sprites/artworks, avec recherche par nom.
+- **Table des types** — matrice complète des forces et faiblesses (`/types` et `/type/{id}`) entre les 18 types.
+- **Capsules techniques** — liste des CTs (`/machines`) avec puissance, précision, PP et type associé.
+- **Personnalisation** — page Options (`/options`) pour choisir le tri du Pokédex, afficher/masquer les méga-évolutions et formes alternatives, et changer le style des illustrations (thèmes « Rubis »/« Saphir »).
+- **Consultation hors ligne** — `manifest.webmanifest` + service worker font de l'app une PWA installable et utilisable sans connexion.
+
 ## Architecture
 
 | Projet | Rôle |
@@ -59,6 +69,22 @@ cd src/PokedexG.Web && npm install && npm run css  # feuille Tailwind (committé
 
 La CI (`.github/workflows/ci.yml`) exécute les tests avec couverture ; le déploiement
 (`deploy-pages.yml`) publie sur GitHub Pages avec un smoke test permanent (racine + fiche).
+
+## Usage
+
+L'application est consultable en ligne sur [phmatray.github.io/pokedexg](https://phmatray.github.io/pokedexg/)
+(installable comme PWA, utilisable hors connexion une fois chargée) :
+
+- **Rechercher** un Pokémon par nom depuis le champ de recherche du Pokédex (`/`) ou de la Galerie (`/galerie`).
+- **Ouvrir une fiche** au hasard avec le bouton « Hasardex », ou directement via une URL du type `/pokemon/6` (fiche de Dracaufeu).
+- **Consulter la table des types** (`/types`) pour les forces/faiblesses, ou les capsules techniques (`/machines`) pour la puissance/précision d'une CT.
+- **Ajuster l'affichage** depuis `/options` : tri par numéro ou par famille d'évolution, affichage des méga-évolutions/formes alternatives, thème des illustrations.
+
+Pour la lancer en local :
+
+```bash
+dotnet run --project src/PokedexG.Web
+```
 
 ## Données & crédits
 
