@@ -2,6 +2,20 @@
 
 # Pokédex G
 
+<!-- portfolio-badges:start -->
+<!-- Identity -->
+[![phmatray - pokedexg](https://img.shields.io/static/v1?label=phmatray&message=pokedexg&color=blue&logo=github)](https://github.com/phmatray/pokedexg)
+![Top language](https://img.shields.io/github/languages/top/phmatray/pokedexg)
+[![Stars](https://img.shields.io/github/stars/phmatray/pokedexg?style=social)](https://github.com/phmatray/pokedexg/stargazers)
+[![Forks](https://img.shields.io/github/forks/phmatray/pokedexg?style=social)](https://github.com/phmatray/pokedexg/network/members)
+
+<!-- Activity -->
+[![Issues](https://img.shields.io/github/issues/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/pulls)
+[![Last commit](https://img.shields.io/github/last-commit/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/commits)
+<!-- portfolio-badges:end -->
+
+
 > Les 721 Pokémon des générations 1 à 6, en français — fiches complètes, méga-évolutions,
 > formes alternatives, table des types et capsules techniques. Consultable hors ligne (PWA).
 
