@@ -1,0 +1,9 @@
+@* Titre de section — la pokéball de 2016 (octet pour octet) en puce, comme UserControlTitle. *@
+<h2 class="flex items-center gap-2 text-lg font-bold mt-6 mb-3">
+    <img src="img/interface/pokeball.png" alt="" width="20" height="20" />
+    <span>@Titre</span>
+</h2>
+
+@code {
+    [Parameter, EditorRequired] public string Titre { get; set; } = "";
+}

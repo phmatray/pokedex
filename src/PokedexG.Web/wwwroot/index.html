@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex G — le Pokédex 6G en français</title>
+    <meta name="description" content="Pokédex G : les 721 Pokémon des générations 1 à 6 en français — fiches complètes, méga-évolutions, formes alternatives, table des types, capsules techniques. Consultable hors ligne." />
+    <base href="/" />
+    <script>
+        // Thème avant la feuille de style : pas d'éclair de thème au chargement.
+        (function () {
+            var theme = localStorage.getItem('AppTheme') || 'rubis';
+            document.documentElement.setAttribute('data-theme', theme);
+            window.pkdx = {
+                applyTheme: function (t) { document.documentElement.setAttribute('data-theme', t); }
+            };
+        })();
+    </script>
+    <link rel="preload" id="webassembly" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="img/interface/logo.png" />
+    <link rel="apple-touch-icon" href="img/interface/logo.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link href="PokedexG.Web.styles.css" rel="stylesheet" />
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="chargement">
+            <img src="img/interface/pokeball.png" alt="" width="48" height="48" class="chargement-balle" />
+            <p>Chargement…</p>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        Une erreur est survenue.
+        <a href="." class="reload">Recharger</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+
+</html>

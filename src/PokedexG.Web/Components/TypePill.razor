@@ -1,0 +1,18 @@
+@* Pastille de type (UserControlType/Type2 de 2016) — couleur du type, encre mesurée AA. *@
+@if (TypeId is null || TypeId == 0)
+{
+}
+else if (Lien)
+{
+    <a class="pastille no-underline" style="@TypeStyle.Pastille(TypeId)" href="type/@TypeId">@Nom</a>
+}
+else
+{
+    <span class="pastille" style="@TypeStyle.Pastille(TypeId)">@Nom</span>
+}
+
+@code {
+    [Parameter] public int? TypeId { get; set; }
+    [Parameter] public string? Nom { get; set; }
+    [Parameter] public bool Lien { get; set; }
+}

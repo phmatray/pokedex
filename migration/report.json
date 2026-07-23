@@ -1,0 +1,72 @@
+{
+  "app": "Pokédex G",
+  "target": "Blazor WASM (net10.0) + API statique générée",
+  "date": "2026-07-23",
+  "headline": "Le Pokédex 6G de retour, hors ligne compris",
+  "badge": "Prêt pour la production",
+  "summary": "L'app UWP de 2016 ne vivait que par le Windows Store ; son frontend (Template10, SQLite.Net-PCL, Toolkit 1.2) est mort avec lui, pendant que Renovate arrosait un webservice netcoreapp1.0 jamais branché au frontend. La vraie source de données — un SQLite veekun de 49 Mo interrogé par 15 requêtes SQL artisanales — est conservée telle quelle : un générateur exécute les requêtes de 2014 verbatim et matérialise une API statique JSON que la réécriture Blazor consomme. Les 721 Pokémon (799 formes), méga-évolutions et formes alternatives se consultent en français, en ligne et hors ligne, dans deux thèmes : « Rubis » (clair, l'accent rouge sombre de 2016) et « Saphir » (nuit).",
+  "kpis": [
+    { "v": "53", "label": "tests de caractérisation verts" },
+    { "v": "75", "unit": "%", "label": "couverture du cœur (lignes, mesurée)" },
+    { "v": "0", "label": "erreur & warning (Roslyn, solution complète)" },
+    { "v": "799", "label": "fiches consultables, hors ligne compris" },
+    { "v": "1", "unit": "h", "label": "réalisé — pour 29 j estimés à l'audit" }
+  ],
+  "business": [
+    { "strong": "L'app revit sur tous les appareils.", "text": "Distribution Windows Store morte → PWA web : 721 espèces, 48 méga-évolutions, table des types, capsules techniques — installable, consultable hors ligne (contrat de l'app installée de 2016 : données et icônes préchargées)." },
+    { "strong": "La donnée et l'art de 2016 sont conservés octet pour octet.", "text": "Le SQLite veekun n'est pas réinterprété : les 15 requêtes SQL de 2014 s'exécutent verbatim au build ; 2 713 illustrations, icônes et la police embarquée sont copiées telles quelles." },
+    { "strong": "Le comportement est prouvé, quirks compris.", "text": "53 tests figent les requêtes (799 formes, matrice 18×18, CT), les formats (« 5'6\" (1.70 m) »), les suffixes de formes (#006MX, #201!) et jusqu'aux bizarreries de la recherche de 2016." },
+    { "strong": "L'audit initial est corrigé.", "text": "Le « backend moderne à conserver » n'existait pas (netcoreapp1.0 + SQL Server jamais branché) et le « projet de tests » était une référence pendante. La mise à jour automatique de dépendances maquillait un projet mort — leçon codifiée dans le kit." }
+  ],
+  "coverage": {
+    "cobertura": "coverage.cobertura.xml",
+    "exclude": [],
+    "note": "cœur porté + couche données ; l'UI Blazor n'est pas comptée"
+  },
+  "screenshot": {
+    "path": "captures/accueil-rubis.png",
+    "caption": "Le Pokédex, thème « Rubis » : bandeau rouge sombre et police de 2016, tri par familles d'évolution, pastilles aux couleurs officielles des types (encres mesurées AA). Fiche, galerie « Saphir », matrice des types et preuve hors-ligne dans captures/.",
+    "alt": "Table du Pokédex : bandeau rouge sombre avec le mot-symbole Pokédex G, lignes Bulbizarre à Méga-Tortank avec icônes d'époque, pastilles de types colorées et statistiques"
+  },
+  "before_after": [
+    ["Plateforme", "UWP 10.0.14393 (Store fermé, Template10 mort)", "Blazor WebAssembly, net10.0"],
+    ["Distribution", "Windows Store (certificat expiré)", "PWA web, hors ligne compris"],
+    ["Données", "SQLite veekun 49 Mo copié dans le bac à sable WinRT", "même SQLite, requêtes 2014 verbatim exécutées au build → API statique JSON"],
+    ["Illustrations", "2 713 assets locaux (Sugimori, Global Link, icônes)", "les mêmes, copiés octet pour octet au build"],
+    ["Accès données", "SQLite.Net-PCL + copie en mémoire", "shim Microsoft.Data.Sqlite de 46 lignes, même contrat"],
+    ["Tests", "aucun (référence pendante dans une .sln morte)", "53 tests de caractérisation, couverture 75 %"],
+    ["Diagnostics Roslyn", "solution inanalysable (netcoreapp1.0 + UWP)", "0 erreur, 0 warning (PokedexG.Blazor.sln)"]
+  ],
+  "code_bodies": [
+    { "label": "Porté verbatim", "loc": 938, "tip": "modèles, filtrage, StringHelper, Constants, façade Veekun — fichiers 2016 inchangés, namespaces conservés" },
+    { "label": "SQL 2014 verbatim", "loc": 984, "tip": "15 requêtes .txt embarquées telles quelles (1 reconstruite : jointures réordonnées pour SQLite moderne)" },
+    { "label": "Reconstruit (shims)", "loc": 343, "tip": "mappeur SQLite, SqlLocator embarqué, enums extraits, ColorCodes en CSS — en-têtes RECONSTRUCTION datés" },
+    { "label": "Logique métier portée", "loc": 228, "tip": "PokemonBusiness : formats, formules de stats, faiblesses, suffixes de formes" },
+    { "label": "Générateur d'API statique", "loc": 135, "tip": "exécute les requêtes verbatim → 838 JSON + manifeste de précache" },
+    { "label": "Tests", "loc": 420, "tip": "53 tests de caractérisation (requêtes, formats, filtre, couleurs)" },
+    { "label": "UI (Razor + CSS)", "loc": 1345, "tip": "7 pages Blazor + composants + feuille Tailwind, deux thèmes" }
+  ],
+  "code_note": "Le corpus (SQLite veekun) et les 2 713 assets de 2016 sont réutilisés octet pour octet — rien n'est réinterprété.",
+  "gates": [
+    { "title": "Préflight", "text": "8/8 vérifications outillage + MCP OK, aucune dégradation", "commit": "—" },
+    { "title": "Cœur porté et caractérisé", "text": "requêtes 2014 verbatim sur SQLite moderne, 53 tests verts, Roslyn 0 erreur/0 warning, générateur d'API statique", "commit": "af5fe68" },
+    { "title": "UI et garde-fous", "text": "7 pages Blazor, identité 2016 (bandeau, police, pokéball, types), encres mesurées AA (contrast-check du kit), workflows CI + déploiement depuis les templates", "commit": "89d5735" },
+    { "title": "Promesses vérifiées", "text": "hors-ligne prouvé serveur coupé sur une fiche jamais visitée (précache 1 773 entrées), publish à froid vérifié (assets + données), route profonde servie par le fallback SPA", "commit": "voir branche" },
+    { "title": "Livraison", "text": "EN ATTENTE décision propriétaire : le repo est privé — GitHub Pages exige de le rendre public (marque Pokémon : usage démo/éducatif). Tout est prêt : workflows en place, smoke test permanent paramétré.", "commit": "—" }
+  ],
+  "branch": "migration/2026-07-23",
+  "next_steps": [
+    { "text": "Rendre le repo public et activer Pages (gh api repos/phmatray/pokedexg/pages -X POST -f build_type=workflow) — ou choisir un hébergement privé", "effort": "~10 min", "owner": true },
+    { "text": "Installer la PWA sur un appareil réel (le hors-ligne est déjà prouvé serveur coupé, en émulation)", "effort": "~15 min" },
+    { "text": "Décider du sort du webservice PokemonAPI.* (netcoreapp1.0, jamais branché au frontend) : archiver ces projets ou les migrer un jour", "effort": "~30 min", "owner": true }
+  ],
+  "deferred": [
+    { "strong": "Actualité (NewsPage)", "text": "l'app interrogeait l'API Bing News (service et SDK morts) — page non portée ; à remplacer par une vraie source si souhaitée en v2." },
+    { "strong": "Games (page vide)", "text": "coquille sans contenu ni ViewModel dans l'app de 2016 — non portée." },
+    { "strong": "Textes des talents", "text": "la fiche 2016 affichait l'effet détaillé en anglais (seconde pile EF, non portée) ; la fiche affiche le texte français du jeu — divergence assumée, plus cohérente avec l'app." },
+    { "strong": "Évolutions tripliquées", "text": "la requête legacy renvoie chaque évolution 3× (fan-out de jointure) — figé par les tests ; l'UI dédoublonne à l'affichage (l'app 2016 affichait bien Salamèche trois fois)." },
+    { "strong": "Illustrations hors ligne", "text": "données et icônes sont préchargées ; les grandes illustrations (25 Mo) se mettent en cache à la visite — nuance assumée pour ne pas imposer le téléchargement." },
+    { "strong": "Poids des assets", "text": "JPG/PNG de 2016 repris tels quels par fidélité ; version WebP/AVIF possible en v2." }
+  ],
+  "method": "Pipeline ai-migration-kit v1.4.0 (port-characterize-wrap) : préflight phase 0 (8/8), port verbatim namespaces conservés, requêtes SQL embarquées telles quelles, tests de caractérisation avant toute UI, RoselineMCP pour l'analyse (0 erreur), couverture cobertura mesurée, contraste WCAG AA mesuré (contrast-check.py — 22 paires thèmes/badges + 18 encres de types), hors-ligne PWA prouvé serveur coupé sur route jamais visitée, workflows depuis les templates du kit avec smoke test post-déploiement. Limites : couverture calculée sur le cœur (l'UI Blazor n'est pas instrumentée) ; comportements legacy conservés tels quels, quirks documentés ; livraison production suspendue à la décision de publier le repo."
+}

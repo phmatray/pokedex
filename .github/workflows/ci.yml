@@ -1,0 +1,32 @@
+# Template CI ai-migration-kit — à déposer dans le repo migré (.github/workflows/ci.yml), phase 6.
+# La migration ne livre pas que du code : elle livre le garde-fou.
+# ⚠ Renseignez SOLUTION si le repo contient plusieurs .sln (l'ancienne solution legacy reste
+#   souvent à la racine) : `dotnet test` nu échoue alors avec MSB1011.
+name: ci
+
+on:
+  push:
+    branches: [main, dev, 'migration/**']
+  pull_request:
+
+env:
+  SOLUTION: 'PokedexG.Blazor.sln'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Tests + couverture
+        run: dotnet test $SOLUTION --nologo --collect:"XPlat Code Coverage" --results-directory coverage
+
+      - name: Publier la couverture en artefact de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/**/coverage.cobertura.xml

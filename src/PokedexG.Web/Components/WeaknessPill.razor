@@ -1,0 +1,15 @@
+@* Faiblesse (UserControlWeakness de 2016) : pastille du type + badge du facteur, cliquable. *@
+@using PokedexG.Uwp.Models
+<a class="inline-flex items-center gap-1 no-underline" href="type/@Faiblesse.DamageTypeId"
+   aria-label="@Faiblesse.DamageTypeName, dégâts ×@(Faiblesse.DamageFactor / 100m)">
+    <span class="pastille" style="@TypeStyle.Pastille(Faiblesse.DamageTypeId)">@Faiblesse.DamageTypeName</span>
+    <span class="badge-facteur" style="@_badge.Style" aria-hidden="true">@_badge.Label</span>
+</a>
+
+@code {
+    [Parameter, EditorRequired] public DamageType Faiblesse { get; set; } = default!;
+
+    private (string Label, string Style) _badge;
+
+    protected override void OnParametersSet() => _badge = TypeStyle.BadgeFaiblesse(Faiblesse.DamageFactor);
+}

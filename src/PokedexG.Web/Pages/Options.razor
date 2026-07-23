@@ -1,0 +1,103 @@
+@page "/options"
+@inject SettingsService Reglages
+
+<PageTitle>Pokédex G — Options</PageTitle>
+
+<h1 class="text-xl font-bold py-4">Options</h1>
+
+<div role="tablist" aria-label="Options" class="flex gap-1 border-b border-(--filet)">
+    @foreach (var onglet in new[] { "Paramètres", "Infos" })
+    {
+        <button type="button" role="tab" aria-selected="@(onglet == _onglet)"
+                class="px-4 py-2 text-sm cursor-pointer border-b-3 -mb-px @(onglet == _onglet ? "border-(--lien) font-bold text-(--lien)" : "border-transparent text-(--encre-2) hover:text-(--encre)")"
+                @onclick="() => _onglet = onglet">@onglet</button>
+    }
+</div>
+
+@if (_onglet == "Paramètres")
+{
+    <div class="max-w-xl space-y-6 mt-6">
+        <section>
+            <h2 class="font-bold mb-2">Style du Pokédex</h2>
+            <label class="flex items-center justify-between gap-4 py-1.5 cursor-pointer">
+                <span>@(Reglages.UsePokedexEvolutionFamilies ? "Pokédex trié par famille d'évolution" : "Pokédex trié par numéro")</span>
+                <input type="checkbox" class="scale-125" checked="@Reglages.UsePokedexEvolutionFamilies"
+                       @onchange="e => Basculer(v => Reglages.UsePokedexEvolutionFamilies = v, e)" />
+            </label>
+            <label class="flex items-center justify-between gap-4 py-1.5 cursor-pointer">
+                <span>@(Reglages.UsePokedexMegaEvolutions ? "Afficher les méga-évolutions" : "Masquer les méga-évolutions")</span>
+                <input type="checkbox" class="scale-125" checked="@Reglages.UsePokedexMegaEvolutions"
+                       @onchange="e => Basculer(v => Reglages.UsePokedexMegaEvolutions = v, e)" />
+            </label>
+            <label class="flex items-center justify-between gap-4 py-1.5 cursor-pointer">
+                <span>@(Reglages.UsePokedexAlternatives ? "Afficher les formes alternatives" : "Masquer les formes alternatives")</span>
+                <input type="checkbox" class="scale-125" checked="@Reglages.UsePokedexAlternatives"
+                       @onchange="e => Basculer(v => Reglages.UsePokedexAlternatives = v, e)" />
+            </label>
+        </section>
+
+        <section>
+            <h2 class="font-bold mb-2">Style des illustrations</h2>
+            <label class="flex items-center justify-between gap-4 py-1.5 cursor-pointer">
+                <span>@(Reglages.ArtworkStyle ? "Illustrations de Sugimori" : "Illustrations du Global Link")</span>
+                <input type="checkbox" class="scale-125" checked="@Reglages.ArtworkStyle"
+                       @onchange="e => Basculer(v => Reglages.ArtworkStyle = v, e)" />
+            </label>
+        </section>
+
+        <section>
+            <h2 class="font-bold mb-2">Thème</h2>
+            <label class="flex items-center justify-between gap-4 py-1.5 cursor-pointer">
+                <span>@(Reglages.AppTheme == "saphir" ? "Thème Saphir (nuit)" : "Thème Rubis (clair)")</span>
+                <input type="checkbox" class="scale-125" checked="@(Reglages.AppTheme == "saphir")"
+                       @onchange='e => Reglages.AppTheme = (bool)e.Value! ? "saphir" : "rubis"' />
+            </label>
+        </section>
+    </div>
+}
+else
+{
+    <div class="max-w-prose space-y-6 mt-6">
+        <section>
+            <h2 class="font-bold text-lg">Pokédex G</h2>
+            <p class="mt-2">
+                Pokédex G est le pokédex 6G le plus complet et le plus pratique.
+                Découvrez les fiches des 721 Pokémons existants, leurs méga-évolutions
+                et leurs formes alternatives — consultables hors ligne.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="font-bold">Créé par</h2>
+            <figure class="flex items-center gap-4 mt-2">
+                <img src="img/interface/me.jpg" alt="Portrait de Philippe Matray" width="72" height="72"
+                     class="rounded-full object-cover" />
+                <figcaption>Philippe MATRAY — <a href="https://github.com/phmatray">github.com/phmatray</a></figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2 class="font-bold">Crédits</h2>
+            <p class="mt-2">
+                Un grand merci pour la base de données : <a href="https://veekun.com/">veekun</a>.<br />
+                Site web de Pokémon : <a href="https://www.pokemon.com/fr/">pokemon.com</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="font-bold">Marques</h2>
+            <p class="mt-2 text-sm text-(--encre-2)">
+                Pokédex G n'est pas affilié avec, sponsorisé, ou spécifiquement approuvé par
+                Nintendo, Game Freak, Creatures et The Pokémon Company.
+                Pokémon est une marque déposée de Nintendo Co., Ltd.
+            </p>
+        </section>
+    </div>
+}
+
+@code {
+    private string _onglet = "Paramètres";
+
+    private static void Basculer(Action<bool> applique, ChangeEventArgs e)
+        => applique((bool)e.Value!);
+}

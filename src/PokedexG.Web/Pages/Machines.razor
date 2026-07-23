@@ -1,0 +1,45 @@
+@page "/machines"
+@inject VeekunClient Veekun
+
+<PageTitle>Pokédex G — Capsules techniques</PageTitle>
+
+@if (_machines is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture des capsules techniques…</p>
+}
+else
+{
+    <h1 class="text-xl font-bold py-4">Capsules techniques</h1>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        @foreach (var machine in _machines)
+        {
+            <div class="carte p-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xl font-bold tabulaire">@machine.ItemName</span>
+                    <span class="font-bold">@machine.Name</span>
+                    <span class="text-(--encre-2) text-sm">(@machine.NameEn)</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 mt-1.5">
+                    <TypePill TypeId="machine.TypeId" Nom="@machine.Type" />
+                    <DamagePill Identifier="@machine.DamageClass" />
+                </div>
+                <div class="flex gap-4 text-sm tabulaire text-(--encre-2) mt-1.5">
+                    <span>@Placeholder(machine.Pp, "{0} PP")</span>
+                    <span title="Puissance">@Placeholder(machine.Power, "{0}")</span>
+                    <span title="Précision">@Placeholder(machine.Accuracy, "{0}%")</span>
+                </div>
+                <p class="text-sm mt-1.5">@(machine.FlavorText?.Replace('\n', ' '))</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Machine>? _machines;
+
+    protected override async Task OnInitializedAsync()
+        => _machines = await Veekun.GetMachinesAsync();
+
+    private static string Placeholder(string? valeur, string format)
+        => string.IsNullOrWhiteSpace(valeur) ? "--" : string.Format(format, valeur);
+}

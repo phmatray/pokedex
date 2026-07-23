@@ -1,0 +1,12 @@
+select
+	types.id as Id,
+	types.identifier as Identifier,
+	type_names.name as Name
+	
+from types
+join type_names
+	on type_names.type_id = types.id
+
+where
+	type_names.local_language_id = @languageId and
+	types.id <= 10000

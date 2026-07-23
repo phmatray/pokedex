@@ -1,0 +1,79 @@
+@page "/types"
+@inject VeekunClient Veekun
+
+<PageTitle>Pokédex G — Types</PageTitle>
+
+@if (_groupes is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture de la table des types…</p>
+}
+else
+{
+    <h1 class="text-xl font-bold py-4">Forces et faiblesses des types</h1>
+
+    <div class="flex flex-wrap gap-1.5 mb-6">
+        @foreach (var type in _types!)
+        {
+            <TypePill TypeId="type.Id" Nom="@type.Name" Lien="true" />
+        }
+    </div>
+
+    <div class="carte overflow-x-auto p-3">
+        <table class="border-separate border-spacing-1 tabulaire">
+            <caption class="sr-only">Facteurs de dégâts : lignes = type attaquant, colonnes = type défenseur</caption>
+            <thead>
+                <tr>
+                    <th class="text-left text-xs text-(--encre-2) font-normal pr-2">Attaquant ↓</th>
+                    @foreach (var type in _types!)
+                    {
+                        <th scope="col" class="text-center">
+                            <a href="type/@type.Id" title="@type.Name"
+                               class="pastille !px-1.5 w-9 !text-[0.6rem] no-underline"
+                               style="@TypeStyle.Pastille(type.Id)">@type.Name[..Math.Min(3, type.Name.Length)]</a>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var groupe in _groupes)
+                {
+                    <tr>
+                        <th scope="row" class="text-left pr-2">
+                            <a href="type/@groupe.Type.Id" class="pastille w-20 no-underline"
+                               style="@TypeStyle.Pastille(groupe.Type.Id)">@groupe.Type.Name</a>
+                        </th>
+                        @foreach (var relation in groupe.TypeRelations)
+                        {
+                            var cellule = TypeStyle.CelluleFacteur(relation.DamageFactor);
+                            <td class="text-center">
+                                <span class="cellule-facteur" style="@cellule.Style"
+                                      title="@TypeStyle.Phrase(relation.DamageTypeName, relation.TargetTypeName, relation.DamageFactor)">
+                                    @cellule.Label
+                                </span>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<TypeLite>? _types;
+    private List<TypeRelationGroup>? _groupes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _types = await Veekun.GetTypeLitesAsync();
+        var relations = await Veekun.GetTypeRelationsAsync();
+        _groupes = relations
+            .GroupBy(x => x.DamageTypeId)
+            .Select(g => new TypeRelationGroup
+            {
+                Type = _types.First(t => t.Id == g.Key),
+                TypeRelations = g.ToList()
+            })
+            .ToList();
+    }
+}

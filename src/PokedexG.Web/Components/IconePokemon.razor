@@ -1,0 +1,10 @@
+@* Petite icône de liste (40×30 en 2016) — masquée si l'asset manque, comme le convertisseur
+   d'origine renvoyait une image vide. *@
+<img src="@Services.SettingsService.IconPath(Cle)" alt="@Alt" width="40" height="30"
+     loading="lazy" class="object-contain @Classe" onerror="this.style.visibility='hidden'" />
+
+@code {
+    [Parameter, EditorRequired] public object Cle { get; set; } = default!;
+    [Parameter] public string? Alt { get; set; }
+    [Parameter] public string? Classe { get; set; }
+}

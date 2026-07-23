@@ -1,0 +1,11 @@
+{
+  "name": "pokedexg.web",
+  "private": true,
+  "scripts": {
+    "css": "tailwindcss -i Styles/tailwind.input.css -o wwwroot/css/app.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

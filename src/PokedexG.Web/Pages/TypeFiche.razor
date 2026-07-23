@@ -1,0 +1,88 @@
+@page "/type/{TypeId:int}"
+@inject VeekunClient Veekun
+
+<PageTitle>Pokédex G — Type @(_type?.Name ?? "")</PageTitle>
+
+@if (_type is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture du type…</p>
+}
+else
+{
+    <div class="flex items-center gap-3 py-4">
+        <h1 class="text-xl font-bold">Type</h1>
+        <span class="pastille text-base! px-4! py-1!" style="@TypeStyle.Pastille(_type.Id)">@_type.Name</span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-x-8">
+        <div>
+            <SectionTitle Titre="Dégâts subis" />
+            <p class="text-sm text-(--encre-2) max-w-prose">Ce que le type @_type.Name encaisse des autres types.</p>
+            <div class="flex flex-wrap gap-2 mt-2">
+                @foreach (var relation in _subis)
+                {
+                    <WeaknessPill Faiblesse="@(new DamageType
+                                             {
+                                                 DamageTypeId = relation.DamageTypeId,
+                                                 DamageTypeName = relation.DamageTypeName,
+                                                 DamageFactor = relation.DamageFactor
+                                             })" />
+                }
+            </div>
+
+            <SectionTitle Titre="Dégâts infligés" />
+            <p class="text-sm text-(--encre-2) max-w-prose">Ce que le type @_type.Name inflige aux autres types.</p>
+            <div class="flex flex-wrap gap-2 mt-2">
+                @foreach (var relation in _infliges)
+                {
+                    var cellule = TypeStyle.CelluleFacteur(relation.DamageFactor);
+                    <a class="inline-flex items-center gap-1 no-underline" href="type/@relation.TargetTypeId"
+                       aria-label="@TypeStyle.Phrase(relation.DamageTypeName, relation.TargetTypeName, relation.DamageFactor)">
+                        <span class="pastille" style="@TypeStyle.Pastille(relation.TargetTypeId)">@relation.TargetTypeName</span>
+                        <span class="badge-facteur" style="@cellule.Style" aria-hidden="true">@cellule.Label</span>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div>
+            <SectionTitle Titre="Pokémons de ce type" />
+            <p class="sr-only">@_pokemons.Count Pokémon</p>
+            <div class="flex flex-wrap gap-1 mt-2">
+                @foreach (var pokemon in _pokemons)
+                {
+                    <a href="pokemon/@pokemon.PokemonId" title="@pokemon.Name">
+                        <IconePokemon Cle="@pokemon.FormKey" Alt="@pokemon.Name" />
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int TypeId { get; set; }
+
+    private TypeLite? _type;
+    private List<PokemonLite> _pokemons = new();
+    private List<TypeRelation> _subis = new();
+    private List<TypeRelation> _infliges = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _type = null;
+        var bundle = await Veekun.GetTypeBundleAsync(TypeId);
+        var relations = await Veekun.GetTypeRelationsAsync();
+
+        _pokemons = bundle.Pokemons;
+        _subis = relations
+            .Where(x => x.TargetTypeId == TypeId && x.DamageFactor != 100)
+            .OrderByDescending(x => x.DamageFactor)
+            .ToList();
+        _infliges = relations
+            .Where(x => x.DamageTypeId == TypeId && x.DamageFactor != 100)
+            .OrderByDescending(x => x.DamageFactor)
+            .ToList();
+        _type = bundle.Type;
+    }
+}

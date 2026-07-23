@@ -1,0 +1,31 @@
+select 
+	pokemon_abilities.pokemon_id as PokemonId,
+	pokemon_abilities.ability_id as AbilityId,
+	pokemon_abilities.is_hidden as IsHidden,
+	pokemon_abilities.slot as Slot,
+	abilities.identifier as AbilityIdentifier,
+	abilities.generation_id as GenerationId,
+	ability_names.name as AbilityName,
+	ability_flavor_text.flavor_text as FlavorText
+
+from pokemon_abilities
+join abilities
+	on abilities.id = pokemon_abilities.ability_id
+join ability_names
+	on ability_names.ability_id = pokemon_abilities.ability_id
+join ability_flavor_text
+	on ability_flavor_text.ability_id = pokemon_abilities.ability_id
+	and ability_flavor_text.language_id = ability_names.local_language_id
+join version_groups
+	on version_groups.id = ability_flavor_text.version_group_id
+join versions
+	on versions.version_group_id = version_groups.id 
+
+where 
+	pokemon_abilities.pokemon_id = @pokemonId and
+	abilities.is_main_series = 1 and
+	ability_names.local_language_id = @languageId and
+	versions.id = @versionId
+	
+order by
+	pokemon_abilities.slot

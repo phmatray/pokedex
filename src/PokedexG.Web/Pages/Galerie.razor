@@ -1,0 +1,72 @@
+@page "/galerie"
+@inject VeekunClient Veekun
+@inject SettingsService Reglages
+@inject NavigationManager Nav
+
+<PageTitle>Pokédex G — Galerie</PageTitle>
+
+@if (_vue is null)
+{
+    <p class="py-10 text-center text-(--encre-2)">Ouverture de la galerie…</p>
+}
+else
+{
+    <div class="flex flex-wrap items-center justify-between gap-3 py-4">
+        <h1 class="text-xl font-bold">Galerie</h1>
+        <div>
+            <label class="sr-only" for="recherche-galerie">Recherche</label>
+            <input id="recherche-galerie" type="search" placeholder="Recherche" autocomplete="off"
+                   class="w-56 rounded border border-(--filet) bg-(--surface) px-3 py-1.5 text-sm"
+                   value="@_filtre" @oninput="e => Filtrer((string?)e.Value)" />
+        </div>
+    </div>
+    <p class="sr-only" role="status">@_vue.Count Pokémon affichés</p>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        @foreach (var p in _vue)
+        {
+            <a @key="p.FormId" href="pokemon/@p.FormId"
+               class="carte p-3 flex flex-col items-center gap-1 no-underline text-(--encre) hover:border-(--lien)"
+               title="@($"{p.PokedexNumberNationalFormatedWithSuffix} {p.Identifier}")">
+                <img src="@Reglages.IllustrationPath(p.FormKey)" alt="" width="150" height="150"
+                     loading="lazy" class="object-contain h-[150px]"
+                     onerror="this.style.visibility='hidden'" />
+                <span class="font-bold tabulaire">@p.PokedexNumberNationalFormatedWithSuffix</span>
+                <span class="font-bold text-center">@p.Name</span>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private FilteredPokemonStore? _store;
+    private List<Pokemon>? _vue;
+    private string _filtre = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var pokemons = await Veekun.GetPokemonsAsync();
+        _store = new FilteredPokemonStore(new PokemonStore(pokemons))
+        {
+            IncludeMegaEvolutions = Reglages.UsePokedexMegaEvolutions,
+            IncludeAlternatives = Reglages.UsePokedexAlternatives,
+            SortMethod = Reglages.UsePokedexEvolutionFamilies
+                ? PokemonSorting.ByEvolution
+                : PokemonSorting.ByNumber
+        };
+        Rafraichir();
+    }
+
+    private void Filtrer(string? valeur)
+    {
+        _filtre = valeur ?? "";
+        _store!.Filter = _filtre;
+        Rafraichir();
+    }
+
+    private void Rafraichir()
+    {
+        _store!.RefreshView();
+        _vue = _store.Cast<Pokemon>().ToList();
+    }
+}

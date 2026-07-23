@@ -1,0 +1,15 @@
+{
+  "name": "Pokédex G",
+  "short_name": "Pokédex G",
+  "description": "Les 721 Pokémon des générations 1 à 6 en français — fiches complètes, méga-évolutions, table des types et capsules techniques, consultables hors ligne.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f3ec",
+  "theme_color": "#8b0000",
+  "icons": [
+    { "src": "img/interface/logo.png", "sizes": "300x300", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}
