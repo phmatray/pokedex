@@ -15,6 +15,21 @@
 [![Last commit](https://img.shields.io/github/last-commit/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/commits)
 <!-- portfolio-badges:end -->
 
+<!-- portfolio-toc:start -->
+
+## Table of Contents
+
+- [Architecture](#architecture)
+- [Développement](#développement)
+- [Données & crédits](#données--crédits)
+- [Provenance](#provenance)
+- [Tech Stack](#tech-stack)
+- [License](#license)
+- [Contributing](#contributing)
+
+<!-- portfolio-toc:end -->
+
+
 
 > Les 721 Pokémon des générations 1 à 6, en français — fiches complètes, méga-évolutions,
 > formes alternatives, table des types et capsules techniques. Consultable hors ligne (PWA).
