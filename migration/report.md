@@ -2,7 +2,7 @@
 
 **Date :** 2026-07-23 · **Pipeline :** ai-migration-kit v1.4.0 (réécriture port-characterize-wrap) ·
 **Branche :** migration/2026-07-23 · **Dashboard :** [report.html](report.html) ·
-**Production :** en attente de la décision propriétaire (repo privé)
+**Production :** https://phmatray.github.io/pokedexg/
 
 ## Avant / après
 
@@ -36,10 +36,10 @@
    4 volets, matrice 18×18, CT, options), identité 2016 (bandeau DarkRed, police Pokemon Solid,
    pokéball, filets bisque), thèmes Rubis/Saphir ; workflows CI + déploiement depuis les
    templates du kit.
-4. **Promesses vérifiées** — contraste AA **mesuré** (22 paires thèmes/badges + 18 encres de
+4. **Promesses vérifiées et livraison** — contraste AA **mesuré** (22 paires thèmes/badges + 18 encres de
    types ; le blanc de 2016 échouait sur 13 types) ; **hors-ligne prouvé serveur coupé** sur une
    fiche jamais visitée (`captures/fiche-hors-ligne.png`, précache 1 773 entrées) ; publish à
-   froid vérifié (assets + données présents).
+   froid vérifié (assets + données présents) ; **production vérifiée** : jobs build/deploy/verify verts, racine et `/pokemon/25` contrôlées dans un vrai navigateur.
 
 ## Quirks figés par les tests (échantillon)
 
@@ -57,7 +57,7 @@ périmètre comprise.
 
 ## Prochaines étapes
 
-- [ ] **Décision propriétaire** : rendre le repo public + activer Pages (`gh api repos/phmatray/pokedexg/pages -X POST -f build_type=workflow`) — ou choisir un hébergement privé (~10 min)
+- [x] Repo rendu public + Pages actif — déploiement, smoke `verify` et fiche profonde vérifiés en production
 - [ ] Installer la PWA sur un appareil réel (~15 min)
 - [ ] **Décision propriétaire** : archiver ou migrer un jour les projets `PokemonAPI.*` (webservice 2016 jamais branché) (~30 min)
 
