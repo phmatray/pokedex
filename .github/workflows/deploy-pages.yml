@@ -86,7 +86,7 @@ jobs:
       page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # Livrée = vérifiée : le smoke test contrôle le CONTENU servi, jamais le seul code HTTP
   # (le fallback 404.html de GitHub Pages sert l'app avec un statut 404 sur les routes profondes).
