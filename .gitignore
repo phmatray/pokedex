@@ -8,18 +8,14 @@ PokedexG.Uwp/PokedexG.Uwp.MainApp.nuget.targets
 PokedexG.Uwp.Tests/bin/
 PokedexG.Uwp.Tests/obj/
 
-PokemonAPI.WebService/bin/
-PokemonAPI.WebService/obj/
-
-PokemonAPI/obj/
-
-PokemonAPI.Models/obj/
-
 *.DotSettings
 
 PokedexG.Uwp/obj/x64/Release/PackageUploadLayout/Assets/globallink/404.jpg
 PokedexG.Uwp/_pkginfo.txt
-PokemonAPI/bin/Debug/Newtonsoft.Json.xml
+
+# IDE / backup cruft — should never be committed
+.vs/
+Backup/
 
 # .NET moderne (migration Blazor)
 **/bin/
