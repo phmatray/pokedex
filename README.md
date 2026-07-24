@@ -4,15 +4,16 @@
 
 <!-- portfolio-badges:start -->
 <!-- Identity -->
-[![phmatray - pokedexg](https://img.shields.io/static/v1?label=phmatray&message=pokedexg&color=blue&logo=github)](https://github.com/phmatray/pokedexg)
-![Top language](https://img.shields.io/github/languages/top/phmatray/pokedexg)
-[![Stars](https://img.shields.io/github/stars/phmatray/pokedexg?style=social)](https://github.com/phmatray/pokedexg/stargazers)
-[![Forks](https://img.shields.io/github/forks/phmatray/pokedexg?style=social)](https://github.com/phmatray/pokedexg/network/members)
+[![phmatray - pokedex](https://img.shields.io/static/v1?label=phmatray&message=pokedex&color=blue&logo=github)](https://github.com/phmatray/pokedex)
+![Top language](https://img.shields.io/github/languages/top/phmatray/pokedex)
+[![Stars](https://img.shields.io/github/stars/phmatray/pokedex?style=social)](https://github.com/phmatray/pokedex/stargazers)
+[![Forks](https://img.shields.io/github/forks/phmatray/pokedex?style=social)](https://github.com/phmatray/pokedex/network/members)
+[![License](https://img.shields.io/github/license/phmatray/pokedex)](https://github.com/phmatray/pokedex/blob/HEAD/LICENSE)
 
 <!-- Activity -->
-[![Issues](https://img.shields.io/github/issues/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/issues)
-[![Pull requests](https://img.shields.io/github/issues-pr/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/pulls)
-[![Last commit](https://img.shields.io/github/last-commit/phmatray/pokedexg)](https://github.com/phmatray/pokedexg/commits)
+[![Issues](https://img.shields.io/github/issues/phmatray/pokedex)](https://github.com/phmatray/pokedex/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/phmatray/pokedex)](https://github.com/phmatray/pokedex/pulls)
+[![Last commit](https://img.shields.io/github/last-commit/phmatray/pokedex)](https://github.com/phmatray/pokedex/commits)
 <!-- portfolio-badges:end -->
 
 <!-- portfolio-toc:start -->
