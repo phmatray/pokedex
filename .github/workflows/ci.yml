@@ -26,7 +26,7 @@ jobs:
         run: dotnet test $SOLUTION --nologo --collect:"XPlat Code Coverage" --results-directory coverage
 
       - name: Publier la couverture en artefact de build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/**/coverage.cobertura.xml
